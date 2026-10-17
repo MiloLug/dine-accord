@@ -1,0 +1,56 @@
+bitmapkey 10629: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 15075: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 15270: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 17742: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 20272: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 21485: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 21608: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 22862: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 3], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 25408: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, ff, 1, 6, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, ff, 1, 6]
+bitmapkey 33750: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, ff, 1, 6, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, ff, 1, 6]
+bitmapkey 34148: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 36202: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 40228: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 42540: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 45449: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 4549: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 51207: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+bitmapkey 6603: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 1, 2]
+facet "Wireshark": want Element=85 Part=245 Identifier=25408 hotspot (0, 0), got Element=85 Part=220 Identifier=25408 hotspot (0, 0)
+header.coreui_version: want 972, got 975
+header.rendition_count: want 47, got 46
+keyformat: want ["Appearance","Localization","Element","Part","Size","Identifier","Dimension1","Dimension2","Layer","Scale","DisplayGamut"], got ["Appearance","Localization","Element","Part","Size","Identifier","Dimension1","Dimension2","Layer","Scale"]
+rendition [Element=85 Part=181 Identifier=15075 Scale=1].payload.celm: want 11, got 4
+rendition [Element=85 Part=181 Identifier=15075 Scale=1].payload.decoded_len: want null, got 8388608
+rendition [Element=85 Part=181 Identifier=15075 Scale=1].size: want [1024,1024], got [2048,2048]
+rendition [Element=85 Part=181 Identifier=15075 Scale=1].tlvs.tlv1003.words: want [1,0,0,0,0,1024,1024], got [1,0,0,0,0,2048,2048]
+rendition [Element=85 Part=181 Identifier=21485 Scale=1].payload.celm: want 11, got 4
+rendition [Element=85 Part=181 Identifier=21485 Scale=1].payload.decoded_len: want null, got 16777216
+rendition [Element=85 Part=181 Identifier=21485 Scale=1].size: want [1024,1024], got [2048,2048]
+rendition [Element=85 Part=181 Identifier=21485 Scale=1].tlvs.tlv1003.words: want [1,0,0,0,0,1024,1024], got [1,0,0,0,0,2048,2048]
+rendition [Element=85 Part=181 Identifier=21485 Scale=1].tlvs.tlv1007.bytes_per_row: want 4096, got 8192
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].colorspace: want 4, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].flags: want 16, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].format: want "RGBW", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].layout: want "Image", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].name: want "image.png", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].payload.celm: want 11, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].payload.decoded_len: want null, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].scale: want 1.0, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].size: want [1024,1024], missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1001.rects[0]: want [0,0,2048,2048], missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1001.type: want "slices", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1003.type: want "metrics", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1003.words: want [1,0,0,0,0,1024,1024], missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1007.bytes_per_row: want 8192, missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1 DisplayGamut=1].tlvs.tlv1007.type: want "bytes_per_row", missing
+rendition [Element=85 Part=181 Identifier=22862 Scale=1].payload.celm: want 11, got 4
+rendition [Element=85 Part=181 Identifier=22862 Scale=1].payload.decoded_len: want null, got 16777216
+rendition [Element=85 Part=181 Identifier=22862 Scale=1].size: want [1024,1024], got [2048,2048]
+rendition [Element=85 Part=181 Identifier=22862 Scale=1].tlvs.tlv1003.words: want [1,0,0,0,0,1024,1024], got [1,0,0,0,0,2048,2048]
+rendition [Element=85 Part=181 Identifier=22862 Scale=1].tlvs.tlv1007.bytes_per_row: want 4096, got 8192
