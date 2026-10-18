@@ -613,6 +613,8 @@ struct StackLayer {
     /// non-1024 / non-square layer keeps its aspect and isn't stretched.
     native_w: u32,
     native_h: u32,
+    /// The layer's solid fill, which replaces the artwork's colour inside its coverage.
+    fill: Option<[f64; 3]>,
 }
 
 /// The visible layers of every group for `appearance`, back to front.
@@ -681,6 +683,17 @@ fn collect_stack_layers(
                 0.0
             };
             let (native_w, native_h) = layer_native_size(&path);
+            let fill = layer
+                .fill_specializations
+                .as_ref()
+                .and_then(|s| crate::icon_effects::spec_value(s, appearance))
+                .or(match layer.fill.as_ref() {
+                    Some(Fill::Structured(v)) => Some(v),
+                    _ => None,
+                })
+                .and_then(|v| v.get("solid")?.as_str())
+                .and_then(parse_color_spec)
+                .and_then(|(_, comps)| comps_to_rgb(&comps));
             out.push(StackLayer {
                 source: path,
                 frosted,
@@ -694,6 +707,7 @@ fn collect_stack_layers(
                 blend,
                 native_w,
                 native_h,
+                fill,
             });
         }
     }
@@ -901,6 +915,18 @@ fn render_layer_stack(
         let src = match raster_cache.entry((layer.source.clone(), rw, rh)) {
             Entry::Occupied(e) => e.into_mut(),
             Entry::Vacant(e) => e.insert(rasterize_layer(&layer.source, rw, rh)?),
+        };
+        let filled;
+        let src = match layer.fill {
+            Some(rgb) => {
+                let px = rgb.map(|c| (c.clamp(0.0, 1.0) * 255.0).round() as u8);
+                filled = src
+                    .chunks_exact(4)
+                    .flat_map(|p| [px[0], px[1], px[2], p[3]])
+                    .collect::<Vec<u8>>();
+                &filled
+            }
+            None => &*src,
         };
         let (rw, rh) = (rw as i64, rh as i64);
         let half = pixel_size as f32 / 2.0;
@@ -2132,7 +2158,7 @@ mod tests {
         std::fs::create_dir_all(&dir).unwrap();
         let red = dir.join("red.png");
         write_solid_png(&red, [255, 0, 0, 255]);
-        let layers = vec![StackLayer { source: red, frosted: true, tinted: false, specular: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64 }];
+        let layers = vec![StackLayer { source: red, frosted: true, tinted: false, specular: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64, fill: None }];
         let out = render_layer_stack(&layers, 64, None).unwrap();
         let i = (32 * 64 + 32) * 4; // centre, premul-first BGRA
         let (b, g, r, a) = (out[i], out[i + 1], out[i + 2], out[i + 3]);
@@ -2146,7 +2172,7 @@ mod tests {
         std::fs::create_dir_all(&dir).unwrap();
         let red = dir.join("red2.png");
         write_solid_png(&red, [255, 0, 0, 255]);
-        let layers = vec![StackLayer { source: red, frosted: false, tinted: false, specular: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64 }];
+        let layers = vec![StackLayer { source: red, frosted: false, tinted: false, specular: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64, fill: None }];
         let out = render_layer_stack(&layers, 64, None).unwrap();
         let i = (32 * 64 + 32) * 4; // premul-first BGRA, opaque red
         assert_eq!((out[i], out[i + 1], out[i + 2], out[i + 3]), (0, 0, 255, 255));
@@ -2182,6 +2208,7 @@ mod tests {
             blend: BlendMode::Normal,
             native_w: 1024,
             native_h: 1024,
+            fill: None,
         };
         let i = (128 * 256 + 128) * 4; // centre at 256², premul-first BGRA
         // One tinted blue layer over grey 153: out = 153 − 63.5·(1−col).
@@ -2224,6 +2251,7 @@ mod tests {
             blend: BlendMode::Normal,
             native_w: 256,
             native_h: 128,
+            fill: None,
         }];
         let out = render_layer_stack(&layers, 1024, None).unwrap();
         let opaque = |x: usize, y: usize| out[(y * 1024 + x) * 4 + 3] > 0;

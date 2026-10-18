@@ -33,30 +33,3 @@ rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv10
 rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
 rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].colorspace: want 1, got 2
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].format: want "ARGB", got "GA8 "
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].colorspace: want 1, got 2
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].format: want "ARGB", got "GA8 "
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=2].colorspace: want 1, got 2
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=2].format: want "ARGB", got "GA8 "
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].colorspace: want 1, got 2
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].format: want "ARGB", got "GA8 "
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].payload.decoded_len: want 262144, got 131072
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].tlvs.tlv1007.bytes_per_row: want 1024, got 512
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].colorspace: want 1, got 2
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].format: want "ARGB", got "GA8 "
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].payload.decoded_len: want 1048576, got 524288
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].tlvs.tlv1007.bytes_per_row: want 2048, got 1024
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].colorspace: want 1, got 2
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].format: want "ARGB", got "GA8 "
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].payload.decoded_len: want 4194304, got 2097152
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].colorspace: want 1, got 2
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].format: want "ARGB", got "GA8 "
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].payload.decoded_len: want 4194304, got 2097152
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
-rendition [Element=9 Part=181 Scale=2].colorspace: want 1, got 2
-rendition [Element=9 Part=181 Scale=2].format: want "ARGB", got "GA8 "
-rendition [Element=9 Part=181 Scale=2].name: want "ZZZZPackedAsset-2.0.0-gamut0", got "ZZZZPackedAsset-2.0.1-gamut0"
-rendition [Element=9 Part=181 Scale=2].payload.decoded_len: want 105600, got 54912
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1007.bytes_per_row: want 800, got 416
