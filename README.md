@@ -90,7 +90,6 @@ Known differences from `actool`:
 - No wide-gamut copies for 16-bit gray images or for icons rendered from an `.icon`.
 - Some `.icon` palette entries are named or merged differently.
 - Alternate iOS app icon sets don't match `actool`'s rendition set yet.
-- File names in `Contents.json` are case-sensitive.
 - `.icon` pre-renders approximate Liquid Glass; iOS 27 draws the icon from the layer stack anyway.
 
 ## Testing against Apple's output

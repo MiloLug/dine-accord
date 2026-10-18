@@ -395,7 +395,7 @@ impl AssetCatalog {
             let Some(filename) = img_info.get("filename").and_then(|v| v.as_str()) else {
                 continue;
             };
-            let img_path = item.join(filename);
+            let img_path = entry_path(item, filename);
             if !img_path.exists() {
                 continue;
             }
@@ -667,7 +667,7 @@ impl AssetCatalog {
             let Some(filename) = img_info.get("filename").and_then(|v| v.as_str()) else {
                 continue;
             };
-            let path = item.join(filename);
+            let path = entry_path(item, filename);
             if !path.exists() {
                 continue;
             }
@@ -1066,7 +1066,7 @@ impl AssetCatalog {
                 let Some(filename) = entry.get("filename").and_then(|v| v.as_str()) else {
                     continue;
                 };
-                let p = item.join(filename);
+                let p = entry_path(item, filename);
                 if !p.exists() {
                     continue;
                 }
@@ -1140,7 +1140,7 @@ impl AssetCatalog {
                     else {
                         continue;
                     };
-                    let img_path = sprite_item.join(filename);
+                    let img_path = entry_path(&sprite_item, filename);
                     if !img_path.exists() {
                         continue;
                     }
@@ -1197,7 +1197,7 @@ impl AssetCatalog {
                 else {
                     continue;
                 };
-                let layer_path = item.join(layer_filename);
+                let layer_path = entry_path(item, layer_filename);
                 if !layer_path.exists() {
                     continue;
                 }
@@ -1225,7 +1225,7 @@ impl AssetCatalog {
                         else {
                             continue;
                         };
-                        let p = content_imageset.join(filename);
+                        let p = entry_path(&content_imageset, filename);
                         if !p.exists() {
                             continue;
                         }
@@ -1297,7 +1297,7 @@ impl AssetCatalog {
                 if filename.to_ascii_lowercase().ends_with(".svg") {
                     continue;
                 }
-                let p = icon_dir.join(filename);
+                let p = entry_path(&icon_dir, filename);
                 if !p.exists() {
                     continue;
                 }
@@ -1358,6 +1358,22 @@ fn json_platform(platform: &str) -> &str {
         "xros" | "xrsimulator" => "visionos",
         other => other,
     }
+}
+
+/// `dir/name`, or the entry whose name matches `name` ignoring case: actool runs on macOS's
+/// case-insensitive file system, where `Contents.json` names need not match the file's case.
+pub(crate) fn entry_path(dir: &Path, name: &str) -> PathBuf {
+    let exact = dir.join(name);
+    if exact.exists() {
+        return exact;
+    }
+    let want = name.to_lowercase();
+    std::fs::read_dir(dir)
+        .into_iter()
+        .flatten()
+        .flatten()
+        .find(|e| e.file_name().to_string_lossy().to_lowercase() == want)
+        .map_or(exact, |e| e.path())
 }
 
 fn read_json(path: &Path) -> Result<Value> {

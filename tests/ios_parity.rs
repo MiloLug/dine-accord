@@ -215,6 +215,21 @@ fn ios_appicon_partial_plist_has_cfbundleicons() {
 }
 
 #[test]
+fn ios_appicon_finds_files_named_in_another_case() {
+    // actool runs on a case-insensitive file system; RootHide ships `Icon-76@2x.png` for a
+    // `Contents.json` entry `icon-76@2x.png`.
+    let root = workspace_tmp("ios_appicon_case");
+    build_appicon_catalog(&root, &[("60x60", "2x", "iphone"), ("76x76", "2x", "ipad")]);
+    let set = root.join("A.xcassets/AppIcon.appiconset");
+    std::fs::rename(set.join("i152.png"), set.join("I152.png")).unwrap();
+    let out = root.join("out");
+    std::fs::create_dir_all(&out).unwrap();
+    compile_ios_icon(&root.join("A.xcassets"), &out);
+
+    assert!(out.join("AppIcon76x76@2x~ipad.png").exists());
+}
+
+#[test]
 fn ios_appicon_ipad_files_only_with_ipad_icons() {
     // iPhone-only set: CFBundleIcons~ipad carries just the name (no files).
     let root = workspace_tmp("ios_appicon_iphone_only");

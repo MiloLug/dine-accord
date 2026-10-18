@@ -643,8 +643,9 @@ fn collect_stack_layers(
                 continue;
             }
             let Some(name) = layer.image_name.as_deref() else { continue };
-            let assets = bundle.join("Assets").join(name);
-            let path = if assets.exists() { assets } else { bundle.join(name) };
+            let assets = crate::catalog::entry_path(&bundle.join("Assets"), name);
+            let path =
+                if assets.exists() { assets } else { crate::catalog::entry_path(bundle, name) };
             if !path.exists() {
                 continue;
             }
@@ -1034,12 +1035,12 @@ fn find_all_source_images(bundle: &Path, json: &serde_json::Value) -> Vec<PathBu
                     if !seen.insert(name.to_string()) {
                         continue;
                     }
-                    let assets_path = bundle.join("Assets").join(name);
+                    let assets_path = crate::catalog::entry_path(&bundle.join("Assets"), name);
                     if assets_path.exists() {
                         out.push(assets_path);
                         continue;
                     }
-                    let root_path = bundle.join(name);
+                    let root_path = crate::catalog::entry_path(bundle, name);
                     if root_path.exists() {
                         out.push(root_path);
                     }
