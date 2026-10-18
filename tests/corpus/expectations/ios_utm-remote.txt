@@ -40,30 +40,6 @@ rendition [Appearance=4 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv10
 rendition [Identifier=33034 Element=85 Part=181].payload.len: want 5076, got 2314
 rendition [Identifier=37391 Element=85 Part=181].payload.len: want 5902, got 3041
 rendition [Identifier=55451 Element=85 Part=181].payload.len: want 6950, got 3920
-rendition [Scale=1 Element=9 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Element=9 Part=181].payload.decoded_len: want null, got 10560
-rendition [Scale=1 Element=9 Part=181].tlvs.tlv1007.bytes_per_row: want 288, got 160
-rendition [Scale=1 Identifier=33034 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Identifier=33034 Element=85 Part=181].payload.decoded_len: want null, got 163008
-rendition [Scale=1 Identifier=33034 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 1152, got 576
-rendition [Scale=1 Identifier=37391 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Identifier=37391 Element=85 Part=181].payload.decoded_len: want null, got 163008
-rendition [Scale=1 Identifier=37391 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 1152, got 576
-rendition [Scale=1 Identifier=55451 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Identifier=55451 Element=85 Part=181].payload.decoded_len: want null, got 163008
-rendition [Scale=1 Identifier=55451 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 1152, got 576
-rendition [Scale=2 Element=9 Part=181].payload.celm: want 11, got 4
-rendition [Scale=2 Element=9 Part=181].payload.decoded_len: want null, got 32256
-rendition [Scale=2 Element=9 Part=181].tlvs.tlv1007.bytes_per_row: want 512, got 256
-rendition [Scale=2 Identifier=33034 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=2 Identifier=33034 Element=85 Part=181].payload.decoded_len: want null, got 653184
-rendition [Scale=2 Identifier=33034 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 2272, got 1152
-rendition [Scale=2 Identifier=37391 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=2 Identifier=37391 Element=85 Part=181].payload.decoded_len: want null, got 653184
-rendition [Scale=2 Identifier=37391 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 2272, got 1152
-rendition [Scale=2 Identifier=55451 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=2 Identifier=55451 Element=85 Part=181].payload.decoded_len: want null, got 653184
-rendition [Scale=2 Identifier=55451 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 2272, got 1152
 rendition [Scale=2 Idiom=1 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
 rendition [Scale=2 Idiom=1 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
 rendition [Scale=2 Idiom=1 Element=9 Part=181].payload.decoded_len: want 223040, got 224352
@@ -72,18 +48,6 @@ rendition [Scale=2 Idiom=2 Dimension1=1 Element=9 Part=181].name: want "ZZZZPack
 rendition [Scale=2 Idiom=2 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
 rendition [Scale=2 Idiom=2 Element=9 Part=181].payload.decoded_len: want 223040, got 224352
 rendition [Scale=2 Idiom=2 Element=9 Part=181].size: want [324,170], got [325,171]
-rendition [Scale=3 Element=9 Part=181].payload.celm: want 11, got 4
-rendition [Scale=3 Element=9 Part=181].payload.decoded_len: want null, got 71424
-rendition [Scale=3 Element=9 Part=181].tlvs.tlv1007.bytes_per_row: want 768, got 384
-rendition [Scale=3 Identifier=33034 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=3 Identifier=33034 Element=85 Part=181].payload.decoded_len: want null, got 1468800
-rendition [Scale=3 Identifier=33034 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 3424, got 1728
-rendition [Scale=3 Identifier=37391 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=3 Identifier=37391 Element=85 Part=181].payload.decoded_len: want null, got 1468800
-rendition [Scale=3 Identifier=37391 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 3424, got 1728
-rendition [Scale=3 Identifier=55451 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=3 Identifier=55451 Element=85 Part=181].payload.decoded_len: want null, got 1468800
-rendition [Scale=3 Identifier=55451 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 3424, got 1728
 rendition [Scale=3 Idiom=1 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-3.1.0-gamut0", got "ZZZZPackedAsset-3.0.0-gamut0"
 rendition [Scale=3 Idiom=1 Element=9 Part=181].name: want "ZZZZPackedAsset-3.1.0-gamut0", got "ZZZZPackedAsset-3.0.0-gamut0"
 rendition [Scale=3 Idiom=1 Element=9 Part=181].payload.decoded_len: want 339456, got 340704

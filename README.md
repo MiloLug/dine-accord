@@ -87,7 +87,8 @@ accord prints the `actool` compilation-results plist and exits 0; errors exit 1,
 
 Known differences from `actool`:
 
-- LZFSE where `actool` uses deepmap2 or palette-img compression; CoreUI reads both.
+- Below macOS 11 and iOS 14, LZFSE where `actool` uses palette-img or deepmap compression;
+  CoreUI reads both.
 - No wide-gamut copies for 16-bit gray images or for icons rendered from an `.icon`.
 - Some `.icon` palette entries are named or merged differently.
 - Alternate iOS app icon sets don't match `actool`'s rendition set yet.

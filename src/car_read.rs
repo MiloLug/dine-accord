@@ -413,8 +413,8 @@ fn parse_rendition(k: &[u8], v: &[u8], attrs: usize) -> Result<Rendition> {
         TlvValue::BytesPerRow { bytes_per_row } => Some(bytes_per_row),
         _ => None,
     });
-    let (payload, decoded) = parse_payload(data, bytes_per_row.map(|b| b as usize * le32(v, 16).unwrap_or(0) as usize));
     let height = le32(v, 16)?;
+    let (payload, decoded) = parse_payload(data, (le32(v, 12)?, height), bytes_per_row);
     Ok(Rendition {
         key,
         layout: le16(v, 36)?,
@@ -533,13 +533,13 @@ fn decode_tlv(tag: u32, v: &[u8]) -> Result<TlvValue> {
 }
 
 /// The payload, plus its decoded bytes for images (CELM) and raw data (RAWD).
-fn parse_payload(d: &[u8], expected_pixels: Option<usize>) -> (Payload, Option<Vec<u8>>) {
+fn parse_payload(d: &[u8], size: (u32, u32), bytes_per_row: Option<u32>) -> (Payload, Option<Vec<u8>>) {
     if d.is_empty() {
         return (Payload::None, None);
     }
     let magic = String::from_utf8_lossy(&d[..d.len().min(4)]).into_owned();
     let r: Result<(Payload, Option<Vec<u8>>)> = match magic.as_str() {
-        "MLEC" => Ok(parse_celm(d, expected_pixels)),
+        "MLEC" => Ok(parse_celm(d, size, bytes_per_row)),
         "RLOC" => (|| {
             let n = le32(d, 12)? as usize;
             Ok((
@@ -583,8 +583,9 @@ fn parse_payload(d: &[u8], expected_pixels: Option<usize>) -> (Payload, Option<V
     r.unwrap_or_else(|e| (Payload::Unknown { magic: format!("{magic} ({e})"), len: d.len() }, None))
 }
 
-/// LZFSE-compressed images are split into `KCBC` chunks of whole rows.
-fn parse_celm(d: &[u8], expected: Option<usize>) -> (Payload, Option<Vec<u8>>) {
+/// LZFSE and deepmap2 images of many rows are split into `KCBC` chunks of whole rows.
+fn parse_celm(d: &[u8], (width, height): (u32, u32), bytes_per_row: Option<u32>) -> (Payload, Option<Vec<u8>>) {
+    let expected = bytes_per_row.map(|b| b as usize * height as usize);
     let field = |off| le32(d, off).unwrap_or(0);
     let (version, compression, word) = (field(4), field(8), field(12));
     let mut chunks = None;
@@ -617,6 +618,34 @@ fn parse_celm(d: &[u8], expected: Option<usize>) -> (Payload, Option<Vec<u8>>) {
             4 => {
                 let body = d.get(16..16 + word as usize).ok_or_else(|| anyhow!("short LZFSE body"))?;
                 Some(lzfse_decode(body, expected)?)
+            }
+            11 => {
+                let mut rows = Vec::new();
+                if d.get(16..20) == Some(b"KCBC") {
+                    chunks = Some(word);
+                    data_len = (d.len() - 16) as u32;
+                    let mut p = 16;
+                    for _ in 0..word {
+                        ensure!(d.get(p..p + 4) == Some(b"KCBC"), "missing KCBC at {p}");
+                        let (n, len) = (le32(d, p + 12)?, le32(d, p + 16)? as usize);
+                        let body = d.get(p + 20..p + 20 + len).ok_or_else(|| anyhow!("short KCBC chunk"))?;
+                        rows.extend(crate::deepmap2::decode_chunk(body, width, n)?);
+                        p += 20 + len;
+                    }
+                } else {
+                    let body = d.get(16..16 + word as usize).ok_or_else(|| anyhow!("short deepmap2 body"))?;
+                    rows = crate::deepmap2::decode_chunk(body, width, height)?;
+                }
+                // Decoded rows are tight; TLV 1007 records the padded stride.
+                match bytes_per_row {
+                    Some(bpr) if height > 0 && (bpr as usize) * height as usize > rows.len() => {
+                        let tight = rows.len() / height as usize;
+                        Some(rows.chunks_exact(tight).flat_map(|r| {
+                            r.iter().copied().chain(std::iter::repeat(0).take(bpr as usize - tight))
+                        }).collect())
+                    }
+                    _ => Some(rows),
+                }
             }
             _ => None,
         };

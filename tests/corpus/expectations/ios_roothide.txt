@@ -6,16 +6,7 @@ bitmapkey 6849: want [ffffffff, 1, e, 6, 10001, 7ff, 1, ffffffff, ffffffff, ffff
 header.coreui_version: want 972, got 975
 header.rendition_count: want 234, got 214
 rendition [Identifier=18117 Element=85 Part=181].payload.len: want 10012, got 3196
-rendition [Scale=1 Element=9 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Element=9 Part=181].payload.decoded_len: want null, got 45760
 rendition [Scale=1 Element=9 Part=181].size: want [206,110], got [207,110]
-rendition [Scale=1 Element=9 Part=181].tlvs.tlv1007.bytes_per_row: want 832, got 416
-rendition [Scale=1 Identifier=18117 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Identifier=18117 Element=85 Part=181].payload.decoded_len: want null, got 3185280
-rendition [Scale=1 Identifier=18117 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 5056, got 2528
-rendition [Scale=1 Identifier=2094 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Identifier=2094 Element=85 Part=181].payload.decoded_len: want null, got 57600
-rendition [Scale=1 Identifier=2094 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 544, got 288
 rendition [Scale=1 Idiom=1 Dimension2=2 Identifier=6849 Element=85 Part=220].colorspace: unexpected 1
 rendition [Scale=1 Idiom=1 Dimension2=2 Identifier=6849 Element=85 Part=220].flags: unexpected 0
 rendition [Scale=1 Idiom=1 Dimension2=2 Identifier=6849 Element=85 Part=220].format: unexpected "ARGB"
@@ -201,7 +192,7 @@ rendition [Scale=2 Element=9 Part=181].flags: unexpected 0
 rendition [Scale=2 Element=9 Part=181].format: unexpected "ARGB"
 rendition [Scale=2 Element=9 Part=181].layout: unexpected "PackedImage"
 rendition [Scale=2 Element=9 Part=181].name: unexpected "ZZZZPackedAsset-2.0.0-gamut0"
-rendition [Scale=2 Element=9 Part=181].payload.celm: unexpected 4
+rendition [Scale=2 Element=9 Part=181].payload.celm: unexpected 11
 rendition [Scale=2 Element=9 Part=181].payload.decoded_len: unexpected 235296
 rendition [Scale=2 Element=9 Part=181].scale: unexpected 2.0
 rendition [Scale=2 Element=9 Part=181].size: unexpected [340,171]
@@ -214,12 +205,9 @@ rendition [Scale=2 Element=9 Part=181].tlvs.tlv1006.orientation: unexpected 1
 rendition [Scale=2 Element=9 Part=181].tlvs.tlv1006.type: unexpected "orientation"
 rendition [Scale=2 Element=9 Part=181].tlvs.tlv1007.bytes_per_row: unexpected 1376
 rendition [Scale=2 Element=9 Part=181].tlvs.tlv1007.type: unexpected "bytes_per_row"
-rendition [Scale=2 Identifier=18117 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=2 Identifier=18117 Element=85 Part=181].payload.decoded_len: want null, got 12741120
-rendition [Scale=2 Identifier=18117 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 10112, got 5056
 rendition [Scale=2 Identifier=55290 Element=85 Part=181].layout: want "Image", got "InternalReference"
 rendition [Scale=2 Identifier=55290 Element=85 Part=181].payload.celm: want 11, missing
-rendition [Scale=2 Identifier=55290 Element=85 Part=181].payload.decoded_len: want null, missing
+rendition [Scale=2 Identifier=55290 Element=85 Part=181].payload.decoded_len: want 112224, missing
 rendition [Scale=2 Identifier=55290 Element=85 Part=181].payload.type: unexpected "none"
 rendition [Scale=2 Identifier=55290 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 672, missing
 rendition [Scale=2 Identifier=55290 Element=85 Part=181].tlvs.tlv1007.type: want "bytes_per_row", missing
@@ -230,7 +218,7 @@ rendition [Scale=2 Identifier=55290 Element=85 Part=181].tlvs.tlv1010.rect: unex
 rendition [Scale=2 Identifier=55290 Element=85 Part=181].tlvs.tlv1010.type: unexpected "link"
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].layout: want "Image", got "InternalReference"
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].payload.celm: want 11, missing
-rendition [Scale=2 Identifier=61030 Element=85 Part=181].payload.decoded_len: want null, missing
+rendition [Scale=2 Identifier=61030 Element=85 Part=181].payload.decoded_len: want 112224, missing
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].payload.type: unexpected "none"
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 672, missing
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].tlvs.tlv1007.type: want "bytes_per_row", missing
@@ -239,9 +227,6 @@ rendition [Scale=2 Identifier=61030 Element=85 Part=181].tlvs.tlv1010.key[1]: un
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].tlvs.tlv1010.key[2]: unexpected [12,2]
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].tlvs.tlv1010.rect: unexpected [171,2,167,167]
 rendition [Scale=2 Identifier=61030 Element=85 Part=181].tlvs.tlv1010.type: unexpected "link"
-rendition [Scale=2 Identifier=8682 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=2 Identifier=8682 Element=85 Part=181].payload.decoded_len: want null, got 66560
-rendition [Scale=2 Identifier=8682 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 1632, got 832
 rendition [Scale=2 Idiom=1 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
 rendition [Scale=2 Idiom=1 Dimension1=1 Element=9 Part=181].payload.decoded_len: want 233920, got 235296
 rendition [Scale=2 Idiom=1 Dimension1=1 Element=9 Part=181].size: want [340,170], got [340,171]
@@ -895,16 +880,10 @@ rendition [Scale=2 Idiom=2 Element=9 Part=181].payload.decoded_len: want 233920,
 rendition [Scale=2 Idiom=2 Element=9 Part=181].size: want [340,170], got [340,171]
 rendition [Scale=3 Identifier=17389 Element=85 Part=181].payload.len: want 382002, got 382016
 rendition [Scale=3 Identifier=17389 Element=85 Part=181].scale: want 3.0, got 1.0
-rendition [Scale=3 Identifier=18117 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=3 Identifier=18117 Element=85 Part=181].payload.decoded_len: want null, got 28667520
-rendition [Scale=3 Identifier=18117 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 15136, got 7584
 rendition [Scale=3 Identifier=25276 Element=85 Part=181].scale: want 3.0, got 1.0
 rendition [Scale=3 Identifier=28825 Element=85 Part=181].scale: want 3.0, got 1.0
 rendition [Scale=3 Identifier=40734 Element=85 Part=181].payload.len: want 931725, got 931739
 rendition [Scale=3 Identifier=40734 Element=85 Part=181].scale: want 3.0, got 1.0
-rendition [Scale=3 Identifier=8682 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=3 Identifier=8682 Element=85 Part=181].payload.decoded_len: want null, got 261120
-rendition [Scale=3 Identifier=8682 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 3264, got 1632
 rendition [Scale=3 Identifier=901 Element=85 Part=181].scale: want 3.0, got 1.0
 rendition [Scale=3 Idiom=1 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-3.1.0-gamut0", got "ZZZZPackedAsset-3.0.0-gamut0"
 rendition [Scale=3 Idiom=1 Dimension1=1 Element=9 Part=181].payload.decoded_len: want 307328, got 270848

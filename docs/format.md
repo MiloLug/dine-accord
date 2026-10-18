@@ -52,7 +52,8 @@ colorspace, modtime 0, u16 layout, u16 0, name[128], TLV length, 1, 0, payload l
 TLVs: 1001 slices, 1003 metrics, 1004 blend + opacity, 1005 UTI (u32 length incl. NUL, u32 0,
 string; a dataset's `universal-type-identifier`, read by `NSDataAsset.typeIdentifier`), 1006 EXIF orientation,
 1007 bytes per row, which must equal the payload's row stride (KCBC/LZFSE: w × bpp
-rounded up to 32, so GA8 is 2w-based; deepmap2: 4 × round_up(w, 8) for GA8 too), 1010 `INLK`
+rounded up to 32, so GA8 is 2w-based; deepmap2: w × 4 for 8-bit formats, GA8 too, or w × 8 for
+GA16 and RGBW, rounded up to 32), 1010 `INLK`
 atlas link, and for icon stacks
 (1019) and groups (1020):
 - 1012 layers: count, then 48-byte entries (u32 0, u32 0, i32 x, y, w, h in a 1024 canvas,
@@ -66,8 +67,26 @@ atlas link, and for icon stacks
 
 Payloads:
 - `MLEC` (CELM): version, compression, then for LZFSE (4) a chunk count and `KCBC` chunks
-  (`KCBC`, 0, 0, rows, length, LZFSE stream); otherwise a length and the data. Compression 11 is
-  deepmap2 (`dmp2`), not decoded yet.
+  (`KCBC`, 0, 0, rows, length, LZFSE stream); otherwise a length and the data. Version bit 0 marks
+  chunks, bit 1 an opaque image.
+- Compression 11 (deepmap2): a 16-byte header (1, format code, stream length, 0) and a `dmp2`
+  stream. Images of 2^20 pixels or more are `KCBC` chunks of 2^20 / w rows, each with its own
+  header and stream. Format codes: 2 GA8, 4 ARGB, 18 GA16, 20 RGBW.
+- `dmp2` stream: `dmp2`, method, 1, 10, format code, u16 tile width, u16 tile height, then tiles
+  row by row, each a u32 length and a body compressed with LZVN (raw stream) below 4 KiB of
+  input and LZFSE above. Tiles are at most 16384 wide and 2 MiB decoded. actool encodes with
+  methods 3, 4 (ARGB only) and 2, keeps the smallest, and falls back to 1 (raw, untiled) when
+  none beats the raw size:
+  - 3: the tile's pixels.
+  - 4: a palette of at most 256 colours, as `count | kind << 16` and the entries after the header;
+    kind 4 stores whole pixels and one index plane, kind 3 24-bit colours plus an alpha plane
+    before the index plane. actool tries both kinds and keeps the smaller.
+  - 2: each pixel as Y, Co, Cg in 16 bits (YCoCg-R; Co and Cg halved, so this method drops their
+    low bit; 16-bit floats scaled by 512 first), and alpha in 8 bits. The body is the alpha
+    plane, one predictor byte per row (0 none, 1 left or up chosen per pixel from Y, 2 left,
+    3 up, 4 mean of left and up), then the high bytes and the low bytes of the residuals in
+    sign-magnitude form (2v, or −2v+1 when negative), padded to 16 bytes. Each row takes the
+    predictor with the smallest sum of ln(|residual| + 1).
 - Pixel formats: `ARGB` (BGRA bytes, premultiplied), `GA8 `, `GA16`, and `RGBW`: premultiplied
   RGBA, a little-endian f16 per channel, in extended sRGB (colorspace 4), values outside 0..1
   kept.

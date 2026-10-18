@@ -14,7 +14,7 @@ rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].format: 
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].layout: want "Image", missing
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].name: want "image.png", missing
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].payload.celm: want 11, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].payload.decoded_len: want null, missing
+rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].payload.decoded_len: want 3653632, missing
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].scale: want 1.0, missing
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].size: want [1024,446], missing
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1001.rects[0]: want [0,0,1756,764], missing
@@ -28,9 +28,6 @@ rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1006.type: want "orientation", missing
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1007.bytes_per_row: want 8192, missing
 rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1007.type: want "bytes_per_row", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1].payload.celm: want 11, got 4
-rendition [Element=85 Part=181 Identifier=34020 Scale=1].payload.decoded_len: want null, got 913408
-rendition [Element=85 Part=181 Identifier=34020 Scale=1].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
 rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].colorspace: want 1, got 2
 rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].format: want "ARGB", got "GA8 "
 rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].colorspace: want 1, got 2
@@ -56,5 +53,4 @@ rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].tlvs.tlv100
 rendition [Element=9 Part=181 Scale=2].colorspace: want 1, got 2
 rendition [Element=9 Part=181 Scale=2].format: want "ARGB", got "GA8 "
 rendition [Element=9 Part=181 Scale=2].name: want "ZZZZPackedAsset-2.0.0-gamut0", got "ZZZZPackedAsset-2.0.1-gamut0"
-rendition [Element=9 Part=181 Scale=2].payload.decoded_len: want 105600, got 54912
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1007.bytes_per_row: want 800, got 416
+rendition [Element=9 Part=181 Scale=2].payload.celm: want 4, got 11

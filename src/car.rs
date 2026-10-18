@@ -163,9 +163,11 @@ pub fn min_pack_version(platform: &str) -> (u32, u32) {
     }
 }
 
-pub fn aligned_bytes_per_row(width: u32, _pixel_format: &[u8]) -> u32 {
-    let exact = width * 4;
-    ((exact + 31) / 32) * 32
+/// The stride actool records for deepmap2 rows: four bytes a pixel for 8-bit formats (GA8 too),
+/// eight for 16-bit ones, rounded up to 32.
+pub fn aligned_bytes_per_row(width: u32, pixel_format: &[u8]) -> u32 {
+    let per_pixel = if matches!(pixel_format, b"WBGR" | b"61AG") { 8 } else { 4 };
+    (width * per_pixel).div_ceil(32) * 32
 }
 
 pub fn compute_keyformat<R>(renditions: &[R], force_dim1: bool) -> Vec<u16>
@@ -473,25 +475,14 @@ pub fn compress_data(
     min_deploy: &str,
     platform: &str,
     allow_dmp2: bool,
-    dmp2_inline: bool,
     is_opaque: bool,
 ) -> Vec<u8> {
     let deploy_ver = parse_version(min_deploy);
 
-    if allow_dmp2 {
-        let dmp2_min = min_dmp2_version(platform);
-        if deploy_ver >= dmp2_min && pixel_data.len() > 256 {
-            if let Some(dmp2_data) =
-                deepmap2::encode(pixel_data, pixel_format, width, height)
-            {
-                let celm_ver = if is_opaque { 2 } else { 0 };
-                return deepmap2::make_celm_dmp2(
-                    &dmp2_data,
-                    pixel_format,
-                    dmp2_inline,
-                    celm_ver,
-                );
-            }
+    if allow_dmp2 && deploy_ver >= min_dmp2_version(platform) && pixel_data.len() > 256 {
+        let stride = pixel_data.len() / height.max(1) as usize;
+        if let Some(celm) = deepmap2::celm(pixel_data, stride, pixel_format, width, height, is_opaque) {
+            return celm;
         }
     }
 
@@ -825,7 +816,6 @@ pub fn build_packed_asset_csi(
         min_deploy,
         platform,
         use_dmp2,
-        false,
         false,
     );
     let actual_comp = if rend_data.len() >= 12 {
@@ -1461,10 +1451,8 @@ impl Rendition {
             let deploy_ver = parse_version(&self.min_deploy);
             let lzfse_min = min_lzfse_version(&self.platform);
             let use_aligned = deploy_ver >= lzfse_min;
-            // Apple deepmap2-compresses BGRA and GA8 when its encoder gains (iina's BGRA: 7 dmp2,
-            // 110 lzfse), but keeps icon renditions on KCBC (feishin: no dmp2).
-            let use_dmp2 = self.part != PART_ICON
-                && (&self.pixel_format == b"BGRA" || &self.pixel_format == b" 8AG");
+            // actool keeps icon renditions on KCBC (feishin: no dmp2).
+            let use_dmp2 = self.part != PART_ICON && deepmap2::format_code(&self.pixel_format).is_some();
 
             let actual_bpp = bytes_per_pixel(&self.pixel_format);
             let lzfse_bpr = ((self.width * actual_bpp + 31) / 32) * 32;
@@ -1481,7 +1469,6 @@ impl Rendition {
                     &self.min_deploy,
                     &self.platform,
                     allow_dmp2,
-                    false,
                     opaque,
                 )
             };
@@ -1490,7 +1477,6 @@ impl Rendition {
             };
             let will_try_dmp2 = use_aligned
                 && use_dmp2
-                && deepmap2::is_available()
                 && deploy_ver >= min_dmp2_version(&self.platform)
                 && self.pixel_data.len() > 256;
             // dmp2 rows have their own stride (GA8 too: 4 × round_up(w, 8)); when the encoder
@@ -1691,7 +1677,6 @@ mod tests {
             "macosx",
             false,
             false,
-            false,
         );
         // 16 bytes of zeros shouldn't compress smaller than themselves
         assert_eq!(&out[..4], b"MLEC");
@@ -1710,7 +1695,6 @@ mod tests {
             "macosx",
             false,
             false,
-            false,
         );
         let comp = u32::from_le_bytes(out[8..12].try_into().unwrap());
         assert_eq!(comp, 4); // KCBC LZFSE
@@ -1718,20 +1702,7 @@ mod tests {
 
     #[test]
     fn compress_data_dmp2_at_11_0_when_allowed() {
-        if !deepmap2::is_available() {
-            return;
-        }
-        let out = compress_data(
-            &vec![0u8; 1024],
-            b"BGRA",
-            16,
-            16,
-            "11.0",
-            "macosx",
-            true,
-            false,
-            false,
-        );
+        let out = compress_data(&vec![0u8; 1024], b"BGRA", 16, 16, "11.0", "macosx", true, false);
         let comp = u32::from_le_bytes(out[8..12].try_into().unwrap());
         assert_eq!(comp, 11);
     }

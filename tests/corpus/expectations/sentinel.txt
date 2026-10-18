@@ -2,5 +2,3 @@ header.coreui_version: want 971, got 975
 rendition [Appearance=1 Element=85 Part=246 Identifier=6054 Scale=1].tlvs.tlv1012.layers[0].frame: want [-54,-54,1132,1132], got [-54,-54,1131,1131]
 rendition [Appearance=10 Element=85 Part=246 Identifier=6054 Scale=1].tlvs.tlv1012.layers[0].frame: want [-54,-54,1132,1132], got [-54,-54,1131,1131]
 rendition [Appearance=8 Element=85 Part=246 Identifier=6054 Scale=1].tlvs.tlv1012.layers[0].frame: want [-54,-54,1132,1132], got [-54,-54,1131,1131]
-rendition [Element=85 Part=181 Identifier=39402 Scale=1].payload.celm: want 11, got 4
-rendition [Element=85 Part=181 Identifier=39402 Scale=1].payload.decoded_len: want null, got 2913824

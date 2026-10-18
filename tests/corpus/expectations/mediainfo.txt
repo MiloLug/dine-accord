@@ -1,9 +1,1 @@
 header.coreui_version: want 972, got 975
-rendition [Element=85 Part=181 Identifier=1097 Scale=1 DisplayGamut=1].payload.celm: want 11, got 4
-rendition [Element=85 Part=181 Identifier=1097 Scale=1 DisplayGamut=1].payload.decoded_len: want null, got 8388608
-rendition [Element=85 Part=181 Identifier=1097 Scale=1].payload.celm: want 11, got 4
-rendition [Element=85 Part=181 Identifier=1097 Scale=1].payload.decoded_len: want null, got 4194304
-rendition [Element=85 Part=181 Identifier=7314 Scale=1 DisplayGamut=1].payload.celm: want 11, got 4
-rendition [Element=85 Part=181 Identifier=7314 Scale=1 DisplayGamut=1].payload.decoded_len: want null, got 8388608
-rendition [Element=85 Part=181 Identifier=7314 Scale=1].payload.celm: want 11, got 4
-rendition [Element=85 Part=181 Identifier=7314 Scale=1].payload.decoded_len: want null, got 4194304

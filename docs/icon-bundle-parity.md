@@ -232,8 +232,7 @@ count on all six.
 Both use the **`KCBC` compression** (chunked-LZFSE, `height/3` rows per chunk) —
 matching Apple: GA8/GA16 are KCBC (not deepmap2), so a variant icon's `.car`
 carries the same codec selection as Apple's (feishin 0 dmp2 / 38 KCBC,
-scrumdinger 3 dmp2 — its BGRA renditions — like Apple). deepmap2 is used only for
-BGRA renditions, as Apple does. With both the codec and the dark-variant model
+scrumdinger 3 dmp2 — its BGRA renditions — like Apple). With both the codec and the dark-variant model
 now matching, CUICatalog's recompose follows the stored content.
 
 ## Reproduce
