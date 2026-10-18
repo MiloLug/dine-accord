@@ -113,9 +113,6 @@ cargo test --release
 - [`docs/icon-bundle-parity.md`](docs/icon-bundle-parity.md): `.icon` output compared with Apple's.
 - [`docs/icon-shading.md`](docs/icon-shading.md): `.icon` shading effects.
 
-accord is a fork of [viraptor/actool](https://github.com/viraptor/actool); its changes are not
-offered upstream.
-
 ## License
 
 MIT, see [`LICENSE`](LICENSE). Corpus files keep their projects' licences, listed in
