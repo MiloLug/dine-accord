@@ -56,10 +56,10 @@ sources = [
 [[sample]]
 name = "emacs-liquid-glass"
 url = "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Resources/Assets.car"
-# Apple ran without --app-icon and with --enable-icon-stack-fallback-generation NO, which accord
-# lacks, so Apple's catalog has no pre-renders.
+# Apple ran without --app-icon. Its catalog has no pre-renders: the actool that built it honoured
+# --enable-icon-stack-fallback-generation NO, which accord accepts and ignores.
 app_icon = "AppIcon"
-args = ["--include-all-app-icons", "--target-device", "mac"]
+args = ["--include-all-app-icons", "--target-device", "mac", "--enable-icon-stack-fallback-generation", "NO"]
 sources = [
     "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Icons/EmacsLG1.icon",
     "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Icons/EmacsLG2.icon",

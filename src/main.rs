@@ -73,6 +73,14 @@ struct Cli {
     #[arg(long, default_value = "NO")]
     enable_on_demand_resources: String,
 
+    /// Accepted and ignored: pre-rendered icons are always generated
+    #[arg(long)]
+    enable_icon_stack_fallback_generation: Option<String>,
+
+    /// Accepted and ignored
+    #[arg(long)]
+    force_png: bool,
+
     #[arg(long)]
     bundle_identifier: Option<String>,
 

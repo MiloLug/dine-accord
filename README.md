@@ -70,10 +70,11 @@ accord prints the `actool` compilation-results plist and exits 0; errors exit 1,
 `actool`:
 
 - `--warnings`, `--errors`, `--notices`, `--compress-pngs`, `--skip-app-store-deployment`,
-  `--enable-on-demand-resources` and `--alternate-app-icon` are ignored.
+  `--enable-on-demand-resources`, `--alternate-app-icon`, `--force-png` and
+  `--enable-icon-stack-fallback-generation` are ignored; pre-rendered icons are always generated.
 - `--print-contents` prints nothing.
 - `--generate-objc-asset-symbols` with `--bundle-identifier` writes only the symbols header.
-- Options `--help` doesn't list, such as `--enable-icon-stack-fallback-generation`, exit 2.
+- Options `--help` doesn't list, such as `--launch-image`, exit 2.
 
 ## What compiles
 
