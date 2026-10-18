@@ -1,0 +1,1169 @@
+bitmapkey 19262: unexpected [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 26511: unexpected [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 31851: unexpected [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 49899: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2], missing
+bitmapkey 54570: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2], missing
+bitmapkey 785: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2], missing
+facet "AppIcon": want Element=85 Part=245 Identifier=6849 hotspot (0, 0), got Element=85 Part=220 Identifier=6849 hotspot (0, 0)
+facet "AppIcon/01 _ Rear flaps and interior": want Element=85 Part=246 Identifier=49899 hotspot (0, 0), missing
+facet "AppIcon/01 · Rear flaps and interior": unexpected Element=85 Part=246 Identifier=26511 hotspot (0, 0)
+facet "AppIcon/02 _ Box walls and front flaps": want Element=85 Part=246 Identifier=54570 hotspot (0, 0), missing
+facet "AppIcon/02 · Box walls and front flaps": unexpected Element=85 Part=246 Identifier=31851 hotspot (0, 0)
+facet "AppIcon/03 _ Barley emblem": want Element=85 Part=246 Identifier=785 hotspot (0, 0), missing
+facet "AppIcon/03 · Barley emblem": unexpected Element=85 Part=246 Identifier=19262 hotspot (0, 0)
+header.coreui_version: want 1010, got 975
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,49899], got [17,26511]
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,54570], got [17,31851]
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[3].key[2]: want [17,785], got [17,19262]
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, got 1
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].colorspace: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].flags: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].format: unexpected "DATA"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].payload.len: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].scale: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].size: unexpected [0,0]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,51931]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,22332]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,58269]
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-8"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-8"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-7"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].colorspace: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].flags: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].format: unexpected "DATA"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].payload.len: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].scale: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].size: unexpected [0,0]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,28828]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,64765]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,35166]
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-16"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-7"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-8"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].colorspace: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].flags: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].format: unexpected "DATA"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].payload.len: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].scale: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].size: unexpected [0,0]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,16597]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,52534]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,22935]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[0]: unexpected [1,85]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[1]: unexpected [2,181]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[2]: unexpected [17,58872]
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].opacity: unexpected 1.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-14"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-7"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-12"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].kind: unexpected 1
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].name: unexpected "AppIcon_Assets/Color-10"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].value: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].shadow_kind: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].shadow_opacity: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].translucency: unexpected 0.0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].unknown: unexpected 0
+rendition [Appearance=1 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].colorspace: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].flags: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].format: want "DATA", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].payload.len: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].scale: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].size: want [0,0], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,28828], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,64765], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,35166], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-16", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-7", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-8", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].colorspace: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].flags: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].format: want "DATA", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].payload.len: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].scale: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].size: want [0,0], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,16597], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,52534], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,22935], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[2]: want [17,58872], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-14", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-7", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-12", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].name: want "AppIcon_Assets/Color-10", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].colorspace: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].flags: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].format: want "DATA", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].payload.len: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].scale: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].size: want [0,0], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,51931], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,22332], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,58269], missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-8", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-8", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-7", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,49899], got [17,26511]
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,54570], got [17,31851]
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[3].key[2]: want [17,785], got [17,19262]
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, got 1
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].colorspace: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].flags: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].format: unexpected "DATA"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].payload.len: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].scale: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].size: unexpected [0,0]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,51931]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,22332]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,58269]
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-7"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-7"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-6"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].colorspace: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].flags: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].format: unexpected "DATA"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].payload.len: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].scale: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].size: unexpected [0,0]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,28828]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,64765]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,35166]
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-15"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-6"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-8"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].colorspace: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].flags: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].format: unexpected "DATA"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].payload.len: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].scale: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].size: unexpected [0,0]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,16597]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,52534]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,22935]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[0]: unexpected [1,85]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[1]: unexpected [2,181]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[2]: unexpected [17,58872]
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].opacity: unexpected 1.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-13"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-6"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-11"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].kind: unexpected 1
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].name: unexpected "AppIcon_Assets/Color-9"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].value: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].shadow_kind: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].shadow_opacity: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].translucency: unexpected 0.0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].unknown: unexpected 0
+rendition [Appearance=10 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].colorspace: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].flags: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].format: want "DATA", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].payload.len: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].scale: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].size: want [0,0], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,28828], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,64765], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,35166], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-15", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-6", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-8", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].colorspace: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].flags: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].format: want "DATA", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].payload.len: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].scale: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].size: want [0,0], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,16597], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,52534], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,22935], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[2]: want [17,58872], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-13", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-6", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-11", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].name: want "AppIcon_Assets/Color-9", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].colorspace: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].flags: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].format: want "DATA", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].payload.len: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].scale: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].size: want [0,0], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,51931], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,22332], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,58269], missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-7", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-7", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-6", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,49899], got [17,26511]
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,54570], got [17,31851]
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1012.layers[3].key[2]: want [17,785], got [17,19262]
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, got 1
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].colorspace: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].flags: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].format: unexpected "DATA"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].payload.len: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].scale: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].size: unexpected [0,0]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,51931]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,22332]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,58269]
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-7"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-7"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-6"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=19262 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].colorspace: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].flags: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].format: unexpected "DATA"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].payload.len: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].scale: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].size: unexpected [0,0]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,28828]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,64765]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,35166]
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-15"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-6"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-8"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=26511 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].colorspace: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].flags: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].format: unexpected "DATA"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].layout: unexpected "IconGroup"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].name: unexpected "IconGroup"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].payload.len: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].payload.rawd: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].scale: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].size: unexpected [0,0]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].key[2]: unexpected [17,16597]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[0].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].key[2]: unexpected [17,52534]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[1].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].key[2]: unexpected [17,22935]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[2].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].frame: unexpected [0,0,1024,1024]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[0]: unexpected [1,85]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[1]: unexpected [2,181]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].key[2]: unexpected [17,58872]
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.layers[3].opacity: unexpected 1.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1012.type: unexpected "layers"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].name: unexpected "AppIcon_Assets/Color-13"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[0].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].name: unexpected "AppIcon_Assets/Color-6"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[1].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].name: unexpected "AppIcon_Assets/Color-11"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[2].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].kind: unexpected 1
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].name: unexpected "AppIcon_Assets/Color-9"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.entries[3].value: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1020.type: unexpected "layer_fills"
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[0].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[1].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[2].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].shadow_kind: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].shadow_opacity: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].translucency: unexpected 0.0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.entries[3].unknown: unexpected 0
+rendition [Appearance=8 Element=85 Part=246 Identifier=31851 Scale=1].tlvs.tlv1021.type: unexpected "layer_effects"
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].colorspace: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].flags: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].format: want "DATA", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].payload.len: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].scale: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].size: want [0,0], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,28828], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,64765], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,35166], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-15", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-6", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-8", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].colorspace: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].flags: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].format: want "DATA", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].payload.len: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].scale: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].size: want [0,0], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,16597], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,52534], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,22935], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].key[2]: want [17,58872], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.layers[3].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-13", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-6", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-11", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].name: want "AppIcon_Assets/Color-9", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.entries[3].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.entries[3].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].colorspace: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].flags: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].format: want "DATA", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].layout: want "IconGroup", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].name: want "IconGroup", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].payload.len: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].payload.rawd: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].scale: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].size: want [0,0], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,51931], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[0].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].key[2]: want [17,22332], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[1].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].frame: want [0,0,1024,1024], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[0]: want [1,85], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[1]: want [2,181], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].key[2]: want [17,58269], missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.layers[2].opacity: want 1.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1012.type: want "layers", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].name: want "AppIcon_Assets/Color-7", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[0].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].name: want "AppIcon_Assets/Color-7", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[1].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].kind: want 1, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].name: want "AppIcon_Assets/Color-6", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1020.type: want "layer_fills", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[0].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[1].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].shadow_opacity: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].translucency: want 0.0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.entries[2].unknown: want 0, missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1021.type: want "layer_effects", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
+rendition [Appearance=8 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.type: want "raw", missing
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].colorspace: want 1, got 2
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].format: want "ARGB", got "GA8 "
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].colorspace: want 1, got 2
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].format: want "ARGB", got "GA8 "
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=2].colorspace: want 1, got 2
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=2].format: want "ARGB", got "GA8 "
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].colorspace: want 1, got 2
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].format: want "ARGB", got "GA8 "
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].payload.decoded_len: want 262144, got 131072
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=4 Scale=2].tlvs.tlv1007.bytes_per_row: want 1024, got 512
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].colorspace: want 1, got 2
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].format: want "ARGB", got "GA8 "
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].payload.decoded_len: want 1048576, got 524288
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=5 Scale=2].tlvs.tlv1007.bytes_per_row: want 2048, got 1024
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].colorspace: want 1, got 2
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].format: want "ARGB", got "GA8 "
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].payload.decoded_len: want 4194304, got 2097152
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=6 Scale=2].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].colorspace: want 1, got 2
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].format: want "ARGB", got "GA8 "
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].payload.decoded_len: want 4194304, got 2097152
+rendition [Element=85 Part=220 Identifier=6849 Dimension2=7 Scale=1].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
+rendition [Element=9 Part=181 Scale=2].colorspace: want 1, got 2
+rendition [Element=9 Part=181 Scale=2].format: want "ARGB", got "GA8 "
+rendition [Element=9 Part=181 Scale=2].name: want "ZZZZPackedAsset-2.0.0-gamut0", got "ZZZZPackedAsset-2.0.1-gamut0"
+rendition [Element=9 Part=181 Scale=2].payload.decoded_len: want 105600, got 54912
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1007.bytes_per_row: want 800, got 416

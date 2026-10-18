@@ -63,25 +63,22 @@ pub struct Atlas {
     pub pixel_format: [u8; 4],
     pub scale: u32,
     pub dim1: u32,
+    /// DisplayGamut of the images.
+    pub gamut: u32,
     pub images: Vec<PackedImage>,
     pub pixel_data: Vec<u8>,
 }
 
 impl Atlas {
     pub fn name(&self) -> String {
-        let fmt_idx: u32 = if &self.pixel_format == b"BGRA" { 0 } else { 1 };
+        let monochrome = matches!(&self.pixel_format, b" 8AG" | b"61AG") as u32;
         // Every atlas of a (scale, format) has the same name: Dimension1 in the key tells them
         // apart and INLK links resolve by key, so duplicate names are expected.
-        format!("ZZZZPackedAsset-{}.0.{}-gamut0", self.scale, fmt_idx)
+        format!("ZZZZPackedAsset-{}.0.{}-gamut{}", self.scale, monochrome, self.gamut)
     }
 
     fn bpp_for_format(pf: &[u8]) -> usize {
-        // "61AG" is GA16.
-        if pf == b"BGRA" || pf == b"61AG" {
-            4
-        } else {
-            2
-        }
+        crate::car::bytes_per_pixel(pf) as usize
     }
 
     pub fn bytes_per_row(&self) -> usize {

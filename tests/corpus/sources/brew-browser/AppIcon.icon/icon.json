@@ -1,0 +1,251 @@
+{
+  "fill-specializations": [
+    {
+      "value": {
+        "linear-gradient": [
+          "srgb:0.98500,0.98500,0.98500,1.00000",
+          "srgb:0.94500,0.94500,0.94500,1.00000"
+        ]
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "linear-gradient": [
+          "srgb:0.18000,0.19000,0.21000,1.00000",
+          "srgb:0.07500,0.08000,0.09500,1.00000"
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "03 \u00b7 Barley emblem",
+      "layers": [
+        {
+          "name": "Front / 03",
+          "image-name": "Front-03.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.66225,0.62725,0.62725,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Front / 02",
+          "image-name": "Front-02.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:1.00000,0.00000,0.00000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Front / 01",
+          "image-name": "Front-01.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:1.00000,0.00000,0.00000,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.04
+      },
+      "specular": false,
+      "translucency": {
+        "enabled": false,
+        "value": 0.05
+      }
+    },
+    {
+      "name": "02 \u00b7 Box walls and front flaps",
+      "layers": [
+        {
+          "name": "Middle / 04",
+          "image-name": "Middle-04.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.62416,0.59117,0.59117,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.91765,0.94118,0.96863,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Middle / 03",
+          "image-name": "Middle-03.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.65013,0.61577,0.61577,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.97647,0.98039,0.98824,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Middle / 02",
+          "image-name": "Middle-02.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.66225,0.62725,0.62725,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Middle / 01",
+          "image-name": "Middle-01.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.59905,0.56739,0.56739,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.87843,0.90196,0.93333,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.04
+      },
+      "specular": false,
+      "translucency": {
+        "enabled": false,
+        "value": 0.05
+      }
+    },
+    {
+      "name": "01 \u00b7 Rear flaps and interior",
+      "layers": [
+        {
+          "name": "Back / 03",
+          "image-name": "Back-03.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:1.00000,0.00000,0.00000,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:1.00000,0.00000,0.00000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Back / 02",
+          "image-name": "Back-02.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.66225,0.62725,0.62725,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Back / 01",
+          "image-name": "Back-01.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.63801,0.60429,0.60429,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.95294,0.96078,0.97647,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.04
+      },
+      "specular": false,
+      "translucency": {
+        "enabled": false,
+        "value": 0.05
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": [
+      "macOS",
+      "iOS"
+    ]
+  }
+}

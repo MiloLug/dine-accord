@@ -35,8 +35,8 @@ pub struct Document {
 }
 
 /// Atlases are grouped by (scale, BGRA before other formats, sprite atlas, idiom, appearance,
-/// format).
-type PackKey = (u16, u8, u16, u16, u16, [u8; 4]);
+/// format, display gamut).
+type PackKey = (u16, u8, u16, u16, u16, [u8; 4], u16);
 
 fn to_packed(r: &Rendition) -> PackedImage {
     let intent = match r.template_rendering_intent {
@@ -71,17 +71,18 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> Vec<Rendition> {
     for r in docs.iter().flat_map(|d| &d.packable) {
         let rank = (&r.pixel_format != b"BGRA") as u8;
         groups
-            .entry((r.scale, rank, r.sprite_atlas_id, r.idiom, r.appearance, r.pixel_format))
+            .entry((r.scale, rank, r.sprite_atlas_id, r.idiom, r.appearance, r.pixel_format, r.display_gamut))
             .or_default()
             .push(r);
     }
     let mut out = Vec::new();
-    let mut dim1: BTreeMap<(u16, u16, u16), u16> = BTreeMap::new();
-    for ((scale, _, sprite_atlas_id, idiom, appearance, fmt), members) in groups {
+    let mut dim1: BTreeMap<(u16, u16, u16, u16), u16> = BTreeMap::new();
+    for ((scale, _, sprite_atlas_id, idiom, appearance, fmt, gamut), members) in groups {
         let images = members.iter().map(|r| to_packed(r)).collect();
         for mut atlas in packer::pack_images_split(images) {
-            let counter = dim1.entry((scale, idiom, appearance)).or_default();
+            let counter = dim1.entry((scale, idiom, appearance, gamut)).or_default();
             atlas.dim1 = *counter as u32;
+            atlas.gamut = gamut as u32;
             atlas.render();
             let all_icons = atlas.images.iter().all(|i| i.part == car::PART_ICON as u32);
             let name = if sprite_atlas_id != 0 {
@@ -109,6 +110,7 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> Vec<Rendition> {
                 dim1: *counter,
                 idiom,
                 appearance,
+                display_gamut: gamut,
                 width: atlas.width,
                 height: atlas.height,
                 pixel_format: fmt,
@@ -134,6 +136,7 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> Vec<Rendition> {
                     flags,
                     img.idiom as u16,
                     appearance,
+                    gamut,
                 );
                 out.push(Rendition {
                     name: img.name.clone(),
@@ -144,6 +147,7 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> Vec<Rendition> {
                     appearance: img.appearance as u16,
                     direction: img.direction as u16,
                     idiom: img.idiom as u16,
+                    display_gamut: gamut,
                     width: img.width,
                     height: img.height,
                     pixel_format: fmt,
@@ -203,15 +207,18 @@ pub fn write_car(docs: &[Document], car_path: &Path, platform: &str, min_deploy:
     let mut renditions: Vec<Rendition> = docs.iter().flat_map(|d| d.renditions.iter().cloned()).collect();
     let packed = pack(docs, min_deploy, platform);
     let atlas_count = packed.iter().filter(|r| r.element == car::ELEMENT_PACKED).count();
-    let atlas_scales: BTreeSet<u16> =
-        packed.iter().filter(|r| r.element == car::ELEMENT_PACKED).map(|r| r.scale).collect();
+    let atlas_scales: BTreeSet<(u16, u16)> = packed
+        .iter()
+        .filter(|r| r.element == car::ELEMENT_PACKED)
+        .map(|r| (r.scale, r.display_gamut))
+        .collect();
     renditions.extend(packed);
     if renditions.is_empty() {
         return Ok(false);
     }
 
-    // A Dimension1 column whenever a scale has more than one atlas, even if every atlas of
-    // that scale belongs to a different idiom and so carries Dimension1 = 0.
+    // A Dimension1 column whenever a scale has more than one atlas of one gamut, even if every
+    // atlas of that scale belongs to a different idiom and so carries Dimension1 = 0.
     let uses_dim1 = atlas_count > atlas_scales.len();
     let keyformat = if car::is_idiom_platform(platform) {
         car::compute_keyformat_ios(&renditions, uses_dim1)

@@ -83,27 +83,34 @@ pub fn bgra_to_best_format(
     (bgra_data, width, height, *b"BGRA")
 }
 
-pub fn load_image_as_bgra(
-    path: &Path,
-    force_bgra: bool,
-) -> Result<(Vec<u8>, u32, u32, [u8; 4])> {
-    let img = image::open(path)?;
-    let w = img.width();
-    let h = img.height();
+pub struct LoadedImage {
+    pub pixel_data: Vec<u8>,
+    pub width: u32,
+    pub height: u32,
+    pub pixel_format: [u8; 4],
+    /// `color::Source::wide_gamut`.
+    pub wide_gamut: Option<Vec<u8>>,
+}
 
-    match &img {
+pub fn load_image_as_bgra(path: &Path, force_bgra: bool) -> Result<LoadedImage> {
+    load_image_fitting(path, force_bgra, u32::MAX)
+}
+
+/// `load_image_as_bgra` through `color::open_fitting`.
+pub fn load_image_fitting(path: &Path, force_bgra: bool, max_px: u32) -> Result<LoadedImage> {
+    let crate::color::Source { image: img, wide_gamut } = crate::color::open_fitting(path, max_px)?;
+    let (width, height) = (img.width(), img.height());
+    let (pixel_data, pixel_format) = match &img {
         DynamicImage::ImageLuma8(luma) if !force_bgra => {
             // Grayscale → add alpha channel (fully opaque, no premultiply needed).
-            let mut ga = Vec::with_capacity((w * h * 2) as usize);
+            let mut ga = Vec::with_capacity((width * height * 2) as usize);
             for &px in luma.as_raw() {
                 ga.push(px);
                 ga.push(0xFF);
             }
-            Ok((ga, w, h, *b" 8AG"))
+            (ga, *b" 8AG")
         }
-        DynamicImage::ImageLumaA8(la) if !force_bgra => {
-            Ok((premultiply_ga8(la.as_raw().clone()), w, h, *b" 8AG"))
-        }
+        DynamicImage::ImageLumaA8(la) if !force_bgra => (premultiply_ga8(la.as_raw().clone()), *b" 8AG"),
         _ => {
             // Grayscale-compatible colour (R==G==B everywhere) is stored as GA8, whatever the
             // PNG's colour type (LiveContainer's RGB AppIconGrey).
@@ -111,12 +118,14 @@ pub fn load_image_as_bgra(
             let raw = rgba.as_raw();
             if !force_bgra && raw.chunks_exact(4).all(|c| c[0] == c[1] && c[1] == c[2]) {
                 let ga = raw.chunks_exact(4).flat_map(|c| [c[0], c[3]]).collect();
-                return Ok((premultiply_ga8(ga), w, h, *b" 8AG"));
+                (premultiply_ga8(ga), *b" 8AG")
+            } else {
+                let bgra = raw.chunks_exact(4).flat_map(|c| [c[2], c[1], c[0], c[3]]).collect();
+                (premultiply_bgra(bgra), *b"BGRA")
             }
-            let bgra = raw.chunks_exact(4).flat_map(|c| [c[2], c[1], c[0], c[3]]).collect();
-            Ok((premultiply_bgra(bgra), w, h, *b"BGRA"))
         }
-    }
+    };
+    Ok(LoadedImage { pixel_data, width, height, pixel_format, wide_gamut })
 }
 
 fn parse_color_component(value: &str) -> f64 {
@@ -593,24 +602,24 @@ impl AssetCatalog {
                 continue;
             }
 
-            let (pixel_data, width, height, pixel_format) =
-                load_image_as_bgra(&img_path, self.force_bgra)?;
+            let img = load_image_as_bgra(&img_path, self.force_bgra)?;
             renditions.push(Rendition {
                 name: filename.to_string(),
                 identifier: ident,
                 element: car::ELEMENT_UNIVERSAL,
                 part: car::PART_REGULAR,
                 scale: scale as u16,
-                width,
-                height,
-                pixel_data,
-                pixel_format,
+                width: img.width,
+                height: img.height,
+                colorspace_id: car::colorspace_for_pixel_format(&img.pixel_format),
+                pixel_data: img.pixel_data,
+                pixel_format: img.pixel_format,
+                wide_gamut: img.wide_gamut,
                 appearance,
                 direction,
                 layout: car::LAYOUT_ONE_PART_SCALE,
                 template_rendering_intent: template_intent,
                 locale,
-                colorspace_id: car::colorspace_for_pixel_format(&pixel_format),
                 min_deploy: self.min_deploy.clone(),
                 platform: self.platform.clone(),
                 ..Rendition::default()
@@ -793,22 +802,23 @@ impl AssetCatalog {
                 continue;
             }
 
-            let (pixel_data, width, height, pixel_format) = load_image_as_bgra(&icon.path, self.force_bgra)?;
+            let img = load_image_as_bgra(&icon.path, self.force_bgra)?;
             renditions.push(Rendition {
                 name: filename,
                 identifier: ident,
                 element: car::ELEMENT_UNIVERSAL,
                 part: car::PART_ICON,
                 scale: icon.scale as u16,
-                width,
-                height,
-                pixel_data,
-                pixel_format,
+                width: img.width,
+                height: img.height,
+                colorspace_id: car::colorspace_for_pixel_format(&img.pixel_format),
+                pixel_data: img.pixel_data,
+                pixel_format: img.pixel_format,
+                wide_gamut: img.wide_gamut,
                 layout: car::LAYOUT_ONE_PART_SCALE,
                 dim2,
                 appearance: icon.appearance,
                 template_rendering_intent: 0,
-                colorspace_id: car::colorspace_for_pixel_format(&pixel_format),
                 min_deploy: self.min_deploy.clone(),
                 platform: self.platform.clone(),
                 ..Rendition::default()
@@ -907,8 +917,7 @@ impl AssetCatalog {
             if self.platform == "macosx" && scale > 2 {
                 continue;
             }
-            let (pixel_data, width, height, pixel_format) =
-                load_image_as_bgra(&img_file, self.force_bgra)?;
+            let img = load_image_as_bgra(&img_file, self.force_bgra)?;
             let dim2 = icon_dim2(point_w);
             renditions.push(Rendition {
                 name: fname,
@@ -916,14 +925,15 @@ impl AssetCatalog {
                 element: car::ELEMENT_UNIVERSAL,
                 part: car::PART_ICON,
                 scale: scale as u16,
-                width,
-                height,
-                pixel_data,
-                pixel_format,
+                width: img.width,
+                height: img.height,
+                colorspace_id: car::colorspace_for_pixel_format(&img.pixel_format),
+                pixel_data: img.pixel_data,
+                pixel_format: img.pixel_format,
+                wide_gamut: img.wide_gamut,
                 layout: car::LAYOUT_ONE_PART_SCALE,
                 dim2,
                 template_rendering_intent: 0,
-                colorspace_id: car::colorspace_for_pixel_format(&pixel_format),
                 min_deploy: self.min_deploy.clone(),
                 platform: self.platform.clone(),
                 ..Rendition::default()
@@ -1135,20 +1145,21 @@ impl AssetCatalog {
                         continue;
                     }
                     let scale = parse_scale(img_info);
-                    let (pd, w, h, pf) = load_image_as_bgra(&img_path, self.force_bgra)?;
+                    let img = load_image_as_bgra(&img_path, self.force_bgra)?;
                     renditions.push(Rendition {
                         name: filename.to_string(),
                         identifier: sprite_ident,
                         element: car::ELEMENT_UNIVERSAL,
                         part: car::PART_REGULAR,
                         scale: scale as u16,
-                        width: w,
-                        height: h,
-                        pixel_data: pd,
-                        pixel_format: pf,
+                        width: img.width,
+                        height: img.height,
+                        colorspace_id: car::colorspace_for_pixel_format(&img.pixel_format),
+                        pixel_data: img.pixel_data,
+                        pixel_format: img.pixel_format,
+                        wide_gamut: img.wide_gamut,
                         layout: car::LAYOUT_ONE_PART_SCALE,
                         sprite_atlas_id: atlas_ident,
-                        colorspace_id: car::colorspace_for_pixel_format(&pf),
                         min_deploy: self.min_deploy.clone(),
                         platform: self.platform.clone(),
                         ..Rendition::default()
@@ -1229,19 +1240,20 @@ impl AssetCatalog {
                         {
                             continue;
                         }
-                        let (pd, w, h, pf) = load_image_as_bgra(&p, false)?;
+                        let img = load_image_as_bgra(&p, false)?;
                         renditions.push(Rendition {
                             name: filename.to_string(),
                             identifier: layer_ident,
                             element: car::ELEMENT_UNIVERSAL,
                             part: car::PART_REGULAR,
                             scale: scale as u16,
-                            width: w,
-                            height: h,
-                            pixel_data: pd,
-                            pixel_format: pf,
+                            width: img.width,
+                            height: img.height,
+                            colorspace_id: car::colorspace_for_pixel_format(&img.pixel_format),
+                            pixel_data: img.pixel_data,
+                            pixel_format: img.pixel_format,
+                            wide_gamut: img.wide_gamut,
                             layout: car::LAYOUT_ONE_PART_SCALE,
-                            colorspace_id: car::colorspace_for_pixel_format(&pf),
                             min_deploy: self.min_deploy.clone(),
                             platform: self.platform.clone(),
                             ..Rendition::default()

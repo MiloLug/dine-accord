@@ -1,0 +1,201 @@
+bitmapkey 18631: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 18710: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 24969: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 31307: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 37273: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 43461: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, ff, 1, 6]
+bitmapkey 47970: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 54568: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 54647: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 60906: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 2], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+facet "main": want Element=85 Part=245 Identifier=43461 hotspot (0, 0), got Element=85 Part=220 Identifier=43461 hotspot (0, 0)
+header.coreui_version: want 969, got 975
+header.rendition_count: want 14, got 23
+keyformat: want ["Appearance","Localization","Element","Part","Size","Identifier","Layer","Scale"], got ["Appearance","Localization","Element","Part","Size","Identifier","Dimension2","Layer","Scale"]
+rendition [Element=85 Part=181 Identifier=37273 Scale=1].payload.celm: want 10, got 4
+rendition [Element=85 Part=181 Identifier=37273 Scale=1].payload.decoded_len: want null, got 4194304
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].colorspace: unexpected 0
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].flags: unexpected 0
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].format: unexpected ""
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].layout: unexpected "MultisizeImageSet"
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].name: unexpected "main"
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.entries[0]: unexpected [16,16,1]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.entries[1]: unexpected [32,32,2]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.entries[2]: unexpected [64,64,3]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.entries[3]: unexpected [128,128,4]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.entries[4]: unexpected [256,256,5]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.entries[5]: unexpected [512,512,6]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.entries[6]: unexpected [1024,1024,7]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.type: unexpected "multisize"
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].payload.version: unexpected 1
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].scale: unexpected 0.0
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].size: unexpected [0,0]
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].tlvs.tlv1004.opacity: unexpected 0.0
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=218 Identifier=43461 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].colorspace: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].flags: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].format: unexpected "ARGB"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].layout: unexpected "InternalReference"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].name: unexpected "main16x16_NSAppearanceNameSystem_<id>.png"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].payload.type: unexpected "none"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].scale: unexpected 2.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].size: unexpected [32,32]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1001.rects[0]: unexpected [0,0,32,32]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1003.type: unexpected "metrics"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1003.words: unexpected [1,0,0,0,0,32,32]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1010.key[0]: unexpected [1,9]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1010.key[1]: unexpected [2,181]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1010.key[2]: unexpected [12,2]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1010.rect: unexpected [132,68,32,32]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=1 Scale=2].tlvs.tlv1010.type: unexpected "link"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].colorspace: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].flags: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].format: unexpected "ARGB"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].layout: unexpected "InternalReference"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].name: unexpected "main32x32_NSAppearanceNameSystem_<id>.png"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].payload.type: unexpected "none"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].scale: unexpected 2.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].size: unexpected [64,64]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1001.rects[0]: unexpected [0,0,64,64]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1003.type: unexpected "metrics"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1003.words: unexpected [1,0,0,0,0,64,64]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1010.key[0]: unexpected [1,9]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1010.key[1]: unexpected [2,181]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1010.key[2]: unexpected [12,2]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1010.rect: unexpected [132,2,64,64]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=2 Scale=2].tlvs.tlv1010.type: unexpected "link"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].colorspace: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].flags: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].format: unexpected "ARGB"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].layout: unexpected "InternalReference"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].name: unexpected "main64x64_NSAppearanceNameSystem_<id>.png"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].payload.type: unexpected "none"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].scale: unexpected 2.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].size: unexpected [128,128]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1001.rects[0]: unexpected [0,0,128,128]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1003.type: unexpected "metrics"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1003.words: unexpected [1,0,0,0,0,128,128]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1010.key[0]: unexpected [1,9]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1010.key[1]: unexpected [2,181]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1010.key[2]: unexpected [12,2]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1010.rect: unexpected [2,2,128,128]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=3 Scale=2].tlvs.tlv1010.type: unexpected "link"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].colorspace: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].flags: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].format: unexpected "ARGB"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].layout: unexpected "Image"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].name: unexpected "main128x128_NSAppearanceNameSystem_<id>.png"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].payload.celm: unexpected 4
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].payload.decoded_len: unexpected 262144
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].scale: unexpected 2.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].size: unexpected [256,256]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1001.rects[0]: unexpected [0,0,256,256]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1003.type: unexpected "metrics"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1003.words: unexpected [1,0,0,0,0,256,256]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1007.bytes_per_row: unexpected 1024
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=4 Scale=2].tlvs.tlv1007.type: unexpected "bytes_per_row"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].colorspace: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].flags: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].format: unexpected "ARGB"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].layout: unexpected "Image"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].name: unexpected "main256x256_NSAppearanceNameSystem_<id>.png"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].payload.celm: unexpected 4
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].payload.decoded_len: unexpected 1048576
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].scale: unexpected 2.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].size: unexpected [512,512]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1001.rects[0]: unexpected [0,0,512,512]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1003.type: unexpected "metrics"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1003.words: unexpected [1,0,0,0,0,512,512]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1007.bytes_per_row: unexpected 2048
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=5 Scale=2].tlvs.tlv1007.type: unexpected "bytes_per_row"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].colorspace: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].flags: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].format: unexpected "ARGB"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].layout: unexpected "Image"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].name: unexpected "main512x512_NSAppearanceNameSystem_<id>.png"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].payload.celm: unexpected 4
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].payload.decoded_len: unexpected 4194304
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].scale: unexpected 2.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].size: unexpected [1024,1024]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1001.rects[0]: unexpected [0,0,1024,1024]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1003.type: unexpected "metrics"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1003.words: unexpected [1,0,0,0,0,1024,1024]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1007.bytes_per_row: unexpected 4096
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=6 Scale=2].tlvs.tlv1007.type: unexpected "bytes_per_row"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].colorspace: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].flags: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].format: unexpected "ARGB"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].layout: unexpected "Image"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].name: unexpected "main1024x1024_NSAppearanceNameSystem_<id>.png"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].payload.celm: unexpected 4
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].payload.decoded_len: unexpected 4194304
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].scale: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].size: unexpected [1024,1024]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1001.rects[0]: unexpected [0,0,1024,1024]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1003.type: unexpected "metrics"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1003.words: unexpected [1,0,0,0,0,1024,1024]
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1007.bytes_per_row: unexpected 4096
+rendition [Element=85 Part=220 Identifier=43461 Dimension2=7 Scale=1].tlvs.tlv1007.type: unexpected "bytes_per_row"
+rendition [Element=9 Part=181 Scale=2].colorspace: unexpected 1
+rendition [Element=9 Part=181 Scale=2].flags: unexpected 0
+rendition [Element=9 Part=181 Scale=2].format: unexpected "ARGB"
+rendition [Element=9 Part=181 Scale=2].layout: unexpected "PackedImage"
+rendition [Element=9 Part=181 Scale=2].name: unexpected "ZZZZPackedAsset-2.0.0-gamut0"
+rendition [Element=9 Part=181 Scale=2].payload.celm: unexpected 4
+rendition [Element=9 Part=181 Scale=2].payload.decoded_len: unexpected 105600
+rendition [Element=9 Part=181 Scale=2].scale: unexpected 2.0
+rendition [Element=9 Part=181 Scale=2].size: unexpected [198,132]
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1001.rects[0]: unexpected [0,0,0,0]
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1001.type: unexpected "slices"
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1004.opacity: unexpected 1.0
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1007.bytes_per_row: unexpected 800
+rendition [Element=9 Part=181 Scale=2].tlvs.tlv1007.type: unexpected "bytes_per_row"

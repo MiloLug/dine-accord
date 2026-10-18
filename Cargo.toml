@@ -30,6 +30,8 @@ quick-xml = { version = "0.38", features = ["serialize"] }
 regex = "1"
 resvg = "0.48.1"
 hayro = "0.5" # 0.6 needs rustc 1.92
+moxcms = "0.8"
+half = "2"
 
 [dev-dependencies]
 tempfile = "3"

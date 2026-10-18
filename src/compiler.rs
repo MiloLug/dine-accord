@@ -99,6 +99,7 @@ fn catalog_document(
     catalog.include_all_app_icons = opts.include_all_app_icons;
     catalog.skipped_app_icons = icon_names.to_vec();
     let (renditions, facets) = catalog.parse()?;
+    let renditions = car::gamut_variants(&renditions);
     let mut doc = Document {
         coreui_version: if car::is_idiom_platform(platform) { 975 } else { 972 },
         ..Document::default()
@@ -258,12 +259,17 @@ fn write_ios_loose_icons(set: &AppIconSet, output_dir: &Path) -> Result<Vec<(&'s
         let dest = if let Some(img) = of_idiom.clone().find(|i| i.point_w == primary && i.scale == 2) {
             let ext = img.path.extension().and_then(|s| s.to_str()).unwrap_or("png");
             let dest = output_dir.join(format!("{base}.{ext}"));
-            fs::copy(&img.path, &dest)?;
+            if ext.eq_ignore_ascii_case("png") {
+                write_loose_icon(&dest, &crate::color::open(&img.path)?.image.to_rgba8())?;
+            } else {
+                fs::copy(&img.path, &dest)?;
+            }
             dest
         } else if let Some(img) = of_idiom.find(|i| i.point_w == 1024) {
             let dest = output_dir.join(format!("{base}.png"));
             let px = primary * 2;
-            image::open(&img.path)?.resize_exact(px, px, image::imageops::FilterType::Lanczos3).save(&dest)?;
+            let icon = crate::color::open(&img.path)?.image;
+            write_loose_icon(&dest, &icon.resize_exact(px, px, image::imageops::FilterType::Lanczos3).to_rgba8())?;
             dest
         } else {
             continue;
@@ -271,6 +277,37 @@ fn write_ios_loose_icons(set: &AppIconSet, output_dir: &Path) -> Result<Vec<(&'s
         out.push((idiom, dest));
     }
     Ok(out)
+}
+
+/// A loose icon PNG as actool writes it: 8-bit RGBA, an `sRGB` chunk, and an `eXIf` holding the
+/// colour space (sRGB) and the pixel size.
+pub(crate) fn write_loose_icon(path: &Path, img: &image::RgbaImage) -> Result<()> {
+    use byteorder::{BigEndian, WriteBytesExt};
+    let (w, h) = img.dimensions();
+    // Big-endian TIFF: IFD0 holds only the Exif IFD pointer (offset 26); the Exif IFD holds
+    // ColorSpace (SHORT 1, left-justified), PixelXDimension and PixelYDimension (LONG).
+    let mut exif = b"MM\0\x2a\0\0\0\x08".to_vec();
+    let entries: [&[(u16, u16, u32)]; 2] =
+        [&[(0x8769, 4, 26)], &[(0xa001, 3, 1 << 16), (0xa002, 4, w), (0xa003, 4, h)]];
+    for ifd in entries {
+        exif.write_u16::<BigEndian>(ifd.len() as u16)?;
+        for &(tag, kind, value) in ifd {
+            exif.write_u16::<BigEndian>(tag)?;
+            exif.write_u16::<BigEndian>(kind)?;
+            exif.write_u32::<BigEndian>(1)?;
+            exif.write_u32::<BigEndian>(value)?;
+        }
+        exif.write_u32::<BigEndian>(0)?;
+    }
+
+    let mut encoder = png::Encoder::new(fs::File::create(path)?, w, h);
+    encoder.set_color(png::ColorType::Rgba);
+    encoder.set_depth(png::BitDepth::Eight);
+    encoder.set_source_srgb(png::SrgbRenderingIntent::Perceptual);
+    let mut writer = encoder.write_header()?;
+    writer.write_chunk(png::chunk::ChunkType(*b"eXIf"), &exif)?;
+    writer.write_image_data(img.as_raw())?;
+    Ok(())
 }
 
 /// iOS partial Info.plist: a `CFBundleIcons` (iPhone) and `CFBundleIcons~ipad` dict, each with

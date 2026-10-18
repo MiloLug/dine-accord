@@ -6,81 +6,148 @@
 # Third-party marks under their projects' licences: see README.md.
 
 [[sample]]
-name = "blender"
-url = "https://projects.blender.org/blender/blender/media/commit/f1331c606bd8f50883c5b7e6d5e50c2045769ff2/release/darwin/Blender.app/Contents/Resources/Assets.car"
-
-[[sample]]
-name = "brave-origin/beta"
-url = "https://raw.githubusercontent.com/brave/brave-core/60bb8dc015614316cba5ffa178c55ab755ee439e/app/theme/brave_origin/mac/beta/Assets.car"
-
-[[sample]]
-name = "brave-origin/development"
-url = "https://raw.githubusercontent.com/brave/brave-core/d63dbd841ff0b4945f594f277ad9a9f2f640ed0f/app/theme/brave_origin/mac/development/Assets.car"
-
-[[sample]]
-name = "brave-origin/nightly"
-url = "https://raw.githubusercontent.com/brave/brave-core/60bb8dc015614316cba5ffa178c55ab755ee439e/app/theme/brave_origin/mac/nightly/Assets.car"
-
-[[sample]]
-name = "brave-origin/release"
-url = "https://raw.githubusercontent.com/brave/brave-core/60bb8dc015614316cba5ffa178c55ab755ee439e/app/theme/brave_origin/mac/Assets.car"
-
-[[sample]]
-name = "brave/beta"
-url = "https://raw.githubusercontent.com/brave/brave-core/131fe3e47863a86a39319378511ee86fe4bbf5e9/app/theme/brave/mac/beta/Assets.car"
-
-[[sample]]
-name = "brave/dev"
-url = "https://raw.githubusercontent.com/brave/brave-core/131fe3e47863a86a39319378511ee86fe4bbf5e9/app/theme/brave/mac/dev/Assets.car"
-
-[[sample]]
-name = "brave/nightly"
-url = "https://raw.githubusercontent.com/brave/brave-core/131fe3e47863a86a39319378511ee86fe4bbf5e9/app/theme/brave/mac/nightly/Assets.car"
-
-[[sample]]
-name = "brave/release"
-url = "https://raw.githubusercontent.com/brave/brave-core/131fe3e47863a86a39319378511ee86fe4bbf5e9/app/theme/brave/mac/Assets.car"
-
-[[sample]]
-name = "emacs-plus/dragon-plus"
-url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/378e0dcd8166688e1ee4f4da136c0754d3557f8e/community/icons/dragon-plus/Assets.car"
-
-[[sample]]
-name = "emacs-plus/retro-emacs-logo"
-url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/a73a5d1c9d6c05fb94cb3fef4b249b3e0dbc8be7/community/icons/retro-emacs-logo/Assets.car"
-
-[[sample]]
-name = "helium"
-url = "https://raw.githubusercontent.com/imputnet/helium-macos/711cbc909b3bf4f4940e86f01ec522809bb7d3b8/resources/assets/Assets.car"
+name = "brew-browser"
+url = "https://raw.githubusercontent.com/msitarzewski/brew-browser/ed2eea7eea083010ce291d10e5cdbced47a5c426/src-tauri/Assets.car"
 app_icon = "AppIcon"
 sources = [
-    "https://raw.githubusercontent.com/imputnet/helium-macos/711cbc909b3bf4f4940e86f01ec522809bb7d3b8/resources/assets/AppIcon.icon",
+    "https://raw.githubusercontent.com/msitarzewski/brew-browser/ed2eea7eea083010ce291d10e5cdbced47a5c426/native/AppIcon.icon",
 ]
 
 [[sample]]
-name = "kitty"
-url = "https://raw.githubusercontent.com/kovidgoyal/kitty/2d18b88480377cfd3ad09ed84a57caa12a88a334/logo/Assets.car"
-
-[[sample]]
-name = "openrct2"
-url = "https://raw.githubusercontent.com/OpenRCT2/OpenRCT2/8bfe55af6378da68c0e48d9be3f716e7b8e9155b/resources/mac/Assets.car"
-app_icon = "openrct2"
+name = "readinglist"
+url = "https://raw.githubusercontent.com/marckohlbrugge/readinglist/89ba77273480a1de315d810506e915e373f9ca71/Resources/Assets.car"
+app_icon = "AppIcon"
 sources = [
-    "https://raw.githubusercontent.com/OpenRCT2/OpenRCT2/8bfe55af6378da68c0e48d9be3f716e7b8e9155b/resources/mac/openrct2.icon",
+    "https://raw.githubusercontent.com/marckohlbrugge/readinglist/89ba77273480a1de315d810506e915e373f9ca71/Resources/AppIcon.icon",
 ]
 
 [[sample]]
-name = "stratoshark"
-url = "https://raw.githubusercontent.com/wireshark/wireshark/d8a4de3107286b18b38545c738396968ca3cc9d6/resources/icons/stratoshark/Assets.car"
-app_icon = "Stratoshark"
+name = "mediainfo"
+url = "https://raw.githubusercontent.com/MediaArea/MediaInfo/61082c82b5557a066a7872f60a8d2b828037e12d/Source/GUI/Cocoa/Assets.car"
+app_icon = "mediainfo"
 sources = [
-    "https://raw.githubusercontent.com/wireshark/wireshark/d8a4de3107286b18b38545c738396968ca3cc9d6/resources/icons/Stratoshark.icon",
-    "https://raw.githubusercontent.com/wireshark/wireshark/d8a4de3107286b18b38545c738396968ca3cc9d6/resources/icons/StratosharkCapture.icon",
+    "https://raw.githubusercontent.com/MediaArea/MediaInfo/61082c82b5557a066a7872f60a8d2b828037e12d/Source/GUI/Cocoa/mediainfo.icon",
 ]
 
 [[sample]]
-name = "supercollider"
-url = "https://raw.githubusercontent.com/supercollider/supercollider/3f2886f563baa3af64e023688be17e03fb2a459e/icons/sc_ide_squircle/Assets.car"
+name = "moddable"
+url = "https://raw.githubusercontent.com/Moddable-OpenSource/moddable/80076c48f5ab87ce29de728071b7408599071a12/tools/mcsim/mac/Assets.car"
+app_icon = "main"
+sources = [
+    "https://raw.githubusercontent.com/Moddable-OpenSource/moddable/80076c48f5ab87ce29de728071b7408599071a12/tools/mcsim/mac/main.icon",
+]
+
+[[sample]]
+name = "aven"
+url = "https://raw.githubusercontent.com/raine/aven/35d55d8cfcbc7ee09df235362c1fab720fae40db/macos/Resources/Assets.car"
+app_icon = "Aven"
+sources = [
+    "https://raw.githubusercontent.com/raine/aven/35d55d8cfcbc7ee09df235362c1fab720fae40db/macos/Aven.icon",
+]
+
+[[sample]]
+name = "zettlr"
+url = "https://raw.githubusercontent.com/Zettlr/Zettlr/c805b1e3ec8c9ca91f6c2be086c89fa55df6ec0d/resources/icons/Assets.car"
+app_icon = "Zettlr"
+sources = [
+    "https://raw.githubusercontent.com/Zettlr/Zettlr/c805b1e3ec8c9ca91f6c2be086c89fa55df6ec0d/resources/icons/Zettlr.icon",
+]
+
+[[sample]]
+name = "emacs-liquid-glass"
+url = "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Resources/Assets.car"
+# Apple ran without --app-icon and with --enable-icon-stack-fallback-generation NO, which accord
+# lacks, so Apple's catalog has no pre-renders.
+app_icon = "AppIcon"
+args = ["--include-all-app-icons", "--target-device", "mac"]
+sources = [
+    "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Icons/EmacsLG1.icon",
+    "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Icons/EmacsLG2.icon",
+    "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Icons/EmacsLG3.icon",
+]
+
+[[sample]]
+name = "tusk"
+url = "https://raw.githubusercontent.com/alpcanaydin/tusk/5285238fb7501cce482b4b67d2e8f7d279e675fd/assets/icon/compiled/Assets.car"
+app_icon = "Tusk"
+sources = [
+    "https://raw.githubusercontent.com/alpcanaydin/tusk/5285238fb7501cce482b4b67d2e8f7d279e675fd/assets/icon/Tusk.icon",
+]
+
+[[sample]]
+name = "browseros"
+url = "https://raw.githubusercontent.com/browseros-ai/BrowserOS/7fdd50f808004d37e8ddeacbf3817614f776523b/packages/browseros/resources/browseros/icons/mac/Assets.car"
+app_icon = "AppIcon"
+sources = [
+    "https://raw.githubusercontent.com/browseros-ai/BrowserOS/7fdd50f808004d37e8ddeacbf3817614f776523b/packages/browseros/resources/browseros/icons/mac/Assets.xcassets",
+]
+
+[[sample]]
+name = "daintree"
+url = "https://raw.githubusercontent.com/daintreehq/daintree/f45fa04b3b614fb40ea17dc374c08a46f2b5553a/build/icon-compiled/Assets.car"
+app_icon = "AppIcon"
+sources = [
+    "https://raw.githubusercontent.com/daintreehq/daintree/f45fa04b3b614fb40ea17dc374c08a46f2b5553a/build/AppIcon.icon",
+]
+
+[[sample]]
+name = "sentinel"
+url = "https://raw.githubusercontent.com/RemakeCode/sentinel/0cbf6eafcf3f3d5c861fc703a65a53a8f24e5b5d/build/darwin/Assets.car"
+app_icon = "appicon"
+sources = [
+    "https://raw.githubusercontent.com/RemakeCode/sentinel/0cbf6eafcf3f3d5c861fc703a65a53a8f24e5b5d/build/appicon.icon",
+]
+
+[[sample]]
+name = "kdrive"
+url = "https://raw.githubusercontent.com/Infomaniak/desktop-kDrive/643057e04581c19aec9d89d225e4f085998d2099/infomaniak/Assets.car"
+
+[[sample]]
+name = "sparkle-test-app"
+url = "https://raw.githubusercontent.com/onivim/oni2/161a92c2226728b37cd9a6f554b7397f4beb3d5e/vendor/Sparkle-1.26.0/Sparkle%20Test%20App.app/Contents/Resources/Assets.car"
+
+[[sample]]
+name = "ios/roothide"
+url = "https://raw.githubusercontent.com/P013onEr/RootHide/c7f6b12929c455c15f5b3e7a49ccb81496c20018/Application/Dopamine/Prebuilt/Assets.car"
+app_icon = "AppIcon"
+args = ["--accent-color", "AccentColor", "--include-all-app-icons", "--target-device", "iphone", "--target-device", "ipad"]
+sources = [
+    "https://raw.githubusercontent.com/P013onEr/RootHide/c7f6b12929c455c15f5b3e7a49ccb81496c20018/Application/Dopamine/Assets.xcassets",
+]
+
+[[sample]]
+name = "ios/openutau"
+url = "https://raw.githubusercontent.com/vocoder712/OpenUtauMobile/17a86f602e054c345841684224903004eff1f536/OpenUtauMobile/Resources/AppIcon/Assets.car"
+app_icon = "AppIcon"
+args = ["--target-device", "iphone", "--target-device", "ipad"]
+sources = [
+    "https://raw.githubusercontent.com/vocoder712/OpenUtauMobile/17a86f602e054c345841684224903004eff1f536/XcodeProject/Assets.xcassets",
+    "https://raw.githubusercontent.com/vocoder712/OpenUtauMobile/17a86f602e054c345841684224903004eff1f536/XcodeProject/openutau.icon",
+]
+
+[[sample]]
+name = "ios/swiftgen"
+url = "https://raw.githubusercontent.com/SwiftGen/SwiftGen/ddb03a73cab2a9feaf870b00ecab0fdda3d451e1/SwiftGen.playground/Resources/Assets.car"
+
+[[sample]]
+name = "ios/sumup"
+url = "https://raw.githubusercontent.com/sumup/sumup-ios-sdk/8224b6eb435dd8b06910dfb534c412a4700f98e2/SumUpSDK.xcframework/ios-arm64_x86_64-simulator/SumUpSDK.framework/SumUpTap_SumUpTap.bundle/Assets.car"
+
+[[sample]]
+name = "tvos/scummvm"
+url = "https://raw.githubusercontent.com/scummvm/scummvm/fd1b51d98dbe8faf5efe8afb4f46fcc14c758236/dists/tvos/Assets.car"
+
+[[sample]]
+name = "maccatalyst/swiftyvk"
+url = "https://raw.githubusercontent.com/SwiftyVK/SwiftyVK/47f72fc766f9cf1fa979d9b07fb9d23264652095/Library/Resources/Bundles/SwiftyVK_resources_iOS.bundle/Contents/Resources/Assets.car"
+
+[[sample]]
+name = "legacy/pxcore2"
+url = "https://raw.githubusercontent.com/pxscene/pxCore2/a33afddbf01ce91ae645416c2f903778c764349b/examples/pxScene2d/src/macstuff/Resources/Assets.car"
+
+[[sample]]
+name = "legacy/acextract"
+url = "https://raw.githubusercontent.com/bartoszj/acextract/df3b018d53cd4b684a5f6d63535dcc4156be1a97/acextractTests/data/assets.car"
 
 [[sample]]
 name = "vlc"
@@ -90,28 +157,6 @@ sources = [
     "https://code.videolan.org/videolan/vlc/-/raw/665f5f6168cde15310ba617c5ae31873e0de4932/modules/gui/macosx/Resources/App-Icons/VLC.icon",
 ]
 
-[[sample]]
-name = "wireshark"
-url = "https://raw.githubusercontent.com/wireshark/wireshark/ed21f770f449eda6235a5e8afb1a5f6b149d2aab/resources/icons/wireshark/Assets.car"
-app_icon = "Wireshark"
-sources = [
-    "https://raw.githubusercontent.com/wireshark/wireshark/ed21f770f449eda6235a5e8afb1a5f6b149d2aab/resources/icons/Wireshark.icon",
-    "https://raw.githubusercontent.com/wireshark/wireshark/ed21f770f449eda6235a5e8afb1a5f6b149d2aab/resources/icons/WiresharkCapture.icon",
-]
-
-# iOS, Xcode 26.2. Settings from LiveContainer.xcodeproj at the tag.
-[[sample]]
-name = "ios/livecontainer"
-url = "https://github.com/LiveContainer/LiveContainer/releases/download/3.8.0/LiveContainer.ipa"
-ipa_member = "Payload/LiveContainer.app/Assets.car"
-app_icon = "AppIcon"
-args = ["--accent-color", "AccentColor", "--include-all-app-icons", "--target-device", "iphone", "--target-device", "ipad"]
-sources = [
-    "https://raw.githubusercontent.com/LiveContainer/LiveContainer/3.8.0/Resources/Assets.xcassets",
-]
-
-# iOS, Xcode 27.1: an Icon Composer icon and an asset catalog in one invocation.
-# Settings from UTM.xcodeproj (UTM Remote target) at the tag.
 [[sample]]
 name = "ios/utm-remote"
 url = "https://github.com/utmapp/UTM/releases/download/v5.0.8/UTM-Remote.ipa"

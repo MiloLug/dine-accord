@@ -1,9 +1,0 @@
-header.coreui_version: want 972, got 975
-rendition [Scale=1 Identifier=60318 Element=85 Part=181].payload.celm: want 11, got 4
-rendition [Scale=1 Identifier=60318 Element=85 Part=181].payload.decoded_len: want null, got 69120
-rendition [Scale=1 Identifier=60318 Element=85 Part=181].tlvs.tlv1007.bytes_per_row: want 736, got 384
-rendition [Scale=2 Element=9 Part=181].payload.celm: want 11, got 4
-rendition [Scale=2 Element=9 Part=181].payload.decoded_len: want null, got 31744
-rendition [Scale=3 Element=9 Part=181].payload.celm: want 11, got 4
-rendition [Scale=3 Element=9 Part=181].payload.decoded_len: want null, got 66976
-rendition [Scale=3 Element=9 Part=181].size: want [180,90], got [180,91]

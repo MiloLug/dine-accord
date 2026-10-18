@@ -1,0 +1,92 @@
+bitmapkey 24459: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2], missing
+bitmapkey 29681: unexpected [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 36622: unexpected [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
+bitmapkey 54058: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2], missing
+facet "Aven_Assets/Gradient-1": want Element=85 Part=247 Identifier=54058 hotspot (0, 0), missing
+facet "Aven_Assets/Gradient-2": want Element=85 Part=247 Identifier=24459 hotspot (0, 0), missing
+facet "Aven_Assets/system-dark": unexpected Element=85 Part=247 Identifier=29681 hotspot (0, 0)
+facet "Aven_Assets/system-light": unexpected Element=85 Part=247 Identifier=36622 hotspot (0, 0)
+rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,24459], got [17,29681]
+rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[1].opacity: want 0.0, got 1.0
+rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
+rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
+rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,54058], got [17,36622]
+rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[2].opacity: want 0.0, got 1.0
+rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
+rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
+rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,54058], got [17,36622]
+rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[2].opacity: want 0.0, got 1.0
+rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
+rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].colorspace: want 0, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].flags: want 0, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].format: want "", missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].layout: want "Gradient", missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].name: want "Aven_Assets/Gradient-2", missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].payload.geometry: want [0.5,0.0,0.5,1.0], missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].payload.kind: want 1, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].payload.reserved: want 0, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].payload.stops[0]: want [0.0,"Aven_Assets/Color-4"], missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].payload.stops[1]: want [1.0,"Aven_Assets/Color-5"], missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].payload.type: want "gradient", missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].scale: want 0.0, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].size: want [0,0], missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].tlvs.tlv1004.opacity: want 0.0, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Element=85 Part=247 Identifier=24459 Scale=1].tlvs.tlv1006.type: want "orientation", missing
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].colorspace: unexpected 0
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].flags: unexpected 0
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].format: unexpected ""
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].layout: unexpected "Gradient"
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].name: unexpected "Aven_Assets/system-dark"
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].payload.geometry: unexpected [0.5,0.0,0.5,1.0]
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].payload.kind: unexpected 1
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].payload.reserved: unexpected 0
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].payload.stops[0]: unexpected [0.0,"Aven_Assets/Color-4"]
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].payload.stops[1]: unexpected [1.0,"Aven_Assets/Color-5"]
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].payload.type: unexpected "gradient"
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].scale: unexpected 0.0
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].size: unexpected [0,0]
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].tlvs.tlv1004.opacity: unexpected 0.0
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=247 Identifier=29681 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].colorspace: unexpected 0
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].flags: unexpected 0
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].format: unexpected ""
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].layout: unexpected "Gradient"
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].name: unexpected "Aven_Assets/system-light"
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].payload.geometry: unexpected [0.5,0.0,0.5,1.0]
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].payload.kind: unexpected 1
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].payload.reserved: unexpected 0
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].payload.stops[0]: unexpected [0.0,"Aven_Assets/Color-2"]
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].payload.stops[1]: unexpected [1.0,"Aven_Assets/Color-3"]
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].payload.type: unexpected "gradient"
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].scale: unexpected 0.0
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].size: unexpected [0,0]
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].tlvs.tlv1004.blend: unexpected 0
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].tlvs.tlv1004.opacity: unexpected 0.0
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].tlvs.tlv1006.orientation: unexpected 1
+rendition [Element=85 Part=247 Identifier=36622 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].colorspace: want 0, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].flags: want 0, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].format: want "", missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].layout: want "Gradient", missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].name: want "Aven_Assets/Gradient-1", missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].payload.geometry: want [0.5,0.0,0.5,1.0], missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].payload.kind: want 1, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].payload.reserved: want 0, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].payload.stops[0]: want [0.0,"Aven_Assets/Color-2"], missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].payload.stops[1]: want [1.0,"Aven_Assets/Color-3"], missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].payload.type: want "gradient", missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].scale: want 0.0, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].size: want [0,0], missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].tlvs.tlv1004.blend: want 0, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].tlvs.tlv1004.opacity: want 0.0, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].tlvs.tlv1006.orientation: want 1, missing
+rendition [Element=85 Part=247 Identifier=54058 Scale=1].tlvs.tlv1006.type: want "orientation", missing

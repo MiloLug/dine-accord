@@ -1,8 +1,9 @@
 # `.car` format notes
 
-Facts read from actool output (the corpus in `tests/corpus/corpus.toml`: Xcode 26.2 – 27.1,
-CoreUI 972 – 1010, macOS and iOS). `src/car_read.rs` decodes all of it; `accord inspect [--json]`
-prints it, `accord diff` compares two catalogs, `accord extract` writes the images as PNG.
+Facts read from actool output: the corpus in `tests/corpus/corpus.toml` (CoreUI 308 to 1010;
+macOS, iOS, tvOS and Mac Catalyst), and other `Assets.car` files committed to public GitHub
+repositories, named where cited. `src/car_read.rs` decodes all of it; `accord inspect [--json]` prints it,
+`accord diff` compares two catalogs, `accord extract` writes the images as PNG.
 
 ## BOM container
 
@@ -30,7 +31,11 @@ prints it, `accord diff` compares two catalogs, `accord extract` writes the imag
   256 bytes each.
 - KEYFORMAT: `tmfk`, 0, count, u32 attribute ids. A rendition key is the u16 values in that order.
   Layouts seen: `[7,13,1,2,3,17,9,11,12]`, the same plus 24 and/or 8 (before 9), and
-  `[7,1,2,17,9,10,14,12,19,18]` (Xcode 26.3 brave-origin).
+  `[7,1,2,17,9,10,14,12,19,18]` (Xcode 26.3 brave-origin). The order is a fixed per-platform list
+  with the attributes no rendition uses dropped; catalogs from older Xcode keep the whole list:
+  macOS `[7,13,1,2,3,4,6,17,8,9,10,14,11,12,24,19,18,25,26,27]`, iOS
+  `[7,13,12,15,16,26,27,9,8,25,24,4,20,21,23,22,17,1,2,10,6]`. So DisplayGamut (24) follows Scale
+  on macOS and Dimension1 on iOS (`[7,13,12,15,16,9,24,17,1,2]` in osu, sentry, dusklight).
 - APPEARANCEKEYS for `.icon`: System 0, DarkAqua 1, Aqua 8, ISAppearanceTintable 10.
 - FACETKEYS value: i16 hotspot x, y, u16 count, (u16 id, u16 value) pairs: Element 85, Part,
   Identifier.
@@ -63,6 +68,9 @@ Payloads:
 - `MLEC` (CELM): version, compression, then for LZFSE (4) a chunk count and `KCBC` chunks
   (`KCBC`, 0, 0, rows, length, LZFSE stream); otherwise a length and the data. Compression 11 is
   deepmap2 (`dmp2`), not decoded yet.
+- Pixel formats: `ARGB` (BGRA bytes, premultiplied), `GA8 `, `GA16`, and `RGBW`: premultiplied
+  RGBA, a little-endian f16 per channel, in extended sRGB (colorspace 4), values outside 0..1
+  kept.
 - `RLOC` color: 1, colorspace (3 display-p3, 6 extended-gray, 2 generated dark greys), count,
   f64 components. icon.json values are stored as `(double)(float)`.
 - `ARGG` gradient: stop count, kind (0 automatic, 1 linear), 0, f32 start x, y, stop x, y, then
@@ -70,14 +78,26 @@ Payloads:
 - `SISM` multisize: 1, count, (w, h, Dimension2 index).
 - `DWAR` raw data: version (1 = LZFSE-compressed SVG), length, data. Icon stacks and groups carry
   an empty `DWAR` (version 0, length 0).
-- Atlases are named `ZZZZPackedAsset-<scale>.0.<n>-gamut0`; small sizes are `InternalReference`
-  renditions whose `INLK` gives the rect (2 px gutter) and the atlas key.
+- Atlases are named `ZZZZPackedAsset-<scale>.<opaque>.<monochrome>-gamut<DisplayGamut>`; small
+  sizes are `InternalReference` renditions whose `INLK` gives the rect (2 px gutter) and the atlas
+  key.
 - Per-build names embed `<UUID>-<pid>-<timestamp>`; compare with `car_read::normalize_name`.
 
 ## Key attributes
 
-- 24 is DisplayGamut: atlases are named `…-gamut0`/`gamut1`, and a wide-gamut (P3 / 16-bit) layer
-  PNG gets a second rendition at gamut 1 in `RGBW`. It is not an appearance axis.
+- 24 is DisplayGamut, not an appearance axis. A PNG gets a second rendition at gamut 1 when its
+  ICC profile is wide (the xy triangle of its colorants is larger than 0.13447: Display P3 and
+  Adobe RGB are, sRGB and Cinema Display Calibrated are not) and some pixel, premultiplied in
+  extended sRGB, falls outside -0.025..1.003. A wide profile with in-gamut pixels gets none (a
+  16-px Adobe RGB icon in openzfs). The copy is `RGBW` in colorspace 4 with the same flags; the
+  gamut-0 rendition holds the same colours clipped to sRGB (openrct2's `Slide.png`, wireshark's
+  `Fin.png`, OpenUtauMobile's 16-bit P3 app icon). A 16-bit gray image gets a `GA16` copy instead
+  (f16 gray and alpha, colorspace 6; readinglist's `eyeglasses.png`), and the macOS icons rendered
+  from an `.icon` with wide colours get `RGBW` copies too (Zettlr). JPEGs get none.
+- The facet holding a copy has BITMAPKEYS mask 3 for 24, every other facet 1. Copies of small
+  images pack into their own `-gamut1` atlases, whose Dimension1 is counted apart from gamut 0;
+  their `INLK` key ends with (24, 1) after Scale. A copy that would be alone in its atlas stays
+  inline, as any lone image does.
 - Dimension2 of an app-icon rendition is the rank of its point size among all sizes of the set
   (target devices, universal and marketing only): 20, 29, 38, 40, 60, 76, 83.5, 90, 1024 give
   1..9 in a full iOS set, 1024 alone gives 1. The synthesized 90pt@2x Plus icon (subtype 1792)
@@ -108,6 +128,8 @@ invocation share atlases. This reproduces all 68 atlases of upstream's iOS sweep
 - Palette: colours deduplicate (a white automatic-gradient colour is Color-1); a keyword fill
   (`system-dark`, dark `automatic`) is a gradient named `system-dark`/`system-light` that still
   takes a gradient number; repeated group names get " 2", " 3".
+- Layer images larger than the 1024-px canvas are stored at 1024; the slices TLV keeps the source
+  size.
 - macOS pre-renders 16–1024 pt (16/32/64 @2x packed) with a squircle, margin and shadow. iOS
   pre-renders one full-bleed 1024 per target device for Any, Dark and Tintable, writes
   `<icon>60x60@2x.png` / `<icon>76x76@2x~ipad.png` and the `CFBundleIcons` plist, and no `.icns`.

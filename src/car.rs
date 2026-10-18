@@ -5,27 +5,31 @@ use crate::{deepmap2, name_hash};
 use byteorder::{LittleEndian, WriteBytesExt};
 use std::io::Write;
 
-pub const KEYFORMAT_ALL: &[u16] = &[7, 13, 1, 2, 3, 4, 17, 8, 9, 11, 12];
-pub const KEYFORMAT_OPTIONAL: &[u16] = &[4, 8, 9];
+pub const KEYFORMAT_ALL: &[u16] = &[7, 13, 1, 2, 3, 4, 17, 8, 9, 11, 12, 24];
+pub const KEYFORMAT_OPTIONAL: &[u16] = &[4, 8, 9, 24];
 
 // iOS keys add Idiom (15) and Subtype (16) and drop the macOS-only Size (3) and Layer (11)
 // columns, whatever idioms the renditions use.
 pub const KEYFORMAT_IOS: &[u16] = &[7, 13, 12, 15, 16, 17, 1, 2];
 
-/// iOS key format, with Dimension2 (9) and Dimension1 (8) after Subtype when used. iOS puts 9
-/// before 8, the reverse of macOS's `KEYFORMAT_ALL`.
+/// iOS key format, with Dimension2 (9), Dimension1 (8) and DisplayGamut (24) after Subtype when
+/// used. iOS puts 9 before 8, the reverse of macOS's `KEYFORMAT_ALL`.
 pub fn compute_keyformat_ios<R>(renditions: &[R], force_dim1: bool) -> Vec<u16>
 where
     R: KeyformatRendition,
 {
     let used_dim1 = force_dim1 || renditions.iter().any(|r| r.dim1() != 0);
     let used_dim2 = renditions.iter().any(|r| r.dim2() != 0);
+    let used_gamut = renditions.iter().any(|r| r.display_gamut() != 0);
     let mut kf = vec![7, 13, 12, 15, 16];
     if used_dim2 {
         kf.push(9);
     }
     if used_dim1 {
         kf.push(8);
+    }
+    if used_gamut {
+        kf.push(24);
     }
     kf.extend_from_slice(&[17, 1, 2]);
     kf
@@ -94,6 +98,8 @@ pub const PIXELFMT_DATA: &[u8; 4] = b"ATAD";
 pub const PIXELFMT_PDF: &[u8; 4] = b" FDP";
 pub const PIXELFMT_SVG: &[u8; 4] = b" GVS";
 pub const PIXELFMT_JPEG: &[u8; 4] = b"GEPJ";
+/// `RGBW`: premultiplied RGBA, a little-endian f16 per channel.
+pub const PIXELFMT_RGBW: [u8; 4] = *b"WBGR";
 
 pub fn colorspace_for_pixel_format(pixel_format: &[u8]) -> u32 {
     if pixel_format == b" 8AG" {
@@ -101,8 +107,19 @@ pub fn colorspace_for_pixel_format(pixel_format: &[u8]) -> u32 {
     } else if pixel_format == b"61AG" {
         // GA16 renditions use Apple's extended-gray colorspace.
         6
+    } else if pixel_format == PIXELFMT_RGBW {
+        // Extended sRGB.
+        4
     } else {
         1
+    }
+}
+
+pub fn bytes_per_pixel(pixel_format: &[u8]) -> u32 {
+    match pixel_format {
+        b"WBGR" => 8,
+        b"BGRA" | b"61AG" => 4,
+        _ => 2,
     }
 }
 
@@ -158,6 +175,7 @@ where
     let used_direction = renditions.iter().any(|r| r.direction() != 0);
     let used_dim1 = force_dim1 || renditions.iter().any(|r| r.dim1() != 0);
     let used_dim2 = renditions.iter().any(|r| r.dim2() != 0);
+    let used_gamut = renditions.iter().any(|r| r.display_gamut() != 0);
     KEYFORMAT_ALL
         .iter()
         .copied()
@@ -165,6 +183,7 @@ where
             4 => used_direction,
             8 => used_dim1,
             9 => used_dim2,
+            24 => used_gamut,
             _ => true,
         })
         .collect()
@@ -175,6 +194,7 @@ pub trait KeyformatRendition {
     fn direction(&self) -> u32;
     fn dim1(&self) -> u32;
     fn dim2(&self) -> u32;
+    fn display_gamut(&self) -> u32;
 }
 
 pub fn make_carheader(rendition_count: u32) -> Vec<u8> {
@@ -256,6 +276,7 @@ pub struct RenditionKeyParts {
     pub idiom: u16,
     /// Attribute 16, idiom subtype (1792 for the Plus phone icon).
     pub subtype: u16,
+    pub display_gamut: u16,
 }
 
 pub fn make_rendition_key(parts: RenditionKeyParts, keyformat: &[u16]) -> Vec<u8> {
@@ -275,6 +296,7 @@ pub fn make_rendition_key(parts: RenditionKeyParts, keyformat: &[u16]) -> Vec<u8
             12 => parts.scale,
             15 => parts.idiom,
             16 => parts.subtype,
+            24 => parts.display_gamut,
             _ => 0,
         };
         buf.write_u16::<LittleEndian>(v).unwrap();
@@ -500,8 +522,7 @@ pub fn compress_data(
             }
         }
     } else if height > 0 {
-        let bpp = if pixel_format == b"BGRA" { 4 } else { 2 };
-        let rle = compress_rle(pixel_data, width, height, bpp);
+        let rle = compress_rle(pixel_data, width, height, bytes_per_pixel(pixel_format));
         if rle.len() < pixel_data.len() {
             let mut out = Vec::new();
             out.extend_from_slice(b"MLEC");
@@ -677,6 +698,7 @@ pub fn make_inlk_tlv(
     atlas_dim1: u16,
     idiom: u16,
     appearance: u16,
+    display_gamut: u16,
 ) -> Vec<u8> {
     let mut inlk = Vec::new();
     inlk.extend_from_slice(b"KLNI");
@@ -712,6 +734,10 @@ pub fn make_inlk_tlv(
         attr.write_u16::<LittleEndian>(7).unwrap();
         attr.write_u16::<LittleEndian>(appearance).unwrap();
     }
+    if display_gamut != 0 {
+        attr.write_u16::<LittleEndian>(24).unwrap();
+        attr.write_u16::<LittleEndian>(display_gamut).unwrap();
+    }
     attr.write_u16::<LittleEndian>(0).unwrap();
 
     inlk.write_u16::<LittleEndian>(12).unwrap();
@@ -736,6 +762,7 @@ pub fn build_packed_image_csi(
     rendition_flags: u32,
     idiom: u16,
     appearance: u16,
+    display_gamut: u16,
 ) -> Vec<u8> {
     let scale_factor = scale as u32 * 100;
     let mut tlv = Vec::new();
@@ -751,6 +778,7 @@ pub fn build_packed_image_csi(
         atlas_dim1,
         idiom,
         appearance,
+        display_gamut,
     ));
     tlv.extend(make_blend_opacity_tlv());
     tlv.extend(make_exif_orientation_tlv(1));
@@ -1294,6 +1322,13 @@ pub struct Rendition {
     /// Encode CELM ver=0 (non-opaque) whatever the alpha: actool stores `.icon` layer images this
     /// way so they composite with alpha in the stack, even when opaque.
     pub force_non_opaque: bool,
+    /// Size in the slices TLV when it isn't the rendition's: the source size of an image stored
+    /// shrunk.
+    pub slices: Option<(u32, u32)>,
+    /// Key attribute 24: 1 for the wide-gamut copy of an image.
+    pub display_gamut: u16,
+    /// Pixels for a wide-gamut copy (`color::Source::wide_gamut`), made by `gamut_variants`.
+    pub wide_gamut: Option<Vec<u8>>,
 }
 
 impl Default for Rendition {
@@ -1327,6 +1362,9 @@ impl Default for Rendition {
             platform: "macosx".to_string(),
             csi_override: None,
             force_non_opaque: false,
+            slices: None,
+            display_gamut: 0,
+            wide_gamut: None,
         }
     }
 }
@@ -1341,33 +1379,39 @@ impl KeyformatRendition for Rendition {
     fn dim2(&self) -> u32 {
         self.dim2 as u32
     }
+    fn display_gamut(&self) -> u32 {
+        self.display_gamut as u32
+    }
 }
 
-fn check_opaque(pixel_data: &[u8], pixel_format: &[u8], width: u32, height: u32) -> bool {
-    let width = width as usize;
-    let height = height as usize;
-    if pixel_format == b"BGRA" {
-        let bpr = width * 4;
-        for row in 0..height {
-            for col in 0..width {
-                if pixel_data[row * bpr + col * 4 + 3] != 255 {
-                    return false;
-                }
-            }
+/// The renditions, each followed by its wide-gamut copy when it has one: RGBW in extended sRGB
+/// at DisplayGamut 1.
+pub fn gamut_variants<'a>(renditions: impl IntoIterator<Item = &'a Rendition>) -> Vec<Rendition> {
+    let mut out = Vec::new();
+    for r in renditions {
+        out.push(Rendition { wide_gamut: None, ..r.clone() });
+        if let Some(wide) = &r.wide_gamut {
+            out.push(Rendition {
+                display_gamut: 1,
+                pixel_data: wide.clone(),
+                pixel_format: PIXELFMT_RGBW,
+                colorspace_id: colorspace_for_pixel_format(&PIXELFMT_RGBW),
+                wide_gamut: None,
+                ..r.clone()
+            });
         }
-        true
-    } else if pixel_format == b" 8AG" {
-        let bpr = width * 2;
-        for row in 0..height {
-            for col in 0..width {
-                if pixel_data[row * bpr + col * 2 + 1] != 255 {
-                    return false;
-                }
-            }
-        }
-        true
-    } else {
-        false
+    }
+    out
+}
+
+fn check_opaque(pixel_data: &[u8], pixel_format: &[u8; 4], width: u32, height: u32) -> bool {
+    let n = width as usize * height as usize;
+    match pixel_format {
+        b"BGRA" => pixel_data.chunks_exact(4).take(n).all(|p| p[3] == 255),
+        b" 8AG" => pixel_data.chunks_exact(2).take(n).all(|p| p[1] == 255),
+        // f16 1.0
+        &PIXELFMT_RGBW => pixel_data.chunks_exact(8).take(n).all(|p| p[6..] == [0x00, 0x3c]),
+        _ => false,
     }
 }
 
@@ -1392,6 +1436,7 @@ impl Rendition {
             scale: self.scale,
             idiom: self.idiom,
             subtype: self.subtype,
+            display_gamut: self.display_gamut,
         };
         make_rendition_key(parts, &self.keyformat)
     }
@@ -1404,7 +1449,8 @@ impl Rendition {
 
         let mut tlv = Vec::new();
         if self.layout == LAYOUT_ONE_PART_SCALE {
-            tlv.extend(make_slices_tlv(self.width, self.height));
+            let (sw, sh) = self.slices.unwrap_or((self.width, self.height));
+            tlv.extend(make_slices_tlv(sw, sh));
             tlv.extend(make_metrics_tlv(self.width, self.height));
             tlv.extend(make_blend_opacity_tlv());
             tlv.extend(make_exif_orientation_tlv(1));
@@ -1420,7 +1466,7 @@ impl Rendition {
             let use_dmp2 = self.part != PART_ICON
                 && (&self.pixel_format == b"BGRA" || &self.pixel_format == b" 8AG");
 
-            let actual_bpp: u32 = if &self.pixel_format == b"BGRA" { 4 } else { 2 };
+            let actual_bpp = bytes_per_pixel(&self.pixel_format);
             let lzfse_bpr = ((self.width * actual_bpp + 31) / 32) * 32;
             let dmp2_bpr = aligned_bytes_per_row(self.width, &self.pixel_format);
             let opaque = !self.force_non_opaque
@@ -1458,7 +1504,7 @@ impl Rendition {
             } else if use_aligned {
                 lzfse_bpr
             } else {
-                self.width * 4
+                self.width * actual_bpp
             };
             tlv.extend(tlv_header(0x03EF, 4));
             tlv.write_u32::<LittleEndian>(bpr).unwrap();
@@ -1587,6 +1633,7 @@ mod tests {
             scale: 2,
             idiom: 0,
             subtype: 0,
+            display_gamut: 0,
         };
         let k = make_rendition_key(p, &[7, 13, 1, 2, 3, 17, 11, 12]);
         assert_eq!(k.len(), 16);
@@ -1610,6 +1657,9 @@ mod tests {
             }
             fn dim2(&self) -> u32 {
                 self.dim2
+            }
+            fn display_gamut(&self) -> u32 {
+                0
             }
         }
         let rs = vec![

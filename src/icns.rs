@@ -60,7 +60,7 @@ fn packbits(data: &[u8]) -> Vec<u8> {
 }
 
 fn make_argb(img_path: &Path, pixel_size: u32) -> anyhow::Result<Vec<u8>> {
-    let img = image::open(img_path)?.to_rgba8();
+    let img = crate::color::open(img_path)?.image.to_rgba8();
     let img = if img.width() != pixel_size || img.height() != pixel_size {
         image::imageops::resize(&img, pixel_size, pixel_size, FilterType::Lanczos3)
     } else {
@@ -121,7 +121,7 @@ fn make_exif(width: u32, height: u32) -> Vec<u8> {
 }
 
 fn reencode_png_at_size(img_path: &Path, pixel_size: u32) -> anyhow::Result<Vec<u8>> {
-    let img = image::open(img_path)?.to_rgba8();
+    let img = crate::color::open(img_path)?.image.to_rgba8();
     let resized = if img.width() != pixel_size || img.height() != pixel_size {
         image::imageops::resize(&img, pixel_size, pixel_size, FilterType::Lanczos3)
     } else {

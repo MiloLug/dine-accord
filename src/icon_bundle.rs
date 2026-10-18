@@ -224,7 +224,7 @@ pub fn document(
             icon_images.push((filepath, pixel_size, *scale));
         }
     } else {
-        let src_img = image::open(primary_source)?.to_rgba8();
+        let src_img = crate::color::open(primary_source)?.image.to_rgba8();
         for (point_size, scale) in MACOS_ICON_SIZES {
             let pixel_size = point_size * scale;
             let resized = image::imageops::resize(
@@ -407,8 +407,7 @@ fn save_resized(bgra: &[u8], size: u32, px: u32, path: &Path) -> Result<()> {
         .collect();
     let img = image::RgbaImage::from_raw(size, size, rgba)
         .ok_or_else(|| anyhow::anyhow!("render is not {size}x{size}"))?;
-    image::imageops::resize(&img, px, px, FilterType::Lanczos3).save(path)?;
-    Ok(())
+    crate::compiler::write_loose_icon(path, &image::imageops::resize(&img, px, px, FilterType::Lanczos3))
 }
 
 /// One `<stem>_Assets/<image stem>` asset per distinct layer image found in `Assets/` or the
@@ -717,7 +716,7 @@ fn rasterize_layer(path: &Path, w: u32, h: u32) -> Result<Vec<u8>> {
         }
         Ok(rgba)
     } else {
-        let img = image::open(path)?.to_rgba8();
+        let img = crate::color::open(path)?.image.to_rgba8();
         let resized = image::imageops::resize(&img, w, h, FilterType::Lanczos3);
         Ok(resized.into_raw())
     }
@@ -1080,8 +1079,8 @@ fn build_icon_car(
                 (stack.clone(), *pixel_size, *pixel_size)
             }
             _ => {
-                let (b, w, h, _pf) = load_image_as_bgra(img_path, true)?;
-                (b, w, h)
+                let img = load_image_as_bgra(img_path, true)?;
+                (img.pixel_data, img.width, img.height)
             }
         };
         let shadow = shadow_params(icon_shadow, *pixel_size);
@@ -1190,7 +1189,9 @@ fn build_icon_car(
             ));
             continue;
         }
-        let (pd, w, h, pf) = load_image_as_bgra(&asset.source_path, false)?;
+        // actool stores layer images larger than the 1024-px canvas shrunk to it (wireshark's
+        // 2048-px layers); the slices keep the source size.
+        let img = crate::catalog::load_image_fitting(&asset.source_path, false, 1024)?;
         // Apple renames every layer image "image.png"; lookups go by attributes, so only byte
         // parity depends on it.
         renditions.push(Rendition {
@@ -1199,14 +1200,16 @@ fn build_icon_car(
             element: car::ELEMENT_UNIVERSAL,
             part: car::PART_REGULAR,
             scale: 1,
-            width: w,
-            height: h,
-            pixel_data: pd,
-            pixel_format: pf,
+            width: img.width,
+            height: img.height,
+            slices: Some(image::image_dimensions(&asset.source_path)?),
+            colorspace_id: car::colorspace_for_pixel_format(&img.pixel_format),
+            pixel_data: img.pixel_data,
+            pixel_format: img.pixel_format,
+            wide_gamut: img.wide_gamut,
             layout: car::LAYOUT_ONE_PART_SCALE,
             min_deploy: min_deploy.to_string(),
             platform: platform.to_string(),
-            colorspace_id: car::colorspace_for_pixel_format(&pf),
             // Apple stores layer images non-opaque (CELM ver=0) even when fully opaque.
             force_non_opaque: true,
             ..Rendition::default()
@@ -1396,7 +1399,7 @@ fn build_icon_car(
     }
 
     Ok(crate::assemble::Document {
-        renditions,
+        renditions: car::gamut_variants(&renditions),
         packable,
         facets: facets
             .into_iter()

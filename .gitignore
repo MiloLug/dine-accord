@@ -14,3 +14,7 @@ actool_client.py
 
 # Test output (generated at runtime)
 _test_output/
+
+# Claude Code harness (local only)
+CLAUDE.md
+.claude/

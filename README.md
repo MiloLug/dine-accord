@@ -106,12 +106,15 @@ with exit code 1, or 2 when `--compile` or the document path is missing.
   scaled down for the loose PNGs.
 - Icon Composer `.icon` bundles for macOS and iOS.
 - Small images packed into atlases the way `actool` packs them.
+- PNGs with an ICC profile, converted to sRGB. When the profile is wide-gamut (Display P3) and the
+  image has colours sRGB can't show, the catalog also gets the 16-bit copy that P3 screens load.
 
 Where the output differs from `actool`:
 
 - Where Apple's `actool` compresses an image with deepmap2 or palette-img, accord on Linux writes
   LZFSE, which CoreUI reads.
-- No wide-gamut (`DisplayGamut` 1) variants.
+- Wide-gamut (`DisplayGamut` 1) copies come only from PNGs whose ICC profile is matrix-based.
+  `actool` also makes them for 16-bit grayscale images and reads LUT-only profiles.
 - No Xcode 27 TLV 1022 (its meaning is unknown).
 - The pre-rendered images of an `.icon` (the 1024 rendition and the loose PNGs) approximate Liquid
   Glass and are not pixel-identical to Apple's. iOS 27 renders the home-screen icon from the layer
@@ -119,11 +122,12 @@ Where the output differs from `actool`:
 
 ## Testing against Apple's output
 
-`tests/corpus/` holds `Assets.car` files compiled by Apple's `actool` (Xcode 26.2 to 27.1, macOS
-and iOS) from open-source projects, and for seven of them the inputs. `tests/corpus_parity.rs`
-compiles each of those with the recorded arguments and diffs the result against Apple's; the
-remaining differences are listed in `tests/corpus/expectations/`, and a new difference fails the
-test. The corpus binaries are in Git LFS:
+`tests/corpus/` holds 23 `Assets.car` files compiled by Apple's `actool` (from early asset-catalog
+builds to Xcode 27.1; macOS, iOS, tvOS and Mac Catalyst) from open-source projects, chosen so each
+adds something the others lack, and for 15 of them the inputs. `tests/corpus_parity.rs` compiles
+each of those with the recorded arguments and diffs the result against Apple's; the remaining
+differences, including the cases accord does not match yet, are listed in
+`tests/corpus/expectations/`, and a new difference fails the test. The corpus binaries are in Git LFS:
 
 ```sh
 git lfs pull

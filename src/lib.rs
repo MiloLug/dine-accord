@@ -3,6 +3,7 @@ pub mod bom;
 pub mod car;
 pub mod car_read;
 pub mod catalog;
+pub mod color;
 pub mod compiler;
 pub mod icon_bundle;
 pub mod icon_effects;
