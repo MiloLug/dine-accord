@@ -23,6 +23,12 @@ fn bundle_facet_prefix(icon_path: &Path) -> String {
         .to_string()
 }
 
+/// A group or layer-image name as a facet name component: actool keeps ASCII letters, digits,
+/// space, `.`, `-` and `_`, and turns anything else into `_` (`01 · Rear flaps`, `Icon@1x`).
+fn facet_component(name: &str) -> String {
+    name.chars().map(|c| if c.is_ascii_alphanumeric() || " .-_".contains(c) { c } else { '_' }).collect()
+}
+
 /// UUID-shaped string stable per `inputs`, so recompiling yields identical bytes.
 fn deterministic_uuid(inputs: &[&str]) -> String {
     use std::hash::{Hash, Hasher};
@@ -147,13 +153,13 @@ pub fn document(
     // Apple gives every group a facet, unnamed ones "Group"; repeated names get " 2", " 3", …
     // (ding_icon's unnamed groups, VLC's three "group"s).
     let group_facet_names: Vec<String> = {
-        let mut seen: std::collections::HashMap<&str, u32> = std::collections::HashMap::new();
+        let mut seen: std::collections::HashMap<String, u32> = std::collections::HashMap::new();
         parsed
             .groups
             .iter()
             .map(|g| {
-                let base = g.name.as_deref().unwrap_or("Group");
-                let n = seen.entry(base).or_default();
+                let base = facet_component(g.name.as_deref().unwrap_or("Group"));
+                let n = seen.entry(base.clone()).or_default();
                 *n += 1;
                 match *n {
                     1 => format!("{facet_prefix}/{base}"),
@@ -439,7 +445,7 @@ fn collect_layer_assets(
             .file_stem()
             .and_then(|s| s.to_str())
             .unwrap_or(image_name);
-        let facet_name = format!("{facet_prefix}_Assets/{stem}");
+        let facet_name = format!("{facet_prefix}_Assets/{}", facet_component(stem));
         if !seen.insert(facet_name.clone()) {
             continue;
         }
@@ -2006,7 +2012,7 @@ fn group_layer_refs(
         }
         let Some(img) = layer.image_name.as_deref() else { continue };
         let stem = Path::new(img).file_stem().and_then(|s| s.to_str()).unwrap_or(img);
-        let facet = format!("{icon_name}_Assets/{stem}");
+        let facet = format!("{icon_name}_Assets/{}", facet_component(stem));
         let Some(asset) = layer_assets.iter().find(|a| a.facet_name == facet) else { continue };
         let (nw, nh) = layer_native_size(&asset.source_path);
         let (lscale, lt) = position_of(layer.position.as_ref());

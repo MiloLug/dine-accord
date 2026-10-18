@@ -96,6 +96,33 @@ fn anonymous_groups_get_sequenced_fallback_names() {
 }
 
 #[test]
+fn facet_names_replace_characters_actool_drops() {
+    let (bundle, out) = make_bundle(
+        "Names",
+        r#"{
+          "groups": [
+            {"name":"01 · Front","layers":[{"image-name":"logo@1x.png","name":"a"}]},
+            {"name":"01 @ Front","layers":[{"image-name":"main.png","name":"b"}]}
+          ]
+        }"#,
+    );
+    write_synthetic_png(&bundle.join("Assets/logo@1x.png"), 1024, [200, 80, 40, 255]);
+    let opts = accord::compiler::Options {
+        platform: "macosx".to_string(),
+        min_deploy: "26.0".to_string(),
+        app_icon: Some("Names".to_string()),
+        standalone_icon_behavior: "default".to_string(),
+        ..Default::default()
+    };
+    accord::compiler::compile(&[bundle], &out, &opts).expect("compile should succeed");
+    let car = accord::car_read::Car::parse(&std::fs::read(out.join("Assets.car")).unwrap()).unwrap();
+    let names: Vec<&str> = car.facets.iter().map(|f| f.name.as_str()).collect();
+    for want in ["Names/01 _ Front", "Names/01 _ Front 2", "Names_Assets/logo_1x", "Names_Assets/main"] {
+        assert!(names.contains(&want), "{want} not in {names:?}");
+    }
+}
+
+#[test]
 fn hidden_layer_does_not_break_compilation() {
     let files = compile_ok(
         "Hidden",
