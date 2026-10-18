@@ -89,7 +89,9 @@ pub struct LoadedImage {
     pub height: u32,
     pub pixel_format: [u8; 4],
     /// `color::Source::wide_gamut`.
-    pub wide_gamut: Option<Vec<u8>>,
+    pub wide_gamut: Option<crate::color::GamutCopy>,
+    /// The source has no alpha channel.
+    pub opaque: bool,
 }
 
 pub fn load_image_as_bgra(path: &Path, force_bgra: bool) -> Result<LoadedImage> {
@@ -100,6 +102,7 @@ pub fn load_image_as_bgra(path: &Path, force_bgra: bool) -> Result<LoadedImage> 
 pub fn load_image_fitting(path: &Path, force_bgra: bool, max_px: u32) -> Result<LoadedImage> {
     let crate::color::Source { image: img, wide_gamut } = crate::color::open_fitting(path, max_px)?;
     let (width, height) = (img.width(), img.height());
+    let opaque = !img.color().has_alpha();
     let (pixel_data, pixel_format) = match &img {
         DynamicImage::ImageLuma8(luma) if !force_bgra => {
             // Grayscale → add alpha channel (fully opaque, no premultiply needed).
@@ -125,7 +128,7 @@ pub fn load_image_fitting(path: &Path, force_bgra: bool, max_px: u32) -> Result<
             }
         }
     };
-    Ok(LoadedImage { pixel_data, width, height, pixel_format, wide_gamut })
+    Ok(LoadedImage { pixel_data, width, height, pixel_format, wide_gamut, opaque })
 }
 
 fn parse_color_component(value: &str) -> f64 {
@@ -514,7 +517,7 @@ impl AssetCatalog {
             if lower_filename.ends_with(".jpg") || lower_filename.ends_with(".jpeg") {
                 if self.jpeg_in_car {
                     let jpeg_data = fs::read(&img_path)?;
-                    let csi = car::build_jpeg_csi(filename, &jpeg_data);
+                    let csi = car::build_jpeg_csi(filename, &jpeg_data, scale);
                     let mut rend = Rendition {
                         name: filename.to_string(),
                         identifier: ident,
@@ -615,6 +618,7 @@ impl AssetCatalog {
                 pixel_data: img.pixel_data,
                 pixel_format: img.pixel_format,
                 wide_gamut: img.wide_gamut,
+                source_opaque: img.opaque,
                 appearance,
                 direction,
                 layout: car::LAYOUT_ONE_PART_SCALE,
@@ -815,6 +819,7 @@ impl AssetCatalog {
                 pixel_data: img.pixel_data,
                 pixel_format: img.pixel_format,
                 wide_gamut: img.wide_gamut,
+                source_opaque: img.opaque,
                 layout: car::LAYOUT_ONE_PART_SCALE,
                 dim2,
                 appearance: icon.appearance,
@@ -931,6 +936,7 @@ impl AssetCatalog {
                 pixel_data: img.pixel_data,
                 pixel_format: img.pixel_format,
                 wide_gamut: img.wide_gamut,
+                source_opaque: img.opaque,
                 layout: car::LAYOUT_ONE_PART_SCALE,
                 dim2,
                 template_rendering_intent: 0,
@@ -1158,6 +1164,7 @@ impl AssetCatalog {
                         pixel_data: img.pixel_data,
                         pixel_format: img.pixel_format,
                         wide_gamut: img.wide_gamut,
+                        source_opaque: img.opaque,
                         layout: car::LAYOUT_ONE_PART_SCALE,
                         sprite_atlas_id: atlas_ident,
                         min_deploy: self.min_deploy.clone(),
@@ -1253,6 +1260,7 @@ impl AssetCatalog {
                             pixel_data: img.pixel_data,
                             pixel_format: img.pixel_format,
                             wide_gamut: img.wide_gamut,
+                            source_opaque: img.opaque,
                             layout: car::LAYOUT_ONE_PART_SCALE,
                             min_deploy: self.min_deploy.clone(),
                             platform: self.platform.clone(),

@@ -112,11 +112,8 @@ fn catalog_document(
         (a, b)
     };
     if deploy_ver >= car::min_pack_version(platform) {
-        let (pack_groups, _) = packer::group_for_packing(&renditions);
-        let packed: std::collections::HashSet<usize> =
-            pack_groups.iter().flat_map(|(_, _, idxs)| idxs.iter().copied()).collect();
-        for (i, r) in renditions.iter().enumerate() {
-            if packed.contains(&i) {
+        for r in &renditions {
+            if packer::can_be_packed(r) {
                 doc.packable.push(r.clone());
             } else {
                 doc.renditions.push(r.clone());

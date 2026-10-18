@@ -2,11 +2,8 @@
 
 pub const MARGIN: u32 = 2;
 pub const GAP: u32 = 2;
-/// Any value in 17145..=18123 fits Apple's sweep and corpus.
-const ATLAS_AREA_PER_SCALE: u32 = 17600;
 
 pub const PART_REGULAR: u32 = 181;
-pub const PART_ICON: u32 = 184;
 
 #[derive(Debug, Clone)]
 pub struct PackedImage {
@@ -30,6 +27,10 @@ pub struct PackedImage {
     pub idiom: u32,
     /// Rasterized from a vector source (SVG / PDF); sets CSI flag bit 0x04.
     pub is_svg_rasterization: bool,
+    /// Key attribute values in the platform's full key order, which break area ties.
+    pub sort_key: Vec<u16>,
+    /// The caller's index of the rendition.
+    pub index: usize,
 }
 
 impl PackedImage {
@@ -52,6 +53,8 @@ impl PackedImage {
             direction: 0,
             idiom: 0,
             is_svg_rasterization: false,
+            sort_key: Vec::new(),
+            index: 0,
         }
     }
 }
@@ -65,6 +68,7 @@ pub struct Atlas {
     pub dim1: u32,
     /// DisplayGamut of the images.
     pub gamut: u32,
+    pub opaque: bool,
     pub images: Vec<PackedImage>,
     pub pixel_data: Vec<u8>,
 }
@@ -72,9 +76,9 @@ pub struct Atlas {
 impl Atlas {
     pub fn name(&self) -> String {
         let monochrome = matches!(&self.pixel_format, b" 8AG" | b"61AG") as u32;
-        // Every atlas of a (scale, format) has the same name: Dimension1 in the key tells them
-        // apart and INLK links resolve by key, so duplicate names are expected.
-        format!("ZZZZPackedAsset-{}.0.{}-gamut{}", self.scale, monochrome, self.gamut)
+        // Atlases sharing these fields share a name: Dimension1 in the key tells them apart and
+        // INLK links resolve by key.
+        format!("ZZZZPackedAsset-{}.{}.{}-gamut{}", self.scale, self.opaque as u32, monochrome, self.gamut)
     }
 
     fn bpp_for_format(pf: &[u8]) -> usize {
@@ -117,12 +121,14 @@ struct Node {
     w: u32,
     h: u32,
     used: bool,
+    /// Holds an image (set on the node an image was placed in).
+    fit: bool,
     right: Option<usize>,
     down: Option<usize>,
 }
 
-/// Growing binary-tree packer: blocks go into the first free node (right before down), and when
-/// none fits the canvas grows right or down, whichever keeps it closer to square.
+/// actool's growing binary-tree packer: blocks go into the first free node (right before down),
+/// and when none fits the canvas grows right or down, whichever keeps it closer to square.
 #[derive(Clone)]
 struct Packer {
     nodes: Vec<Node>,
@@ -137,7 +143,7 @@ impl Packer {
     }
 
     fn node(&mut self, x: u32, y: u32, w: u32, h: u32) -> usize {
-        self.nodes.push(Node { x, y, w, h, used: false, right: None, down: None });
+        self.nodes.push(Node { x, y, w, h, used: false, fit: false, right: None, down: None });
         self.nodes.len() - 1
     }
 
@@ -152,7 +158,7 @@ impl Packer {
         }
     }
 
-    fn split(&mut self, n: usize, w: u32, h: u32) -> (u32, u32) {
+    fn split(&mut self, n: usize, w: u32, h: u32) -> usize {
         let Node { x, y, w: nw, h: nh, .. } = self.nodes[n];
         let down = self.node(x, y + h, nw, nh - h);
         let right = self.node(x + w, y, nw - w, h);
@@ -160,13 +166,10 @@ impl Packer {
         node.used = true;
         node.down = Some(down);
         node.right = Some(right);
-        (x, y)
+        n
     }
 
-    fn insert(&mut self, w: u32, h: u32) -> Option<(u32, u32)> {
-        if let Some(n) = self.find(Some(self.root), w, h) {
-            return Some(self.split(n, w, h));
-        }
+    fn grow(&mut self, w: u32, h: u32) -> Option<usize> {
         let (rw, rh) = (self.nodes[self.root].w, self.nodes[self.root].h);
         let (can_down, can_right) = (w <= rw, h <= rh);
         let should_right = can_right && rh >= rw + w;
@@ -175,140 +178,137 @@ impl Packer {
         if should_right || (!should_down && can_right) {
             let strip = self.node(rw, 0, w, rh);
             self.root = self.node(0, 0, rw + w, rh);
-            self.nodes[self.root] = Node { used: true, right: Some(strip), down: Some(old), ..self.nodes[self.root].clone() };
-        } else if can_down {
+            let root = &mut self.nodes[self.root];
+            (root.used, root.right, root.down) = (true, Some(strip), Some(old));
+        } else {
             let strip = self.node(0, rh, rw, h);
             self.root = self.node(0, 0, rw, rh + h);
-            self.nodes[self.root] = Node { used: true, right: Some(old), down: Some(strip), ..self.nodes[self.root].clone() };
-        } else {
-            return None;
+            let root = &mut self.nodes[self.root];
+            (root.used, root.right, root.down) = (true, Some(old), Some(strip));
         }
         let n = self.find(Some(self.root), w, h)?;
         Some(self.split(n, w, h))
     }
 
-    fn size(&self) -> (u32, u32) {
-        (self.nodes[self.root].w + MARGIN, self.nodes[self.root].h + MARGIN)
-    }
-}
-
-/// actool's atlas split and layout: an atlas takes no more images once their pixel area reaches
-/// `ATLAS_AREA_PER_SCALE × scale`. Reproduces every atlas of Apple's iOS app-icon sweep
-/// (`tools/atlas_sweep_dataset.json`) and of the corpus' multi-icon catalogs.
-pub fn pack_images_split(mut images: Vec<PackedImage>) -> Vec<Atlas> {
-    images.sort_by(|a, b| {
-        b.width.max(b.height).cmp(&a.width.max(a.height)).then(a.identifier.cmp(&b.identifier))
-    });
-    let mut packs: Vec<(Packer, Atlas)> = Vec::new();
-    for mut img in images {
-        let (w, h) = (img.width + GAP, img.height + GAP);
-        if let Some((packer, atlas)) = packs.last_mut() {
-            let area: u32 = atlas.images.iter().map(|i| i.width * i.height).sum();
-            if area < ATLAS_AREA_PER_SCALE * img.scale {
-                if let Some((x, y)) = packer.insert(w, h) {
-                    (img.x, img.y) = (x + MARGIN, y + MARGIN);
-                    atlas.images.push(img);
-                    continue;
-                }
-            }
-        }
-        let mut packer = Packer::new(w, h);
-        packer.insert(w, h);
-        (img.x, img.y) = (MARGIN, MARGIN);
-        let atlas = Atlas { pixel_format: img.pixel_format, scale: img.scale, images: vec![img], ..Default::default() };
-        packs.push((packer, atlas));
-    }
-    packs
-        .into_iter()
-        .map(|(packer, mut atlas)| {
-            (atlas.width, atlas.height) = packer.size();
-            atlas
-        })
-        .collect()
-}
-
-/// Split renditions into pack groups `(pixel_format, scale, indices)` and inline indices.
-pub fn group_for_packing(
-    renditions: &[crate::car::Rendition],
-) -> (Vec<([u8; 4], u16, Vec<usize>)>, Vec<usize>) {
-    use crate::car;
-
-    const ICON_INLINE_THRESHOLD: u32 = 256;
-    const PACK_MAX_WIDTH: u32 = 262;
-    const PACK_MAX_HEIGHT: u32 = 196;
-    const PACK_MARGIN: u32 = 4;
-
-    // Apple never mixes idioms in an atlas.
-    let mut groups: indexmap::IndexMap<([u8; 4], u16, u16, u16), Vec<usize>> =
-        indexmap::IndexMap::new();
-    let mut force_inline: Vec<usize> = Vec::new();
-
-    for (i, rend) in renditions.iter().enumerate() {
-        match rend.layout {
-            car::LAYOUT_MULTISIZE_IMAGE
-            | car::LAYOUT_COLOR
-            | car::LAYOUT_RAW_DATA
-            | car::LAYOUT_METADATA => {
-                force_inline.push(i);
-                continue;
-            }
-            _ => {}
-        }
-        if rend.part == car::PART_ICON && rend.width >= ICON_INLINE_THRESHOLD {
-            force_inline.push(i);
-            continue;
-        }
-        // actool stores subtype icons (the synthesized 90pt Plus icon, 1792) inline.
-        if rend.subtype != 0 {
-            force_inline.push(i);
-            continue;
-        }
-        if rend.csi_override.is_some() {
-            force_inline.push(i);
-            continue;
-        }
-        if rend.width >= PACK_MAX_WIDTH - PACK_MARGIN
-            || rend.height >= PACK_MAX_HEIGHT - PACK_MARGIN
-        {
-            force_inline.push(i);
-            continue;
-        }
-        let key = (rend.pixel_format, rend.scale, rend.sprite_atlas_id, rend.idiom);
-        groups.entry(key).or_default().push(i);
-    }
-
-    let mut pack_groups: Vec<([u8; 4], u16, Vec<usize>)> = Vec::new();
-    let mut inline: Vec<usize> = force_inline;
-
-    let mut keys: Vec<_> = groups.keys().cloned().collect();
-    keys.sort_by_key(|k| (k.0, k.1, k.2, k.3));
-    for k in keys {
-        let idxs = groups.shift_remove(&k).unwrap();
-        // iOS app icons all share the icon facet's identifier, so they count as distinct by
-        // size (dim2).
-        let ios_icon_group = idxs.iter().all(|i| {
-            let r = &renditions[*i];
-            r.part == car::PART_ICON && car::is_idiom_platform(&r.platform)
-        });
-        let distinct = if ios_icon_group {
-            idxs.iter()
-                .map(|i| (renditions[*i].identifier, renditions[*i].dim2))
-                .collect::<std::collections::HashSet<_>>()
-                .len()
-        } else {
-            idxs.iter()
-                .map(|i| renditions[*i].identifier)
-                .collect::<std::collections::HashSet<_>>()
-                .len()
+    fn insert(&mut self, w: u32, h: u32) -> Option<(u32, u32)> {
+        let n = match self.find(Some(self.root), w, h) {
+            Some(n) => self.split(n, w, h),
+            None => self.grow(w, h)?,
         };
-        if distinct >= 2 {
-            pack_groups.push((k.0, k.1, idxs));
-        } else {
-            inline.extend(idxs);
-        }
+        self.nodes[n].fit = true;
+        Some((self.nodes[n].x, self.nodes[n].y))
     }
 
-    (pack_groups, inline)
+    /// Nodes under the root that hold no image, not counting below such a node (so a grown
+    /// canvas's old root counts as one).
+    fn empty_nodes(&self) -> usize {
+        fn count(p: &Packer, n: usize) -> usize {
+            let node = &p.nodes[n];
+            if !node.fit {
+                return 1;
+            }
+            node.down.map_or(0, |d| count(p, d)) + node.right.map_or(0, |r| count(p, r))
+        }
+        let root = &self.nodes[self.root];
+        root.down.map_or(0, |d| count(self, d)) + root.right.map_or(0, |r| count(self, r))
+    }
+
+    fn enclosing(&self) -> (u32, u32) {
+        (self.nodes[self.root].w, self.nodes[self.root].h)
+    }
+}
+
+/// Packs `images` in order, each padded by `GAP`; returns the packer and each image's
+/// position, or `None` for an image that fits nowhere.
+fn layout(images: &[PackedImage]) -> (Packer, Vec<Option<(u32, u32)>>) {
+    let mut packer = Packer::new(images[0].width + GAP, images[0].height + GAP);
+    let fits = images.iter().map(|i| packer.insert(i.width + GAP, i.height + GAP)).collect();
+    (packer, fits)
+}
+
+/// Images whose pixel area exceeds this × scale stay out of atlases.
+pub const MAX_PACKED_AREA_PER_SCALE: u32 = 18050;
+
+/// actool's split of one packing group, largest area first (ties by rendition key): a chunk
+/// takes images until their total area reaches `limit`, keeping the image that crosses it; when the images before it leave empty nodes and as many more images
+/// pack into the same canvas, it takes those too. Returns each chunk's ordinal, counting the
+/// steps that made none (an image whose own area crosses the limit stays unpacked).
+pub fn split_group(mut images: Vec<PackedImage>, limit: u32) -> (Vec<(usize, Vec<PackedImage>)>, Vec<PackedImage>) {
+    images.sort_by(|a, b| (b.width * b.height).cmp(&(a.width * a.height)).then_with(|| a.sort_key.cmp(&b.sort_key)));
+    let n = images.len();
+    let limit = limit as f64;
+    let mut chunks = Vec::new();
+    let mut ranges = Vec::new();
+    let (mut start, mut step) = (0, 0);
+    while start < n {
+        let mut end = n;
+        let mut area = 0.0;
+        for i in start..n {
+            area += (images[i].width * images[i].height) as f64;
+            if area >= limit {
+                end = i;
+                if i > start {
+                    let (first, _) = layout(&images[start..i]);
+                    let extended = i + first.empty_nodes();
+                    if extended < n {
+                        let (more, _) = layout(&images[start..extended]);
+                        let (a, b) = (first.enclosing(), more.enclosing());
+                        if a.0 * a.1 == b.0 * b.1 {
+                            end = extended;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        if end > start {
+            let len = if end == n { n - start } else { end - start + 1 };
+            ranges.push((step, start..start + len));
+        }
+        start = end + 1;
+        step += 1;
+    }
+    let mut taken = vec![false; n];
+    for (step, r) in &ranges {
+        r.clone().for_each(|i| taken[i] = true);
+        chunks.push((*step, images[r.clone()].to_vec()));
+    }
+    let rest = images.into_iter().zip(taken).filter(|(_, t)| !t).map(|(i, _)| i).collect();
+    (chunks, rest)
+}
+
+/// Lays out one chunk: images at their packed positions plus `MARGIN`, the canvas one pixel wider
+/// and taller than the padded layout, rounded up to even.
+pub fn pack_chunk(images: Vec<PackedImage>) -> Atlas {
+    let (packer, fits) = layout(&images);
+    let even = |v: u32| (v + 1).next_multiple_of(2);
+    let (w, h) = packer.enclosing();
+    let mut atlas = Atlas {
+        width: even(w),
+        height: even(h),
+        pixel_format: images[0].pixel_format,
+        scale: images[0].scale,
+        ..Default::default()
+    };
+    for (mut img, fit) in images.into_iter().zip(fits) {
+        if let Some((x, y)) = fit {
+            (img.x, img.y) = (x + MARGIN, y + MARGIN);
+            atlas.images.push(img);
+        }
+    }
+    atlas
+}
+
+/// Whether actool packs a rendition: a raster image, not a JPEG, of at most
+/// `MAX_PACKED_AREA_PER_SCALE × scale` pixels.
+pub fn can_be_packed(r: &crate::car::Rendition) -> bool {
+    use crate::car;
+    r.layout == car::LAYOUT_ONE_PART_SCALE
+        && r.csi_override.is_none()
+        && r.width > 0
+        && r.height > 0
+        && !r.pixel_data.is_empty()
+        && r.width * r.height <= MAX_PACKED_AREA_PER_SCALE * r.scale as u32
 }
 
 #[cfg(test)]
@@ -320,20 +320,26 @@ mod tests {
     }
 
     #[test]
-    fn empty_packing() {
-        let atlases = pack_images_split(vec![]);
-        assert!(atlases.is_empty());
+    fn empty_group_has_no_chunks() {
+        let (chunks, rest) = split_group(vec![], 18050);
+        assert!(chunks.is_empty() && rest.is_empty());
     }
 
     #[test]
     fn single_image_placed_with_margin() {
-        let atlases = pack_images_split(vec![img("a", 10, 10)]);
-        assert_eq!(atlases.len(), 1);
-        let atlas = &atlases[0];
+        let atlas = pack_chunk(vec![img("a", 10, 10)]);
         assert_eq!(atlas.images.len(), 1);
-        assert_eq!(atlas.images[0].x, MARGIN);
-        assert_eq!(atlas.images[0].y, MARGIN);
-        assert_eq!(atlas.width, MARGIN + 10 + MARGIN);
+        assert_eq!((atlas.images[0].x, atlas.images[0].y), (MARGIN, MARGIN));
+        // 12-pixel padded layout, plus one, rounded up to even.
+        assert_eq!((atlas.width, atlas.height), (14, 14));
+    }
+
+    #[test]
+    fn image_crossing_the_limit_alone_stays_unpacked() {
+        let (chunks, rest) = split_group(vec![img("big", 100, 100), img("a", 10, 10), img("b", 10, 10)], 9000);
+        assert_eq!(rest.len(), 1);
+        assert_eq!(chunks.len(), 1);
+        assert_eq!(chunks[0].0, 1);
     }
 
     #[test]

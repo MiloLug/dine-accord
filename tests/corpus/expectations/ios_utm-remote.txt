@@ -1,4 +1,3 @@
-bitmapkey 6849: want [ffffffff, 1, e, 6, 10001, 3ff, 1, ffffffff, ffffffff, ffffffff], got [ffffffff, 1, e, 6, 1, 3ff, 1, ffffffff, ffffffff, ffffffff]
 facet "AppIcon-Remote": want Element=85 Part=245 Identifier=29341 hotspot (0, 0), got Element=85 Part=220 Identifier=29341 hotspot (0, 0)
 header.coreui_version: want 1010, got 975
 rendition [Appearance=1 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
@@ -13,14 +12,6 @@ rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85
 rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].format: want "ARGB", got "GA8 "
 rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].payload.decoded_len: want 4194304, got 2097152
 rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
-rendition [Appearance=1 Scale=2 Idiom=1 Element=9 Part=181].payload.decoded_len: want 223040, got 224352
-rendition [Appearance=1 Scale=2 Idiom=1 Element=9 Part=181].size: want [324,170], got [325,171]
-rendition [Appearance=1 Scale=2 Idiom=2 Element=9 Part=181].payload.decoded_len: want 223040, got 224352
-rendition [Appearance=1 Scale=2 Idiom=2 Element=9 Part=181].size: want [324,170], got [325,171]
-rendition [Appearance=1 Scale=3 Idiom=1 Element=9 Part=181].payload.decoded_len: want 339456, got 340704
-rendition [Appearance=1 Scale=3 Idiom=1 Element=9 Part=181].size: want [306,272], got [306,273]
-rendition [Appearance=1 Scale=3 Idiom=2 Element=9 Part=181].payload.decoded_len: want 339456, got 340704
-rendition [Appearance=1 Scale=3 Idiom=2 Element=9 Part=181].size: want [306,272], got [306,273]
 rendition [Appearance=10 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
 rendition [Appearance=10 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=10 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv1022.hex: want "0200000000000000000000000000000000000000000000000000000000000000", missing
@@ -40,19 +31,3 @@ rendition [Appearance=4 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv10
 rendition [Identifier=33034 Element=85 Part=181].payload.len: want 5076, got 2314
 rendition [Identifier=37391 Element=85 Part=181].payload.len: want 5902, got 3041
 rendition [Identifier=55451 Element=85 Part=181].payload.len: want 6950, got 3920
-rendition [Scale=2 Idiom=1 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
-rendition [Scale=2 Idiom=1 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
-rendition [Scale=2 Idiom=1 Element=9 Part=181].payload.decoded_len: want 223040, got 224352
-rendition [Scale=2 Idiom=1 Element=9 Part=181].size: want [324,170], got [325,171]
-rendition [Scale=2 Idiom=2 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
-rendition [Scale=2 Idiom=2 Element=9 Part=181].name: want "ZZZZPackedAsset-2.1.0-gamut0", got "ZZZZPackedAsset-2.0.0-gamut0"
-rendition [Scale=2 Idiom=2 Element=9 Part=181].payload.decoded_len: want 223040, got 224352
-rendition [Scale=2 Idiom=2 Element=9 Part=181].size: want [324,170], got [325,171]
-rendition [Scale=3 Idiom=1 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-3.1.0-gamut0", got "ZZZZPackedAsset-3.0.0-gamut0"
-rendition [Scale=3 Idiom=1 Element=9 Part=181].name: want "ZZZZPackedAsset-3.1.0-gamut0", got "ZZZZPackedAsset-3.0.0-gamut0"
-rendition [Scale=3 Idiom=1 Element=9 Part=181].payload.decoded_len: want 339456, got 340704
-rendition [Scale=3 Idiom=1 Element=9 Part=181].size: want [306,272], got [306,273]
-rendition [Scale=3 Idiom=2 Dimension1=1 Element=9 Part=181].name: want "ZZZZPackedAsset-3.1.0-gamut0", got "ZZZZPackedAsset-3.0.0-gamut0"
-rendition [Scale=3 Idiom=2 Element=9 Part=181].name: want "ZZZZPackedAsset-3.1.0-gamut0", got "ZZZZPackedAsset-3.0.0-gamut0"
-rendition [Scale=3 Idiom=2 Element=9 Part=181].payload.decoded_len: want 339456, got 340704
-rendition [Scale=3 Idiom=2 Element=9 Part=181].size: want [306,272], got [306,273]

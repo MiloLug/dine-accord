@@ -679,18 +679,21 @@ pub fn make_bytes_per_row_tlv(width: u32, pixel_format: &[u8], aligned: bool) ->
     out
 }
 
-pub fn make_inlk_tlv(
-    x: u32,
-    y: u32,
-    width: u32,
-    height: u32,
-    scale: u16,
-    atlas_identifier: u16,
-    atlas_dim1: u16,
-    idiom: u16,
-    appearance: u16,
-    display_gamut: u16,
-) -> Vec<u8> {
+/// The key attributes of the atlas a packed image links to.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct AtlasKey {
+    pub identifier: u16,
+    pub dim1: u16,
+    pub scale: u16,
+    pub idiom: u16,
+    pub subtype: u16,
+    pub appearance: u16,
+    pub display_gamut: u16,
+}
+
+pub fn make_inlk_tlv(x: u32, y: u32, width: u32, height: u32, atlas: &AtlasKey) -> Vec<u8> {
+    let AtlasKey { identifier: atlas_identifier, dim1: atlas_dim1, scale, idiom, subtype, appearance, display_gamut } =
+        *atlas;
     let mut inlk = Vec::new();
     inlk.extend_from_slice(b"KLNI");
     inlk.write_u32::<LittleEndian>(0).unwrap();
@@ -721,6 +724,10 @@ pub fn make_inlk_tlv(
         attr.write_u16::<LittleEndian>(15).unwrap();
         attr.write_u16::<LittleEndian>(idiom).unwrap();
     }
+    if subtype != 0 {
+        attr.write_u16::<LittleEndian>(16).unwrap();
+        attr.write_u16::<LittleEndian>(subtype).unwrap();
+    }
     if appearance != 0 {
         attr.write_u16::<LittleEndian>(7).unwrap();
         attr.write_u16::<LittleEndian>(appearance).unwrap();
@@ -744,33 +751,18 @@ pub fn build_packed_image_csi(
     name: &str,
     width: u32,
     height: u32,
-    scale: u16,
     pixel_format: &[u8],
     x: u32,
     y: u32,
-    atlas_identifier: u16,
-    atlas_dim1: u16,
     rendition_flags: u32,
-    idiom: u16,
-    appearance: u16,
-    display_gamut: u16,
+    atlas: &AtlasKey,
 ) -> Vec<u8> {
+    let scale = atlas.scale;
     let scale_factor = scale as u32 * 100;
     let mut tlv = Vec::new();
     tlv.extend(make_slices_tlv(width, height));
     tlv.extend(make_metrics_tlv(width, height));
-    tlv.extend(make_inlk_tlv(
-        x,
-        y,
-        width,
-        height,
-        scale,
-        atlas_identifier,
-        atlas_dim1,
-        idiom,
-        appearance,
-        display_gamut,
-    ));
+    tlv.extend(make_inlk_tlv(x, y, width, height, atlas));
     tlv.extend(make_blend_opacity_tlv());
     tlv.extend(make_exif_orientation_tlv(1));
 
@@ -1218,7 +1210,7 @@ pub fn jpeg_dimensions(data: &[u8]) -> (u32, u32) {
 
 /// CSI for a JPEG rendition (layout 12, `GEPJ`): the JPEG raw in a DWAR, and unlike PDF/SVG,
 /// real Slices/Metrics TLVs sized from its SOFn marker.
-pub fn build_jpeg_csi(filename: &str, jpeg_data: &[u8]) -> Vec<u8> {
+pub fn build_jpeg_csi(filename: &str, jpeg_data: &[u8], scale: u32) -> Vec<u8> {
     let (width, height) = jpeg_dimensions(jpeg_data);
     let mut rawd = Vec::new();
     rawd.extend_from_slice(b"DWAR");
@@ -1235,7 +1227,7 @@ pub fn build_jpeg_csi(filename: &str, jpeg_data: &[u8]) -> Vec<u8> {
     build_csi(
         0,
         0,
-        100,
+        scale * 100,
         PIXELFMT_JPEG,
         LAYOUT_ONE_PART_SCALE,
         filename,
@@ -1317,8 +1309,10 @@ pub struct Rendition {
     pub slices: Option<(u32, u32)>,
     /// Key attribute 24: 1 for the wide-gamut copy of an image.
     pub display_gamut: u16,
-    /// Pixels for a wide-gamut copy (`color::Source::wide_gamut`), made by `gamut_variants`.
-    pub wide_gamut: Option<Vec<u8>>,
+    /// Pixels of the DisplayGamut 1 copy (`color::Source::wide_gamut`), made by `gamut_variants`.
+    pub wide_gamut: Option<crate::color::GamutCopy>,
+    /// The source image has no alpha channel, which makes actool pack it into opaque atlases.
+    pub source_opaque: bool,
 }
 
 impl Default for Rendition {
@@ -1355,6 +1349,7 @@ impl Default for Rendition {
             slices: None,
             display_gamut: 0,
             wide_gamut: None,
+            source_opaque: false,
         }
     }
 }
@@ -1380,12 +1375,12 @@ pub fn gamut_variants<'a>(renditions: impl IntoIterator<Item = &'a Rendition>) -
     let mut out = Vec::new();
     for r in renditions {
         out.push(Rendition { wide_gamut: None, ..r.clone() });
-        if let Some(wide) = &r.wide_gamut {
+        if let Some(copy) = &r.wide_gamut {
             out.push(Rendition {
                 display_gamut: 1,
-                pixel_data: wide.clone(),
-                pixel_format: PIXELFMT_RGBW,
-                colorspace_id: colorspace_for_pixel_format(&PIXELFMT_RGBW),
+                pixel_data: copy.pixels.clone(),
+                pixel_format: copy.pixel_format,
+                colorspace_id: colorspace_for_pixel_format(&copy.pixel_format),
                 wide_gamut: None,
                 ..r.clone()
             });
@@ -1394,13 +1389,14 @@ pub fn gamut_variants<'a>(renditions: impl IntoIterator<Item = &'a Rendition>) -
     out
 }
 
-fn check_opaque(pixel_data: &[u8], pixel_format: &[u8; 4], width: u32, height: u32) -> bool {
+pub(crate) fn check_opaque(pixel_data: &[u8], pixel_format: &[u8; 4], width: u32, height: u32) -> bool {
     let n = width as usize * height as usize;
     match pixel_format {
         b"BGRA" => pixel_data.chunks_exact(4).take(n).all(|p| p[3] == 255),
         b" 8AG" => pixel_data.chunks_exact(2).take(n).all(|p| p[1] == 255),
         // f16 1.0
         &PIXELFMT_RGBW => pixel_data.chunks_exact(8).take(n).all(|p| p[6..] == [0x00, 0x3c]),
+        b"61AG" => pixel_data.chunks_exact(4).take(n).all(|p| p[2..] == [0x00, 0x3c]),
         _ => false,
     }
 }

@@ -1,7 +1,6 @@
 bitmapkey 44501: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 3, 1, 6], got [1, 1, ffffffff, ffffffff, 1, ffffffff, 11, 1, 6]
 bitmapkey 6849: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 3f, 1, 6], got [1, 1, ffffffff, ffffffff, 1, ffffffff, 3f, 1, 6]
 header.coreui_version: want 916, got 972
-header.rendition_count: want 16, got 14
 header.schema_version: want 5, got 2
 rendition [Element=85 Part=218 Identifier=44501 Scale=1].payload.entries[0]: want [256,256,1], got [256,256,4]
 rendition [Element=85 Part=220 Identifier=44501 Dimension2=1 Scale=1].colorspace: want 1, missing
@@ -84,94 +83,3 @@ rendition [Element=85 Part=220 Identifier=44501 Dimension2=4 Scale=2].tlvs.tlv10
 rendition [Element=85 Part=220 Identifier=44501 Dimension2=4 Scale=2].tlvs.tlv1006.type: unexpected "orientation"
 rendition [Element=85 Part=220 Identifier=44501 Dimension2=4 Scale=2].tlvs.tlv1007.bytes_per_row: unexpected 2048
 rendition [Element=85 Part=220 Identifier=44501 Dimension2=4 Scale=2].tlvs.tlv1007.type: unexpected "bytes_per_row"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].layout: want "InternalReference", got "Image"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].payload.celm: unexpected 4
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].payload.decoded_len: unexpected 1024
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].payload.type: want "none", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].tlvs.tlv1007.bytes_per_row: unexpected 64
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].tlvs.tlv1007.type: unexpected "bytes_per_row"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].tlvs.tlv1010.key[0]: want [1,9], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].tlvs.tlv1010.key[1]: want [2,181], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].tlvs.tlv1010.key[2]: want [12,1], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].tlvs.tlv1010.rect: want [132,36,16,16], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=1].tlvs.tlv1010.type: want "link", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].layout: want "InternalReference", got "Image"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].payload.celm: unexpected 4
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].payload.decoded_len: unexpected 4096
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].payload.type: want "none", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].tlvs.tlv1007.bytes_per_row: unexpected 128
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].tlvs.tlv1007.type: unexpected "bytes_per_row"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].tlvs.tlv1010.key[0]: want [1,9], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].tlvs.tlv1010.key[1]: want [2,181], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].tlvs.tlv1010.key[2]: want [12,2], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].tlvs.tlv1010.rect: want [68,2,32,32], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].tlvs.tlv1010.type: want "link", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].layout: want "InternalReference", got "Image"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].payload.celm: unexpected 4
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].payload.decoded_len: unexpected 4096
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].payload.type: want "none", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].tlvs.tlv1007.bytes_per_row: unexpected 128
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].tlvs.tlv1007.type: unexpected "bytes_per_row"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].tlvs.tlv1010.key[0]: want [1,9], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].tlvs.tlv1010.key[1]: want [2,181], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].tlvs.tlv1010.key[2]: want [12,1], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].tlvs.tlv1010.rect: want [132,2,32,32], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=1].tlvs.tlv1010.type: want "link", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].layout: want "InternalReference", got "Image"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].payload.celm: unexpected 4
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].payload.decoded_len: unexpected 16384
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].payload.type: want "none", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].tlvs.tlv1007.bytes_per_row: unexpected 256
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].tlvs.tlv1007.type: unexpected "bytes_per_row"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].tlvs.tlv1010.key[0]: want [1,9], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].tlvs.tlv1010.key[1]: want [2,181], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].tlvs.tlv1010.key[2]: want [12,2], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].tlvs.tlv1010.rect: want [2,2,64,64], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].tlvs.tlv1010.type: want "link", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].layout: want "InternalReference", got "Image"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].payload.celm: unexpected 4
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].payload.decoded_len: unexpected 65536
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].payload.type: want "none", missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].tlvs.tlv1007.bytes_per_row: unexpected 512
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].tlvs.tlv1007.type: unexpected "bytes_per_row"
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].tlvs.tlv1010.key[0]: want [1,9], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].tlvs.tlv1010.key[1]: want [2,181], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].tlvs.tlv1010.key[2]: want [12,1], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].tlvs.tlv1010.rect: want [2,2,128,128], missing
-rendition [Element=85 Part=220 Identifier=6849 Dimension2=3 Scale=1].tlvs.tlv1010.type: want "link", missing
-rendition [Element=9 Part=181 Scale=1].colorspace: want 1, missing
-rendition [Element=9 Part=181 Scale=1].flags: want 0, missing
-rendition [Element=9 Part=181 Scale=1].format: want "ARGB", missing
-rendition [Element=9 Part=181 Scale=1].layout: want "PackedImage", missing
-rendition [Element=9 Part=181 Scale=1].name: want "ZZZZPackedAsset-1.0.0-gamut0", missing
-rendition [Element=9 Part=181 Scale=1].payload.celm: want 4, missing
-rendition [Element=9 Part=181 Scale=1].payload.decoded_len: want 88704, missing
-rendition [Element=9 Part=181 Scale=1].scale: want 1.0, missing
-rendition [Element=9 Part=181 Scale=1].size: want [166,132], missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1001.rects[0]: want [0,0,0,0], missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1001.type: want "slices", missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1004.blend: want 0, missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1004.opacity: want 1.0, missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1004.type: want "blend_opacity", missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1006.orientation: want 1, missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1006.type: want "orientation", missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1007.bytes_per_row: want 672, missing
-rendition [Element=9 Part=181 Scale=1].tlvs.tlv1007.type: want "bytes_per_row", missing
-rendition [Element=9 Part=181 Scale=2].colorspace: want 1, missing
-rendition [Element=9 Part=181 Scale=2].flags: want 0, missing
-rendition [Element=9 Part=181 Scale=2].format: want "ARGB", missing
-rendition [Element=9 Part=181 Scale=2].layout: want "PackedImage", missing
-rendition [Element=9 Part=181 Scale=2].name: want "ZZZZPackedAsset-2.0.0-gamut0", missing
-rendition [Element=9 Part=181 Scale=2].payload.celm: want 4, missing
-rendition [Element=9 Part=181 Scale=2].payload.decoded_len: want 28288, missing
-rendition [Element=9 Part=181 Scale=2].scale: want 2.0, missing
-rendition [Element=9 Part=181 Scale=2].size: want [102,68], missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1001.rects[0]: want [0,0,0,0], missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1001.type: want "slices", missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1004.blend: want 0, missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1004.opacity: want 1.0, missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1004.type: want "blend_opacity", missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1006.orientation: want 1, missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1006.type: want "orientation", missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1007.bytes_per_row: want 416, missing
-rendition [Element=9 Part=181 Scale=2].tlvs.tlv1007.type: want "bytes_per_row", missing

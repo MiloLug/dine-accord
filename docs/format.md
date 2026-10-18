@@ -97,9 +97,10 @@ Payloads:
 - `SISM` multisize: 1, count, (w, h, Dimension2 index).
 - `DWAR` raw data: version (1 = LZFSE-compressed SVG), length, data. Icon stacks and groups carry
   an empty `DWAR` (version 0, length 0).
-- Atlases are named `ZZZZPackedAsset-<scale>.<opaque>.<monochrome>-gamut<DisplayGamut>`; small
-  sizes are `InternalReference` renditions whose `INLK` gives the rect (2 px gutter) and the atlas
-  key.
+- Atlases are named `ZZZZPackedAsset-<scale>.<opaque>.<monochrome>-gamut<DisplayGamut>`; packed
+  images are `InternalReference` renditions whose `INLK` gives the rect (2 px gutter) and the
+  atlas key (Element, Part, Dimension1, Identifier, Scale, Idiom, Subtype, Appearance,
+  DisplayGamut, each when non-zero).
 - Per-build names embed `<UUID>-<pid>-<timestamp>`; compare with `car_read::normalize_name`.
 
 ## Key attributes
@@ -110,8 +111,9 @@ Payloads:
   extended sRGB, falls outside -0.025..1.003. A wide profile with in-gamut pixels gets none (a
   16-px Adobe RGB icon in openzfs). The copy is `RGBW` in colorspace 4 with the same flags; the
   gamut-0 rendition holds the same colours clipped to sRGB (openrct2's `Slide.png`, wireshark's
-  `Fin.png`, OpenUtauMobile's 16-bit P3 app icon). A 16-bit gray image gets a `GA16` copy instead
-  (f16 gray and alpha, colorspace 6; readinglist's `eyeglasses.png`), and the macOS icons rendered
+  `Fin.png`, OpenUtauMobile's 16-bit P3 app icon). An image with more than 8 bits a channel whose
+  pixels are gray in 8-bit sRGB gets a `GA16` copy instead (premultiplied f16 gray and alpha,
+  colorspace 6; readinglist's 16-bit RGBA `eyeglasses.png`), and the macOS icons rendered
   from an `.icon` with wide colours get `RGBW` copies too (Zettlr). JPEGs get none.
 - The facet holding a copy has BITMAPKEYS mask 3 for 24, every other facet 1. Copies of small
   images pack into their own `-gamut1` atlases, whose Dimension1 is counted apart from gamut 0;
@@ -122,17 +124,18 @@ Payloads:
   1..9 in a full iOS set, 1024 alone gives 1. The synthesized 90pt@2x Plus icon (subtype 1792)
   counts, one per appearance of the 60pt@3x icon.
 - BITMAPKEYS masks are -1 for Element, Part and Identifier everywhere, and for Appearance in
-  `.icon` and iOS catalogs.
+  `.icon` and iOS catalogs. Other attributes set bit `value` (below 32), Localization bit 1 for
+  any locale, and Subtype a bit per device subtype (iOS: 0→0, 568→1, 569→2, 570→3, 2732→4,
+  163→5, 2420→7, 2752→8, 2034→9, 2224→10, 2436→11, 2688→12, 2622→13, 2868→14, 2388→15,
+  1792→16, 32401→17, 2340→18, 2778→19, 2360→20, 2160→21, 2532→22, 2266→25, 2556→29, 2796→30,
+  2736→31).
 
 ## Atlases
 
-actool packs small images per (scale, idiom, appearance, format) with a growing binary-tree
-packer (Jake Gordon's): images sorted largest first, ties by identifier, each padded by 2 px; a
-block goes into the first free node (right before down), otherwise the canvas grows right or
-down, whichever keeps it squarer. An atlas takes no more images once the pixel area it holds
-reaches about 17600 × scale (any value in 17145–18123 fits). Rects in `INLK` are bottom-up, and
-Dimension1 counts atlases per (scale, idiom, appearance). Images of every document of an
-invocation share atlases. This reproduces all 68 atlases of upstream's iOS sweep and the corpus.
+Images of at most 18050 × scale pixels pack into atlases, grouped by scale, opacity,
+monochrome, subtype, idiom, gamut and appearance (images of every document of an invocation
+share them); a group of one stays inline. [atlas-packing.md](atlas-packing.md) has the split,
+the layout, the atlas size and the Dimension1 numbering. Rects in `INLK` are bottom-up.
 
 ## Icon Composer `.icon`
 

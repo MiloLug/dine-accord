@@ -83,15 +83,15 @@ accord prints the `actool` compilation-results plist and exits 0; errors exit 1,
 - Icon Composer `.icon` bundles for macOS and iOS.
 - Atlases packed the way `actool` packs them.
 - ICC-tagged PNGs, converted to sRGB, plus the 16-bit copy P3 screens load when a wide-gamut image
-  has colours sRGB can't show.
+  has colours sRGB can't show, or when a 16-bit image is gray.
 
 Known differences from `actool`:
 
 - Below macOS 11 and iOS 14, LZFSE where `actool` uses palette-img or deepmap compression;
   CoreUI reads both.
-- No wide-gamut copies for 16-bit gray images or for icons rendered from an `.icon`.
+- No wide-gamut copies of icons rendered from an `.icon`.
+- JPEGs are stored as they are; `actool` drops their EXIF `YCbCrPositioning` tag.
 - Some `.icon` palette entries are named or merged differently.
-- Alternate iOS app icon sets don't match `actool`'s rendition set yet.
 - `.icon` pre-renders approximate Liquid Glass; iOS 27 draws the icon from the layer stack anyway.
 
 ## Testing against Apple's output

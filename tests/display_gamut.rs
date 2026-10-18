@@ -1,5 +1,5 @@
-//! Wide-gamut (DisplayGamut 1) copies of images whose ICC profile is wide and whose colours leave
-//! sRGB.
+//! DisplayGamut 1 copies: `RGBW` for images whose ICC profile is wide and whose colours leave
+//! sRGB, `GA16` for deep gray images.
 
 use accord::car_read::{Car, Rendition};
 use accord::compiler;
@@ -165,4 +165,39 @@ fn small_wide_images_pack_into_gamut1_atlases() {
     gamuts.sort();
     assert_eq!(gamuts, [0, 1]);
     assert!(refs.iter().all(|r| r.layout == 1003));
+}
+
+/// A 16-bit gray PNG (half-transparent mid gray) as an imageset.
+fn make_deep_gray_catalog(dir: &Path, bit_depth: png::BitDepth) -> PathBuf {
+    let catalog = make_catalog(dir, &[("gray", 64, [0, 0, 0, 0], &[])]);
+    let path = catalog.join("gray.imageset/gray.png");
+    let mut info = png::Info::with_size(64, 64);
+    info.color_type = png::ColorType::GrayscaleAlpha;
+    info.bit_depth = bit_depth;
+    let mut writer = png::Encoder::with_info(fs::File::create(&path).unwrap(), info).unwrap().write_header().unwrap();
+    let px: Vec<u8> = if bit_depth == png::BitDepth::Sixteen { [0x80, 0x00, 0x80, 0x00].repeat(64 * 64) } else { [0x80, 0x80].repeat(64 * 64) };
+    writer.write_image_data(&px).unwrap();
+    catalog
+}
+
+#[test]
+fn deep_gray_image_gets_a_ga16_copy() {
+    let dir = workspace_tmp("display_gamut_ga16");
+    let car = compile(&make_deep_gray_catalog(&dir, png::BitDepth::Sixteen), &dir.join("out"), "macosx");
+
+    let rs = named(&car, "gray.png");
+    assert_eq!(rs.len(), 2);
+    let (base, copy) = if gamut(&car, rs[0]) == 0 { (rs[0], rs[1]) } else { (rs[1], rs[0]) };
+    assert_eq!((base.pixel_format.as_str(), base.colorspace), ("GA8 ", 2));
+    assert_eq!((copy.pixel_format.as_str(), copy.colorspace, gamut(&car, copy)), ("GA16", 6, 1));
+    // Premultiplied: gray 0.5 at alpha 0.5.
+    let px = f16s(&copy.data.as_ref().unwrap()[..4]);
+    assert!((px[0] - 0.25).abs() < 0.01 && (px[1] - 0.5).abs() < 0.01, "{px:?}");
+}
+
+#[test]
+fn eight_bit_gray_image_gets_no_copy() {
+    let dir = workspace_tmp("display_gamut_ga8");
+    let car = compile(&make_deep_gray_catalog(&dir, png::BitDepth::Eight), &dir.join("out"), "macosx");
+    assert_eq!(named(&car, "gray.png").len(), 1);
 }

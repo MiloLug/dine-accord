@@ -1,33 +1,3 @@
-bitmapkey 27972: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 29778: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 34020: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2, 3], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 34310: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 55059: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 59377: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 63909: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 6849: want [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, ff, 1, 6, 1], got [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, ff, 1, 6]
-header.rendition_count: want 22, got 21
-keyformat: want ["Appearance","Localization","Element","Part","Size","Identifier","Dimension2","Layer","Scale","DisplayGamut"], got ["Appearance","Localization","Element","Part","Size","Identifier","Dimension2","Layer","Scale"]
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].colorspace: want 6, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].flags: want 16, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].format: want "GA16", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].layout: want "Image", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].name: want "image.png", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].payload.celm: want 11, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].payload.decoded_len: want 3653632, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].scale: want 1.0, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].size: want [1024,446], missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1001.rects[0]: want [0,0,1756,764], missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1001.type: want "slices", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1003.type: want "metrics", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1003.words: want [1,0,0,0,0,1024,446], missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1004.blend: want 0, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1004.opacity: want 1.0, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1004.type: want "blend_opacity", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1006.orientation: want 1, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1006.type: want "orientation", missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1007.bytes_per_row: want 8192, missing
-rendition [Element=85 Part=181 Identifier=34020 Scale=1 DisplayGamut=1].tlvs.tlv1007.type: want "bytes_per_row", missing
 rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].colorspace: want 1, got 2
 rendition [Element=85 Part=220 Identifier=6849 Dimension2=1 Scale=2].format: want "ARGB", got "GA8 "
 rendition [Element=85 Part=220 Identifier=6849 Dimension2=2 Scale=2].colorspace: want 1, got 2

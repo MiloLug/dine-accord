@@ -34,11 +34,7 @@ pub struct Document {
     pub files: Vec<PathBuf>,
 }
 
-/// Atlases are grouped by (scale, BGRA before other formats, sprite atlas, idiom, appearance,
-/// format, display gamut).
-type PackKey = (u16, u8, u16, u16, u16, [u8; 4], u16);
-
-fn to_packed(r: &Rendition) -> PackedImage {
+fn to_packed(r: &Rendition, index: usize, platform: &str) -> PackedImage {
     let intent = match r.template_rendering_intent {
         i if i >= 0 => i,
         _ if r.is_template => 2,
@@ -62,108 +58,234 @@ fn to_packed(r: &Rendition) -> PackedImage {
         direction: r.direction as u32,
         idiom: r.idiom as u32,
         is_svg_rasterization: r.is_svg_rasterization,
+        sort_key: sort_key(r, platform),
+        index,
     }
 }
 
-/// Atlas and packed-reference renditions for every document's packable images.
-fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> Vec<Rendition> {
-    let mut groups: BTreeMap<PackKey, Vec<&Rendition>> = BTreeMap::new();
-    for r in docs.iter().flat_map(|d| &d.packable) {
-        let rank = (&r.pixel_format != b"BGRA") as u8;
-        groups
-            .entry((r.scale, rank, r.sprite_atlas_id, r.idiom, r.appearance, r.pixel_format, r.display_gamut))
-            .or_default()
-            .push(r);
+/// The full key orders actool breaks packing ties with (CoreUI's untrimmed key formats).
+const MAC_KEY_ORDER: [u16; 20] = [7, 13, 1, 2, 3, 4, 6, 17, 8, 9, 10, 14, 11, 12, 24, 19, 18, 25, 26, 27];
+const IOS_KEY_ORDER: [u16; 21] = [7, 13, 12, 15, 16, 26, 27, 9, 8, 25, 24, 4, 20, 21, 23, 22, 17, 1, 2, 10, 6];
+
+fn locale_id(r: &Rendition) -> u16 {
+    if r.locale.is_empty() { 0 } else { crate::name_hash::hash_name(&r.locale) }
+}
+
+fn sort_key(r: &Rendition, platform: &str) -> Vec<u16> {
+    let order: &[u16] = if car::is_idiom_platform(platform) { &IOS_KEY_ORDER } else { &MAC_KEY_ORDER };
+    order
+        .iter()
+        .map(|a| match a {
+            1 => r.element,
+            2 => r.part,
+            4 => r.direction,
+            7 => r.appearance,
+            9 => r.dim2,
+            12 => r.scale,
+            13 => locale_id(r),
+            15 => r.idiom,
+            16 => r.subtype,
+            17 => r.identifier,
+            24 => r.display_gamut,
+            _ => 0,
+        })
+        .collect()
+}
+
+/// actool packs app icons by their pixels' opacity, other images by whether the source has alpha.
+fn packs_opaque(r: &Rendition) -> bool {
+    if r.part == car::PART_ICON || r.idiom == 6 {
+        car::check_opaque(&r.pixel_data, &r.pixel_format, r.width, r.height)
+    } else {
+        r.source_opaque
     }
+}
+
+/// actool's packing group: scale, opaque, monochrome, subtype, idiom, two size classes, explicit
+/// atlas, memory and graphics classes, gamut, compression, deployment target, appearance,
+/// localization and archive flag, joined with '.' and ordered as strings.
+fn group_key(r: &Rendition) -> String {
+    let mono = matches!(&r.pixel_format, b" 8AG" | b"61AG");
+    format!(
+        "{}.{}.{}.{}.{}.0.0.{}.0.0.{}.0.0.{}.{}.0",
+        r.scale,
+        packs_opaque(r) as u8,
+        mono as u8,
+        r.subtype,
+        r.idiom,
+        r.sprite_atlas_id,
+        r.display_gamut,
+        r.appearance,
+        locale_id(r)
+    )
+}
+
+/// Atlases are numbered (Dimension1) per group key without its opaque, monochrome and
+/// compression fields and without the chunk ordinal.
+fn dim1_key(chunk: &str) -> String {
+    let fields = chunk.split('.').take(16).enumerate();
+    fields.filter(|(i, _)| ![1, 2, 11].contains(i)).map(|(_, f)| f).collect::<Vec<_>>().join(".")
+}
+
+/// Atlas and packed-reference renditions for every document's packable images, and the
+/// packable images actool leaves unpacked.
+fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> (Vec<Rendition>, Vec<Rendition>) {
+    let packable: Vec<&Rendition> = docs.iter().flat_map(|d| &d.packable).collect();
+    let mut groups: BTreeMap<String, Vec<usize>> = BTreeMap::new();
+    for (i, r) in packable.iter().enumerate() {
+        groups.entry(group_key(r)).or_default().push(i);
+    }
+    let mut unpacked = Vec::new();
+    let mut chunks: BTreeMap<String, Vec<PackedImage>> = BTreeMap::new();
+    for (key, members) in groups {
+        let first = packable[members[0]];
+        let explicit = first.sprite_atlas_id != 0;
+        if members.len() == 1 && !explicit {
+            unpacked.push(first.clone());
+            continue;
+        }
+        let scale = first.scale as u32;
+        let limit = if explicit { 0x36_6666 / scale * scale } else { packer::MAX_PACKED_AREA_PER_SCALE * scale };
+        let images = members.iter().map(|&i| to_packed(packable[i], i, platform)).collect();
+        let (split, rest) = packer::split_group(images, limit);
+        unpacked.extend(rest.iter().map(|img| packable[img.index].clone()));
+        for (step, imgs) in split {
+            chunks.insert(format!("{key}.{step}"), imgs);
+        }
+    }
+
     let mut out = Vec::new();
-    let mut dim1: BTreeMap<(u16, u16, u16, u16), u16> = BTreeMap::new();
-    for ((scale, _, sprite_atlas_id, idiom, appearance, fmt, gamut), members) in groups {
-        let images = members.iter().map(|r| to_packed(r)).collect();
-        for mut atlas in packer::pack_images_split(images) {
-            let counter = dim1.entry((scale, idiom, appearance, gamut)).or_default();
-            atlas.dim1 = *counter as u32;
-            atlas.gamut = gamut as u32;
-            atlas.render();
-            let all_icons = atlas.images.iter().all(|i| i.part == car::PART_ICON as u32);
-            let name = if sprite_atlas_id != 0 {
-                atlas.name().replace("ZZZZPackedAsset", "ZZZZExplicitlyPackedAsset")
-            } else {
-                atlas.name()
-            };
-            let csi = car::build_packed_asset_csi(
-                &name,
-                atlas.width,
-                atlas.height,
-                scale,
-                &fmt,
-                &atlas.pixel_data,
-                min_deploy,
-                platform,
-                &fmt == b"BGRA" && all_icons,
-            );
+    let mut dim1: BTreeMap<String, u16> = BTreeMap::new();
+    for (key, imgs) in chunks {
+        let first = packable[imgs[0].index];
+        let (scale, sprite_atlas_id) = (first.scale, first.sprite_atlas_id);
+        let mut atlas = packer::pack_chunk(imgs);
+        let counter = dim1.entry(dim1_key(&key)).or_default();
+        let link = car::AtlasKey {
+            identifier: sprite_atlas_id,
+            dim1: *counter,
+            scale,
+            idiom: first.idiom,
+            subtype: first.subtype,
+            appearance: first.appearance,
+            display_gamut: first.display_gamut,
+        };
+        *counter += 1;
+        atlas.dim1 = link.dim1 as u32;
+        atlas.gamut = link.display_gamut as u32;
+        atlas.opaque = packs_opaque(first);
+        atlas.render();
+        let fmt = atlas.pixel_format;
+        let all_icons = atlas.images.iter().all(|i| i.part == car::PART_ICON as u32);
+        let name = if sprite_atlas_id != 0 {
+            atlas.name().replace("ZZZZPackedAsset", "ZZZZExplicitlyPackedAsset")
+        } else {
+            atlas.name()
+        };
+        let csi = car::build_packed_asset_csi(
+            &name,
+            atlas.width,
+            atlas.height,
+            scale,
+            &fmt,
+            &atlas.pixel_data,
+            min_deploy,
+            platform,
+            &fmt == b"BGRA" && all_icons,
+        );
+        out.push(Rendition {
+            name,
+            identifier: sprite_atlas_id,
+            element: car::ELEMENT_PACKED,
+            part: car::PART_REGULAR,
+            scale,
+            dim1: link.dim1,
+            idiom: link.idiom,
+            subtype: link.subtype,
+            appearance: link.appearance,
+            display_gamut: link.display_gamut,
+            width: atlas.width,
+            height: atlas.height,
+            pixel_format: fmt,
+            layout: car::LAYOUT_NAME_LIST,
+            csi_override: Some(csi),
+            ..Rendition::default()
+        });
+        for img in &atlas.images {
+            let r = packable[img.index];
+            let mut flags = (img.template_rendering_intent as u32) << 2;
+            if img.is_svg_rasterization {
+                flags |= 0x04;
+            }
+            let csi = car::build_packed_image_csi(&img.name, img.width, img.height, &fmt, img.x, img.y, flags, &link);
             out.push(Rendition {
-                name,
-                identifier: sprite_atlas_id,
-                element: car::ELEMENT_PACKED,
-                part: car::PART_REGULAR,
+                name: img.name.clone(),
+                identifier: r.identifier,
+                part: r.part,
                 scale,
-                dim1: *counter,
-                idiom,
-                appearance,
-                display_gamut: gamut,
-                width: atlas.width,
-                height: atlas.height,
+                dim2: r.dim2,
+                appearance: r.appearance,
+                direction: r.direction,
+                idiom: r.idiom,
+                subtype: r.subtype,
+                display_gamut: r.display_gamut,
+                width: img.width,
+                height: img.height,
                 pixel_format: fmt,
-                layout: car::LAYOUT_NAME_LIST,
+                layout: car::LAYOUT_PACKED_IMAGE,
                 csi_override: Some(csi),
                 ..Rendition::default()
             });
-            for img in &atlas.images {
-                let mut flags = (img.template_rendering_intent as u32) << 2;
-                if img.is_svg_rasterization {
-                    flags |= 0x04;
-                }
-                let csi = car::build_packed_image_csi(
-                    &img.name,
-                    img.width,
-                    img.height,
-                    scale,
-                    &fmt,
-                    img.x,
-                    img.y,
-                    sprite_atlas_id,
-                    *counter,
-                    flags,
-                    img.idiom as u16,
-                    appearance,
-                    gamut,
-                );
-                out.push(Rendition {
-                    name: img.name.clone(),
-                    identifier: img.identifier as u16,
-                    part: img.part as u16,
-                    scale,
-                    dim2: img.dim2 as u16,
-                    appearance: img.appearance as u16,
-                    direction: img.direction as u16,
-                    idiom: img.idiom as u16,
-                    display_gamut: gamut,
-                    width: img.width,
-                    height: img.height,
-                    pixel_format: fmt,
-                    layout: car::LAYOUT_PACKED_IMAGE,
-                    csi_override: Some(csi),
-                    ..Rendition::default()
-                });
-            }
-            *counter += 1;
         }
     }
-    out
+    (out, unpacked)
 }
 
 /// One BITMAPKEYS value per facet: for each key attribute, the bitset of values its
 /// renditions use (1 when none), or -1 for wildcard attributes.
+/// The BITMAPKEYS bit CoreUI gives a device subtype (key attribute 16) on iOS-family platforms.
+fn subtype_bit(subtype: u16) -> Option<u32> {
+    Some(match subtype {
+        0 => 0,
+        568 => 1,
+        569 => 2,
+        570 => 3,
+        2732 => 4,
+        163 => 5,
+        2420 => 7,
+        2752 => 8,
+        2034 => 9,
+        2224 => 10,
+        2436 => 11,
+        2688 => 12,
+        2622 => 13,
+        2868 => 14,
+        2388 => 15,
+        1792 => 16,
+        32401 => 17,
+        2340 => 18,
+        2778 => 19,
+        2360 => 20,
+        2160 => 21,
+        2532 => 22,
+        2266 => 25,
+        2556 => 29,
+        2796 => 30,
+        2736 => 31,
+        _ => return None,
+    })
+}
+
+/// The BITMAPKEYS bit of an attribute value: its subtype bit, 1 for any localization, else the
+/// value itself below 32.
+fn value_bit(attr: u16, value: u16) -> Option<u32> {
+    match attr {
+        16 => subtype_bit(value),
+        13 => Some((value != 0) as u32),
+        _ => (value < 32).then_some(value as u32),
+    }
+}
+
 fn bitmap_keys(
     facets: &BTreeMap<String, &Facet>,
     entries: &[(Vec<u8>, Vec<u8>)],
@@ -192,7 +314,7 @@ fn bitmap_keys(
                 let mask = if wildcards.contains(attr) {
                     u32::MAX
                 } else {
-                    let m = rows.iter().filter(|r| r[i] < 32).fold(0u32, |m, r| m | 1 << r[i]);
+                    let m = rows.iter().filter_map(|r| value_bit(*attr, r[i])).fold(0u32, |m, b| m | 1 << b);
                     if m == 0 { 1 } else { m }
                 };
                 value.write_u32::<LittleEndian>(mask).unwrap();
@@ -205,7 +327,8 @@ fn bitmap_keys(
 /// Writes `car_path` unless no document has renditions; returns whether it did.
 pub fn write_car(docs: &[Document], car_path: &Path, platform: &str, min_deploy: &str) -> Result<bool> {
     let mut renditions: Vec<Rendition> = docs.iter().flat_map(|d| d.renditions.iter().cloned()).collect();
-    let packed = pack(docs, min_deploy, platform);
+    let (packed, unpacked) = pack(docs, min_deploy, platform);
+    renditions.extend(unpacked);
     let atlas_count = packed.iter().filter(|r| r.element == car::ELEMENT_PACKED).count();
     let atlas_scales: BTreeSet<(u16, u16)> = packed
         .iter()
