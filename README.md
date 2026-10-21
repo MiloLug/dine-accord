@@ -120,9 +120,6 @@ cargo test --release
 - [`docs/icon-bundle.md`](docs/icon-bundle.md): what `actool` writes for an Icon Composer `.icon`.
 - [`docs/icon-rendering.md`](docs/icon-rendering.md): what its pre-rendered icons look like.
 
-accord is a fork of [viraptor/actool](https://github.com/viraptor/actool); its changes are not
-offered upstream.
-
 ## License
 
 MIT, see [`LICENSE`](LICENSE). Corpus files keep their projects' licences, listed in
