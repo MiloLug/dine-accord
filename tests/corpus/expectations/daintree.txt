@@ -1,7 +1,4 @@
 header.coreui_version: want 974, got 975
 rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, got 0.5
-rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 3, got 2
 rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, got 0.5
-rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 3, got 2
 rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1020.entries[2].value: want 0.0, got 0.5
-rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].shadow_kind: want 3, got 2

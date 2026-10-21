@@ -1,8 +1,5 @@
 facet "AppIcon": want Element=85 Part=245 Identifier=6849 hotspot (0, 0), got Element=85 Part=220 Identifier=6849 hotspot (0, 0)
 header.coreui_version: want 1010, got 975
-rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
-rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
-rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, got 1
 rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
 rendition [Appearance=1 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
@@ -11,9 +8,6 @@ rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv10
 rendition [Appearance=1 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
-rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
-rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, got 1
 rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
 rendition [Appearance=10 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=10 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
@@ -22,9 +16,6 @@ rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1
 rendition [Appearance=10 Element=85 Part=246 Identifier=54570 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
 rendition [Appearance=10 Element=85 Part=246 Identifier=785 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
-rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
-rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1021.entries[3].translucency_enabled: want 0, got 1
 rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
 rendition [Appearance=8 Element=85 Part=245 Identifier=6849 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=8 Element=85 Part=246 Identifier=49899 Scale=1].tlvs.tlv1022.hex: want "0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing

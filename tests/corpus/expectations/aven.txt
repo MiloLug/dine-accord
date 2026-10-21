@@ -7,17 +7,8 @@ facet "Aven_Assets/Gradient-2": want Element=85 Part=247 Identifier=24459 hotspo
 facet "Aven_Assets/system-dark": unexpected Element=85 Part=247 Identifier=29681 hotspot (0, 0)
 facet "Aven_Assets/system-light": unexpected Element=85 Part=247 Identifier=36622 hotspot (0, 0)
 rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,24459], got [17,29681]
-rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[1].opacity: want 0.0, got 1.0
-rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
-rendition [Appearance=1 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
 rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,54058], got [17,36622]
-rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[2].opacity: want 0.0, got 1.0
-rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
-rendition [Appearance=10 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
 rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[0].key[2]: want [17,54058], got [17,36622]
-rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1012.layers[2].opacity: want 0.0, got 1.0
-rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[1].translucency_enabled: want 0, got 1
-rendition [Appearance=8 Element=85 Part=245 Identifier=50610 Scale=1].tlvs.tlv1021.entries[2].translucency_enabled: want 0, got 1
 rendition [Element=85 Part=247 Identifier=24459 Scale=1].colorspace: want 0, missing
 rendition [Element=85 Part=247 Identifier=24459 Scale=1].flags: want 0, missing
 rendition [Element=85 Part=247 Identifier=24459 Scale=1].format: want "", missing

@@ -332,7 +332,7 @@ pub fn make_facetkey_value(element: u16, part: Option<u16>, identifier: u16) -> 
     buf
 }
 
-fn compress_rle(pixel_data: &[u8], width: u32, height: u32, bpp: u32) -> Vec<u8> {
+pub(crate) fn compress_rle(pixel_data: &[u8], width: u32, height: u32, bpp: u32) -> Vec<u8> {
     let row_stride = (width * bpp) as usize;
     let bpp = bpp as usize;
     let width = width as usize;
@@ -863,6 +863,7 @@ pub struct LayerRef {
 /// A stack group's TLV 1021 row.
 #[derive(Clone, Copy, Debug, Default)]
 pub struct GroupEffects {
+    pub specular: bool,
     /// 0 when translucency is disabled.
     pub translucency: f32,
     /// 0 none, 2 layer-color, 3 neutral.
@@ -905,7 +906,7 @@ fn layer_tables(layers: &[LayerRef]) -> Vec<u8> {
     for l in layers {
         let e = l.effects.unwrap_or_default();
         t3fd.write_u32::<LittleEndian>(0).unwrap();
-        t3fd.write_u32::<LittleEndian>(l.effects.is_some() as u32).unwrap();
+        t3fd.write_u32::<LittleEndian>(e.specular as u32).unwrap();
         t3fd.write_f32::<LittleEndian>(e.translucency).unwrap();
         t3fd.write_u32::<LittleEndian>(e.shadow_kind).unwrap();
         t3fd.write_f32::<LittleEndian>(e.shadow_opacity).unwrap();
@@ -1239,7 +1240,7 @@ pub fn build_jpeg_csi(filename: &str, jpeg_data: &[u8], scale: u32) -> Vec<u8> {
     )
 }
 
-pub fn build_svg_csi(filename: &str, svg_data: &[u8]) -> Vec<u8> {
+pub fn build_svg_csi(filename: &str, svg_data: &[u8], colorspace_id: u32) -> Vec<u8> {
     let (stored, is_compressed): (Vec<u8>, u32) = match lzfse_compress(svg_data) {
         Some(c) if c.len() < svg_data.len() => (c, 1),
         _ => (svg_data.to_vec(), 0),
@@ -1264,7 +1265,7 @@ pub fn build_svg_csi(filename: &str, svg_data: &[u8]) -> Vec<u8> {
         &tlv,
         &rawd,
         0x04,
-        0,
+        colorspace_id,
         1,
     )
 }

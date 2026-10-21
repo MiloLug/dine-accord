@@ -210,7 +210,7 @@ pub enum TlvValue {
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct LayerEffects {
     pub unknown: u32,
-    pub translucency_enabled: u32,
+    pub specular: u32,
     pub translucency: f32,
     pub shadow_kind: u32,
     pub shadow_opacity: f32,
@@ -414,7 +414,8 @@ fn parse_rendition(k: &[u8], v: &[u8], attrs: usize) -> Result<Rendition> {
         _ => None,
     });
     let height = le32(v, 16)?;
-    let (payload, decoded) = parse_payload(data, (le32(v, 12)?, height), bytes_per_row);
+    let bytes_per_pixel = crate::car::bytes_per_pixel(&v[24..28]) as usize;
+    let (payload, decoded) = parse_payload(data, (le32(v, 12)?, height), bytes_per_row, bytes_per_pixel);
     Ok(Rendition {
         key,
         layout: le16(v, 36)?,
@@ -506,7 +507,7 @@ fn decode_tlv(tag: u32, v: &[u8]) -> Result<TlvValue> {
                     let o = 4 + 20 * i;
                     Ok(LayerEffects {
                         unknown: le32(v, o)?,
-                        translucency_enabled: le32(v, o + 4)?,
+                        specular: le32(v, o + 4)?,
                         translucency: lef32(v, o + 8)?,
                         shadow_kind: le32(v, o + 12)?,
                         shadow_opacity: lef32(v, o + 16)?,
@@ -533,13 +534,18 @@ fn decode_tlv(tag: u32, v: &[u8]) -> Result<TlvValue> {
 }
 
 /// The payload, plus its decoded bytes for images (CELM) and raw data (RAWD).
-fn parse_payload(d: &[u8], size: (u32, u32), bytes_per_row: Option<u32>) -> (Payload, Option<Vec<u8>>) {
+fn parse_payload(
+    d: &[u8],
+    size: (u32, u32),
+    bytes_per_row: Option<u32>,
+    bytes_per_pixel: usize,
+) -> (Payload, Option<Vec<u8>>) {
     if d.is_empty() {
         return (Payload::None, None);
     }
     let magic = String::from_utf8_lossy(&d[..d.len().min(4)]).into_owned();
     let r: Result<(Payload, Option<Vec<u8>>)> = match magic.as_str() {
-        "MLEC" => Ok(parse_celm(d, size, bytes_per_row)),
+        "MLEC" => Ok(parse_celm(d, size, bytes_per_row, bytes_per_pixel)),
         "RLOC" => (|| {
             let n = le32(d, 12)? as usize;
             Ok((
@@ -583,8 +589,59 @@ fn parse_payload(d: &[u8], size: (u32, u32), bytes_per_row: Option<u32>) -> (Pay
     r.unwrap_or_else(|e| (Payload::Unknown { magic: format!("{magic} ({e})"), len: d.len() }, None))
 }
 
+/// Decoded rows are tight; TLV 1007 records the padded stride.
+fn pad_rows(rows: Vec<u8>, height: u32, bytes_per_row: Option<u32>) -> Vec<u8> {
+    match bytes_per_row {
+        Some(bpr) if height > 0 && rows.len() >= height as usize && (bpr as usize) * height as usize > rows.len() => {
+            let tight = rows.len() / height as usize;
+            rows.chunks_exact(tight)
+                .flat_map(|r| r.iter().copied().chain(std::iter::repeat(0).take(bpr as usize - tight)))
+                .collect()
+        }
+        _ => rows,
+    }
+}
+
+/// Compression 1 (docs/codecs.md). The first header word is not the pixel size: actool writes 3
+/// for a GA8 image (swiftgen), so the size comes from the CSI's pixel format.
+fn decode_rle(body: &[u8], width: u32, height: u32, bytes_per_pixel: usize) -> Result<Vec<u8>> {
+    let row_len = width as usize * bytes_per_pixel;
+    let mut out = Vec::with_capacity(row_len * height as usize);
+    for y in 0..height as usize {
+        let mut p = le32(body, 12 + 4 * y)? as usize;
+        let end = out.len() + row_len;
+        while out.len() < end {
+            let n = le16(body, p)? as usize;
+            ensure!(n > 0, "empty RLE op in row {y}");
+            p += 4;
+            match le16(body, p - 2)? {
+                0x8000 => {
+                    let px = body.get(p..p + bytes_per_pixel).ok_or_else(|| anyhow!("short RLE run"))?;
+                    for _ in 0..n {
+                        out.extend_from_slice(px);
+                    }
+                    p += bytes_per_pixel;
+                }
+                0 => {
+                    let len = n * bytes_per_pixel;
+                    out.extend_from_slice(body.get(p..p + len).ok_or_else(|| anyhow!("short RLE literal"))?);
+                    p += len;
+                }
+                f => bail!("RLE op flag {f:#x} in row {y}"),
+            }
+        }
+        ensure!(out.len() == end, "RLE row {y} is longer than the image");
+    }
+    Ok(out)
+}
+
 /// LZFSE and deepmap2 images of many rows are split into `KCBC` chunks of whole rows.
-fn parse_celm(d: &[u8], (width, height): (u32, u32), bytes_per_row: Option<u32>) -> (Payload, Option<Vec<u8>>) {
+fn parse_celm(
+    d: &[u8],
+    (width, height): (u32, u32),
+    bytes_per_row: Option<u32>,
+    bytes_per_pixel: usize,
+) -> (Payload, Option<Vec<u8>>) {
     let expected = bytes_per_row.map(|b| b as usize * height as usize);
     let field = |off| le32(d, off).unwrap_or(0);
     let (version, compression, word) = (field(4), field(8), field(12));
@@ -593,6 +650,10 @@ fn parse_celm(d: &[u8], (width, height): (u32, u32), bytes_per_row: Option<u32>)
     let r: Result<Option<Vec<u8>>> = (|| {
         let pixels = match compression {
             0 => Some(d.get(16..16 + word as usize).ok_or_else(|| anyhow!("short raw body"))?.to_vec()),
+            1 => {
+                let body = d.get(16..16 + word as usize).ok_or_else(|| anyhow!("short RLE body"))?;
+                Some(pad_rows(decode_rle(body, width, height, bytes_per_pixel)?, height, bytes_per_row))
+            }
             2 => {
                 use std::io::Read;
                 let body = d.get(16..16 + word as usize).ok_or_else(|| anyhow!("short zip body"))?;
@@ -636,16 +697,7 @@ fn parse_celm(d: &[u8], (width, height): (u32, u32), bytes_per_row: Option<u32>)
                     let body = d.get(16..16 + word as usize).ok_or_else(|| anyhow!("short deepmap2 body"))?;
                     rows = crate::deepmap2::decode_chunk(body, width, height)?;
                 }
-                // Decoded rows are tight; TLV 1007 records the padded stride.
-                match bytes_per_row {
-                    Some(bpr) if height > 0 && (bpr as usize) * height as usize > rows.len() => {
-                        let tight = rows.len() / height as usize;
-                        Some(rows.chunks_exact(tight).flat_map(|r| {
-                            r.iter().copied().chain(std::iter::repeat(0).take(bpr as usize - tight))
-                        }).collect())
-                    }
-                    _ => Some(rows),
-                }
+                Some(pad_rows(rows, height, bytes_per_row))
             }
             _ => None,
         };
@@ -807,5 +859,23 @@ impl Rendition {
             }
         }
         Some(out)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn rle_round_trip() {
+        // GA8 rows: a run, literals, and a repeat of the first row (shared row offset).
+        let rows: [[u8; 10]; 3] = [
+            [1, 255, 1, 255, 1, 255, 2, 255, 3, 128],
+            [9, 9, 8, 8, 7, 7, 7, 7, 7, 7],
+            [1, 255, 1, 255, 1, 255, 2, 255, 3, 128],
+        ];
+        let pixels: Vec<u8> = rows.concat();
+        let rle = crate::car::compress_rle(&pixels, 5, 3, 2);
+        assert_eq!(decode_rle(&rle, 5, 3, 2).unwrap(), pixels);
     }
 }

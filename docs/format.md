@@ -120,8 +120,8 @@ TLVs:
 | 1012 | layer list: count, then 48-byte entries (u32 0, u32 0, i32 x, y, w, h in a 1024 canvas, u32 0, f32 opacity, u32 16, then Element, Part and Identifier as (u16, u16) pairs), then 4 zero bytes |
 | 1013 | a list of names, on swiftgen's layout 1005 renditions |
 | 1020 | group materials: count, 0, then per entry u32 kind, f32 value, u32 name length including NUL, name |
-| 1021 | group effects: count, then 20-byte entries (u32 0, u32 translucency enabled, f32 translucency, u32 shadow kind, f32 shadow opacity), then 4 zero bytes |
-| 1022 | Xcode 27 only, meaning unknown |
+| 1021 | group effects: count, then 20-byte entries (u32 0, u32 specular flag, f32 translucency, u32 shadow kind, f32 shadow opacity), then 4 zero bytes |
+| 1022 | from CoreUI 1006 on (vlc; brew-browser, tusk and utm-remote at 1010), on icon stacks and IconGroups: count, 0, then 12-byte entries (u32, f32, u32), all zero except vlc's stacks, which hold 0.5 in the f32 of each group entry; meaning unknown |
 
 What TLVs 1012, 1020 and 1021 hold in an Icon Composer catalog is in
 [icon-bundle.md](icon-bundle.md#stacks-and-groups).

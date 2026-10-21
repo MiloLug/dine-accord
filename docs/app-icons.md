@@ -25,7 +25,8 @@ actool runs; the corpus holds only catalogs.
 - Dimension2 is the rank of the icon's point size among all sizes of the set, counting only the
   target devices, universal and marketing: 20, 29, 38, 40, 60, 76, 83.5, 90, 1024 give 1 to 9 in
   a full iOS set (utm-remote); a single 1024 gives 1. A multisize rendition (`SISM`) lists each
-  size with its Dimension2 (83.5 as 83).
+  size with its Dimension2 (83.5 as 83). A macOS `.iconset` folder ranks its files' sizes the
+  same way (browseros: a lone 256 pt icon is 1).
 - For iPhone Plus models actool adds a 90 pt @2x icon (Idiom phone, Subtype 1792) made from the
   60 pt @3x one (both 180 px), one per appearance, with a multisize set of its own (roothide,
   utm-remote).
@@ -40,7 +41,7 @@ macOS:
 - 16, 32 and 64 pt are packed into an atlas; the others stay inline (aven).
 - Appearance 0 only, named
   `<stem><pt>x<pt>_NSAppearanceNameSystem_<UUID>-<pid>-<timestamp>.png`.
-- `ARGB` even when the icon is gray (readinglist).
+- `ARGB` for readinglist's near-gray icon, whose channels differ by up to 16.
 - An icon with wide-gamut colours gets an `RGBW` DisplayGamut 1 copy of every size (zettlr).
 - `--enable-icon-stack-fallback-generation NO` leaves them out (emacs-liquid-glass). moddable,
   compiled for macOS 10.14 with `--app-icon main` and `main.icon`, has none either, for a reason
@@ -49,7 +50,8 @@ macOS:
 iOS:
 - One 1024 × 1024 @1x per target-device idiom for each of Any (0), Dark (1) and Tintable (10),
   Dimension2 1, named `<stem>1024x1024_UIAppearanceAny_…` (openutau, utm-remote).
-- The Tintable image is `GA8` in openutau and `ARGB` in utm-remote.
+- The Tintable image is `GA8` in openutau, whose pixels are exactly gray, and `ARGB` in
+  utm-remote, whose channels differ by up to 2.
 - They show on systems before iOS 27 and in the loose PNG; iOS 27 draws the icon from the stack
   ([icon-bundle.md](icon-bundle.md#stacks-and-groups)).
 

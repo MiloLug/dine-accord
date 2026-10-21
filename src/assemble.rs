@@ -27,8 +27,6 @@ pub struct Document {
     pub appearances: Vec<(String, u16)>,
     /// CARHEADER version this document's renditions need.
     pub coreui_version: u32,
-    /// Key attributes whose BITMAPKEYS mask is -1 even when only one value is used.
-    pub wildcard_attributes: Vec<u16>,
     pub plist: plist::Dictionary,
     /// Files written next to the catalog (loose icons, `.icns`, JPEGs).
     pub files: Vec<PathBuf>,
@@ -241,8 +239,6 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> (Vec<Rendition>,
     (out, unpacked)
 }
 
-/// One BITMAPKEYS value per facet: for each key attribute, the bitset of values its
-/// renditions use (1 when none), or -1 for wildcard attributes.
 /// The BITMAPKEYS bit CoreUI gives a device subtype (key attribute 16) on iOS-family platforms.
 fn subtype_bit(subtype: u16) -> Option<u32> {
     Some(match subtype {
@@ -286,11 +282,15 @@ fn value_bit(attr: u16, value: u16) -> Option<u32> {
     }
 }
 
+/// Element, Part, Appearance and Identifier: mask -1 whatever values a facet uses.
+const WILDCARD_ATTRIBUTES: [u16; 4] = [1, 2, 7, 17];
+
+/// One BITMAPKEYS value per facet: for each key attribute, the bitset of values its
+/// renditions use (1 when none), or -1 for wildcard attributes.
 fn bitmap_keys(
     facets: &BTreeMap<String, &Facet>,
     entries: &[(Vec<u8>, Vec<u8>)],
     keyformat: &[u16],
-    wildcards: &BTreeSet<u16>,
 ) -> Vec<(u32, Vec<u8>)> {
     let id_pos = keyformat.iter().position(|&a| a == 17);
     let mut by_ident: BTreeMap<u16, Vec<Vec<u16>>> = BTreeMap::new();
@@ -311,7 +311,7 @@ fn bitmap_keys(
             value.write_u32::<LittleEndian>(4 + 4 * keyformat.len() as u32).unwrap();
             value.write_u32::<LittleEndian>(keyformat.len() as u32).unwrap();
             for (i, attr) in keyformat.iter().enumerate() {
-                let mask = if wildcards.contains(attr) {
+                let mask = if WILDCARD_ATTRIBUTES.contains(attr) {
                     u32::MAX
                 } else {
                     let m = rows.iter().filter_map(|r| value_bit(*attr, r[i])).fold(0u32, |m, b| m | 1 << b);
@@ -384,9 +384,7 @@ pub fn write_car(docs: &[Document], car_path: &Path, platform: &str, min_deploy:
 
     bom.add_named_block("KEYFORMAT", car::make_keyformat(&keyformat));
     bom.add_named_block("EXTENDED_METADATA", car::make_extended_metadata(platform, min_deploy));
-    let wildcards: BTreeSet<u16> =
-        [1, 2, 17].into_iter().chain(docs.iter().flat_map(|d| d.wildcard_attributes.iter().copied())).collect();
-    bom.add_raw_key_tree("BITMAPKEYS", &bitmap_keys(&facets, &entries, &keyformat, &wildcards), 1024);
+    bom.add_raw_key_tree("BITMAPKEYS", &bitmap_keys(&facets, &entries, &keyformat), 1024);
     bom.write(car_path)?;
     Ok(true)
 }

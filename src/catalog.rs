@@ -11,20 +11,9 @@ use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
 
-const ICON_DIM2_POINTS: &[(u32, u16)] = &[
-    (16, 1),
-    (32, 2),
-    (128, 3),
-    (256, 4),
-    (512, 5),
-];
-
-fn icon_dim2(point_w: u32) -> u16 {
-    ICON_DIM2_POINTS
-        .iter()
-        .find(|(p, _)| *p == point_w)
-        .map(|(_, d)| *d)
-        .unwrap_or(0)
+/// An icon's Dimension2: the rank of its point size among the set's `sizes` (sorted, deduplicated).
+fn dim2_rank(sizes: &[u32], point_w: u32) -> u16 {
+    sizes.iter().position(|&s| s == point_w).map_or(0, |p| p as u16 + 1)
 }
 
 fn premultiply_bgra(mut buf: Vec<u8>) -> Vec<u8> {
@@ -546,7 +535,7 @@ impl AssetCatalog {
 
             if lower_filename.ends_with(".svg") {
                 let svg_data = fs::read(&img_path)?;
-                let csi = car::build_svg_csi(filename, &svg_data);
+                let csi = car::build_svg_csi(filename, &svg_data, 0);
                 let mut vec_rend = Rendition {
                     name: filename.to_string(),
                     identifier: ident,
@@ -727,15 +716,13 @@ impl AssetCatalog {
         // (both 180 px), with its own phone/subtype-1792 multisize facet.
         let synth_90 = car::is_idiom_platform(&self.platform)
             && icons.iter().any(|i| i.idiom == "iphone" && i.point_w == 60 && i.scale == 3);
-        // Dimension2 is a size's rank among all sizes of the set: a full iOS set maps
-        // 20, 29, 40, 60, 76, 83.5, 90, 1024 to 1..8, a single-size set 1024 to 1.
         let mut sizes: Vec<u32> = icons.iter().map(|i| i.point_w).collect();
         if synth_90 {
             sizes.push(90);
         }
         sizes.sort_unstable();
         sizes.dedup();
-        let dim2_of = |w: u32| sizes.iter().position(|&s| s == w).map_or(0, |p| p as u16 + 1);
+        let dim2_of = |w: u32| dim2_rank(&sizes, w);
 
         let appicon_start = renditions.len();
         let mut icon_renditions: Vec<(u32, u16, u16)> = Vec::new(); // (point_w, idiom, subtype)
@@ -748,7 +735,7 @@ impl AssetCatalog {
 
             if filename.to_ascii_lowercase().ends_with(".svg") {
                 let svg_data = fs::read(&icon.path)?;
-                let csi = car::build_svg_csi(&filename, &svg_data);
+                let csi = car::build_svg_csi(&filename, &svg_data, 0);
                 let mut vec_rend = Rendition {
                     name: filename.clone(),
                     identifier: ident,
@@ -900,6 +887,7 @@ impl AssetCatalog {
         let facet_name = format!("{namespace}{name}");
         let ident = self.get_identifier(&facet_name);
         let re = regex::Regex::new(r"^icon_(\d+)x(\d+)(?:@(\d+)x)?\.png$").unwrap();
+        let first = renditions.len();
         let mut icon_renditions: Vec<u32> = Vec::new();
         let mut entries: Vec<PathBuf> = match fs::read_dir(item) {
             Ok(rd) => rd.filter_map(|e| e.ok().map(|e| e.path())).collect(),
@@ -923,7 +911,6 @@ impl AssetCatalog {
                 continue;
             }
             let img = load_image_as_bgra(&img_file, self.force_bgra)?;
-            let dim2 = icon_dim2(point_w);
             renditions.push(Rendition {
                 name: fname,
                 identifier: ident,
@@ -938,7 +925,6 @@ impl AssetCatalog {
                 wide_gamut: img.wide_gamut,
                 source_opaque: img.opaque,
                 layout: car::LAYOUT_ONE_PART_SCALE,
-                dim2,
                 template_rendering_intent: 0,
                 min_deploy: self.min_deploy.clone(),
                 platform: self.platform.clone(),
@@ -949,6 +935,12 @@ impl AssetCatalog {
         if icon_renditions.is_empty() {
             return Ok(());
         }
+        let mut sizes = icon_renditions.clone();
+        sizes.sort_unstable();
+        sizes.dedup();
+        for (r, &pw) in renditions[first..].iter_mut().zip(&icon_renditions) {
+            r.dim2 = dim2_rank(&sizes, pw);
+        }
 
         let mut ms_entries: Vec<MultisizeImageEntry> = Vec::new();
         let mut seen: HashSet<u32> = HashSet::new();
@@ -957,7 +949,7 @@ impl AssetCatalog {
                 ms_entries.push(MultisizeImageEntry {
                     width: *pw,
                     height: *pw,
-                    index: icon_dim2(*pw) as u32,
+                    index: dim2_rank(&sizes, *pw) as u32,
                 });
             }
         }

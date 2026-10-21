@@ -50,5 +50,5 @@ fn car_helpers_match_python() {
         py_packed,
         "packed"
     );
-    assert_eq!(car::build_svg_csi("icon.svg", b"<svg></svg>"), py_svg, "svg");
+    assert_eq!(car::build_svg_csi("icon.svg", b"<svg></svg>", 0), py_svg, "svg");
 }

@@ -112,8 +112,9 @@ front:
 - The translucency is the group's value for that appearance when enabled, 0 when disabled
   (emacs-liquid-glass's `EmacsLG3`, translucent in light only: 0.5 in Aqua, 0 in Dark and
   Tintable; tusk).
-- Shadow kind: `none` 0, `layer-color` 2, `neutral` 3. daintree's `layer-color` group, whose
-  layer is not glass, is stored as 3. Shadow opacity is copied.
+- Shadow kind: `none` 0, `layer-color` 2, `neutral` 3. A `layer-color` group with no glass layer
+  is stored as 3: daintree's layer says `glass: false`, while emacs-liquid-glass's layers without
+  a `glass` key count as glass and keep 2. Shadow opacity is copied.
 
 An IconGroup rendition lists the group's visible layers back to front:
 - 1012 frame: `w, h = native size × layer scale × group scale`, rounded to the nearest integer,

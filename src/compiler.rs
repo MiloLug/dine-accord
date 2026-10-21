@@ -164,7 +164,6 @@ fn catalog_document(
         if has(1) {
             doc.appearances.push(("UIAppearanceDark".into(), 1));
         }
-        doc.wildcard_attributes.push(7);
     } else if has(1) {
         doc.appearances.push(("NSAppearanceNameDarkAqua".into(), 1));
         doc.appearances.push(("NSAppearanceNameSystem".into(), 0));

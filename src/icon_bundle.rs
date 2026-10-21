@@ -263,7 +263,7 @@ pub fn document(
         &group_facet_names,
         &color_assets,
         &gradient_assets,
-        &parsed.groups,
+        &parsed,
         &light_stacks,
         light_fill.as_ref(),
         solid_fill_color.as_deref(),
@@ -322,7 +322,7 @@ fn ios_document(
         group_facet_names,
         color_assets,
         gradient_assets,
-        &parsed.groups,
+        parsed,
         &[],
         None,
         solid_fill_color,
@@ -600,8 +600,8 @@ struct StackLayer {
     /// Frosted glass whose group shadow is `layer-color`: its colour survives as a subtractive
     /// tint; with `none`/`neutral` it is a neutral relief.
     tinted: bool,
-    /// Opaque specular glass (KYA's coffee cup): keeps its colour, blacks lifted to `GLASS_FLOOR`.
-    specular: bool,
+    /// Opaque glass (KYA's coffee cup): keeps its colour, blacks lifted to `GLASS_FLOOR`.
+    opaque_glass: bool,
     /// Drop-shadow peak; 0 = none.
     shadow_strength: f32,
     scale: f32,
@@ -665,13 +665,13 @@ fn collect_stack_layers(
             let (opacity, blend) = eff
                 .layers
                 .get(i)
-                .map(|l| (l.opacity, parse_blend(&l.blend_mode)))
+                .map(|l| (l.opacity * eff.opacity, parse_blend(&l.blend_mode)))
                 .unwrap_or((1.0, BlendMode::Normal));
             let is_glass = explicit || (glass_context && !opted_out);
             let frosted = is_glass && eff.translucency.enabled;
             let tinted = frosted
                 && eff.shadow.kind == crate::icon_effects::ShadowKind::LayerColor;
-            let specular = is_glass && !eff.translucency.enabled && eff.specular;
+            let opaque_glass = is_glass && !eff.translucency.enabled;
             use crate::icon_effects::ShadowKind;
             let shadow_strength = if is_glass {
                 match eff.shadow.kind {
@@ -698,7 +698,7 @@ fn collect_stack_layers(
                 source: path,
                 frosted,
                 tinted,
-                specular,
+                opaque_glass,
                 shadow_strength,
                 scale: base * gscale * lscale,
                 tx: base * (gscale * ltx + gtx),
@@ -971,7 +971,7 @@ fn render_layer_stack(
                 } else {
                     let mut dst =
                         [rgba[ci * 4], rgba[ci * 4 + 1], rgba[ci * 4 + 2], rgba[ci * 4 + 3]];
-                    let s = if layer.specular {
+                    let s = if layer.opaque_glass {
                         let lift = |c: u8| {
                             let c = c as f32 / 255.0;
                             ((c + GLASS_FLOOR - c * GLASS_FLOOR) * 255.0).round() as u8
@@ -1085,7 +1085,7 @@ fn build_icon_car(
     group_facet_names: &[String],
     color_assets: &[ColorAsset],
     gradient_assets: &[GradientAsset],
-    groups: &[crate::icon_json::Group],
+    parsed: &IconJson,
     light_stacks: &[Vec<u8>],
     light_fill: Option<&crate::icon_render::GradientFill>,
     solid_fill_color: Option<&str>,
@@ -1101,7 +1101,11 @@ fn build_icon_car(
     // Apple's margin halo ignores the group `shadow` kind (same for `none`, absent, `layer-color`:
     // element-web, feishin, KYA). `shadow_geometry` is tuned to this spec.
     use crate::icon_effects::{ShadowKind, ShadowSpec};
-    let _ = groups;
+    let groups = &parsed.groups;
+    let svg_colorspace = match parsed.color_space_for_untagged_svg_colors.as_deref() {
+        Some("display-p3") => 3,
+        _ => 0,
+    };
     let icon_shadow = Some(ShadowSpec { kind: ShadowKind::Neutral, opacity: 0.5 });
 
     for (idx, (img_path, pixel_size, scale)) in icon_images.iter().enumerate() {
@@ -1196,7 +1200,7 @@ fn build_icon_car(
         if is_svg {
             // Apple stores an SVG layer as a vector rendition of the raw SVG, not a bitmap.
             let svg_data = fs::read(&asset.source_path)?;
-            let csi = car::build_svg_csi("image.svg", &svg_data);
+            let csi = car::build_svg_csi("image.svg", &svg_data, svg_colorspace);
             renditions.push(Rendition {
                 name: "image.svg".to_string(),
                 identifier: asset_ident,
@@ -1210,7 +1214,7 @@ fn build_icon_car(
                 layout: car::LAYOUT_PDF,
                 min_deploy: min_deploy.to_string(),
                 platform: platform.to_string(),
-                colorspace_id: 0,
+                colorspace_id: svg_colorspace,
                 csi_override: Some(csi),
                 ..Rendition::default()
             });
@@ -1365,18 +1369,27 @@ fn build_icon_car(
                     continue;
                 }
                 let eff = crate::icon_effects::resolve_icon_effects(group, look);
-                use crate::icon_effects::ShadowKind;
+                use crate::icon_effects::{Lighting, ShadowKind};
                 stack_layers.push(car::LayerRef {
                     part: car::PART_ICON_GROUP,
                     identifier: *ident,
-                    opacity: 1.0,
-                    kind: 2,
+                    opacity: eff.opacity,
+                    kind: match eff.lighting {
+                        Lighting::Combined => 0,
+                        Lighting::Individual => 2,
+                    },
                     value: eff.blur_material.unwrap_or(0.0),
                     effects: Some(car::GroupEffects {
+                        specular: eff.specular,
                         translucency: if eff.translucency.enabled { eff.translucency.value } else { 0.0 },
                         shadow_kind: match eff.shadow.kind {
                             ShadowKind::None => 0,
-                            ShadowKind::LayerColor => 2,
+                            ShadowKind::LayerColor
+                                if group.layers.iter().any(|l| l.hidden != Some(true) && layer_is_glass(l, look)) =>
+                            {
+                                2
+                            }
+                            ShadowKind::LayerColor => 3,
                             ShadowKind::Neutral => 3,
                         },
                         shadow_opacity: eff.shadow.opacity,
@@ -1439,8 +1452,6 @@ fn build_icon_car(
             .map(|(name, element, part, identifier)| crate::assemble::Facet { name, element, part, identifier })
             .collect(),
         coreui_version: 975,
-        // In .icon catalogs every facet's Appearance mask is -1, even for single-appearance colors.
-        wildcard_attributes: vec![7],
         ..Default::default()
     })
 }
@@ -1951,6 +1962,9 @@ fn append_layer_fills(
     grad_floor: usize,
 ) {
     for (_group, layer) in json.iter_layers() {
+        if layer.hidden == Some(true) {
+            continue;
+        }
         if let Some(Fill::Structured(v)) = layer.fill.as_ref() {
             process_fill_value(v, None, facet_prefix, colors, gradients, grad_floor);
         }
@@ -2022,6 +2036,17 @@ fn fill_assets(
 }
 
 /// The IconGroup rows for a group's visible image layers, resolved for `look`.
+/// The catalog's glass flag: absent counts as glass, unlike `LayerEffects.glass` used for rendering.
+fn layer_is_glass(layer: &crate::icon_json::Layer, look: crate::icon_effects::Appearance) -> bool {
+    let glass = layer
+        .glass_specializations
+        .as_ref()
+        .and_then(|s| crate::icon_effects::spec_value(s, look))
+        .cloned()
+        .or(layer.glass.map(serde_json::Value::Bool));
+    glass.and_then(|v| v.as_bool()) != Some(false)
+}
+
 fn group_layer_refs(
     group: &crate::icon_json::Group,
     look: crate::icon_effects::Appearance,
@@ -2047,13 +2072,10 @@ fn group_layer_refs(
         let (w, h) = (nw as f64 * s, nh as f64 * s);
         let tx = (gscale * lt[0] + gt[0]) as f64;
         let ty = (gscale * lt[1] + gt[1]) as f64;
-        let frame = [((1024.0 - w) / 2.0 + tx).floor(), ((1024.0 - h) / 2.0 + ty).floor(), w.floor(), h.floor()];
+        let frame = [((1024.0 - w) / 2.0 + tx).floor(), ((1024.0 - h) / 2.0 + ty).floor(), w.round(), h.round()];
         let resolved = |specs: Option<&Vec<serde_json::Value>>| {
             specs.and_then(|s| crate::icon_effects::spec_value(s, look)).cloned()
         };
-        let glass = resolved(layer.glass_specializations.as_ref())
-            .or(layer.glass.map(serde_json::Value::Bool))
-            .and_then(|v| v.as_bool());
         let fill = resolved(layer.fill_specializations.as_ref()).or_else(|| match layer.fill.as_ref() {
             Some(Fill::Structured(v)) => Some(v.clone()),
             _ => None,
@@ -2063,7 +2085,7 @@ fn group_layer_refs(
             identifier: hash_name(&facet),
             frame: frame.map(|v| v as i32),
             opacity: eff.layers.get(i).map_or(1.0, |l| l.opacity),
-            kind: (glass != Some(false)) as u32,
+            kind: layer_is_glass(layer, look) as u32,
             fill: fill.and_then(|v| fill_facet(&v, colors, gradients)).unwrap_or_default(),
             ..Default::default()
         });
@@ -2158,7 +2180,7 @@ mod tests {
         std::fs::create_dir_all(&dir).unwrap();
         let red = dir.join("red.png");
         write_solid_png(&red, [255, 0, 0, 255]);
-        let layers = vec![StackLayer { source: red, frosted: true, tinted: false, specular: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64, fill: None }];
+        let layers = vec![StackLayer { source: red, frosted: true, tinted: false, opaque_glass: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64, fill: None }];
         let out = render_layer_stack(&layers, 64, None).unwrap();
         let i = (32 * 64 + 32) * 4; // centre, premul-first BGRA
         let (b, g, r, a) = (out[i], out[i + 1], out[i + 2], out[i + 3]);
@@ -2172,7 +2194,7 @@ mod tests {
         std::fs::create_dir_all(&dir).unwrap();
         let red = dir.join("red2.png");
         write_solid_png(&red, [255, 0, 0, 255]);
-        let layers = vec![StackLayer { source: red, frosted: false, tinted: false, specular: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64, fill: None }];
+        let layers = vec![StackLayer { source: red, frosted: false, tinted: false, opaque_glass: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 64, native_h: 64, fill: None }];
         let out = render_layer_stack(&layers, 64, None).unwrap();
         let i = (32 * 64 + 32) * 4; // premul-first BGRA, opaque red
         assert_eq!((out[i], out[i + 1], out[i + 2], out[i + 3]), (0, 0, 255, 255));
@@ -2199,7 +2221,7 @@ mod tests {
             source: src.to_path_buf(),
             frosted: true,
             tinted,
-            specular: false,
+            opaque_glass: false,
             shadow_strength: 0.0,
             scale: 1.0,
             tx: 0.0,
@@ -2242,7 +2264,7 @@ mod tests {
             source: red,
             frosted: false,
             tinted: false,
-            specular: false,
+            opaque_glass: false,
             shadow_strength: 0.0,
             scale: crate::icon_render::Shape::Squircle.content_scale(),
             tx: 0.0,

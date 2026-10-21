@@ -34,7 +34,7 @@ Compressions:
 | Id | Encoding | Seen in |
 |---|---|---|
 | 0 | raw | sparkle-test-app |
-| 1 | not decoded | swiftgen (one GA8 atlas) |
+| 1 | RLE | swiftgen (one GA8 atlas) |
 | 2 | gzip | sparkle-test-app (CoreUI 691, macOS 10.9) |
 | 3 | not decoded | pxcore2 (CoreUI 308) |
 | 4 | LZFSE, chunked as `KCBC` or whole | almost every catalog |
@@ -43,6 +43,11 @@ Compressions:
 | 8 | not decoded | swiftgen (CoreUI 676, iOS 11.0), scummvm |
 | 10 | not decoded | moddable (CoreUI 969, macOS 10.14), scummvm |
 | 11 | deepmap2 | most catalogs with images, iOS 11.0 and macOS 11.0 targets upward |
+
+RLE (1) data is three u32 (3 in swiftgen's GA8 atlas, the width, the height), a u32 offset per
+row counted from the start of the RLE data, then the rows. Identical rows share one offset. A row
+is a series of runs (`u16 count, u16 0x8000`, one pixel) and literals (`u16 count, u16 0`, count
+pixels) that adds up to the width; rows are tight, and the TLV 1007 stride pads them.
 
 LZFSE (4) payloads come in two forms:
 - chunked (version bit 0 set): u32 chunk count, then per chunk `KCBC`, u32 0, u32 0, u32 row

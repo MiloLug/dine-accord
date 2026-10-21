@@ -65,8 +65,8 @@ accord uses deepmap2 from macOS 11, iOS and tvOS 14 and watchOS 7 for payloads o
 except app icons and atlases made only of `ARGB` icons; otherwise chunked LZFSE from macOS 10.11,
 iOS and tvOS 9 and watchOS 2; below that gzip (4 KiB and up), RLE or raw. Simulator and visionOS
 targets use the macOS thresholds. Below macOS 11 and iOS 14, accord writes LZFSE where actool may
-use deepmap2 or another compression. `car_read.rs` decodes raw, gzip, LZFSE and deepmap2, not the
-RLE accord writes for old targets.
+use deepmap2 or another compression. accord's RLE header starts with the bytes per pixel where
+actool's has 3 (swiftgen). `car_read.rs` decodes raw, RLE, gzip, LZFSE and deepmap2.
 
 ### Atlases
 
@@ -106,15 +106,12 @@ Differs from actool:
   `system-light` and `system-dark` whatever the build. actool numbers them before Xcode 27; from
   Xcode 27 it names the dark gray-pair gradient `system-dark` whatever its source (tusk's comes
   from a top-level `fill`).
-- A hidden layer's fills still enter the palette, which shifts the numbers after them (vlc).
-- `color-space-for-untagged-svg-colors` is ignored, so SVG layers keep colorspace 0 (vlc).
-- In the stack, group opacity is always 1, the 1020 kind always 2 and its value always the
-  `blur-material`, the 1021 flag always 1 (actool: the group's `specular`), and a `layer-color`
-  shadow is 2 even when the group has no glass layer.
-- IconGroup frame sizes are rounded down (sentinel: 1131 for actool's 1132).
-- TLV 1022 is not written.
+- The stack's 1020 group value is the `blur-material`, as from Xcode 27, in a catalog stamped 975
+  (daintree's actool writes 0).
+- TLV 1022 is not written; actool writes it from CoreUI 1006 on.
 - The 1024 pt macOS pre-render is @1x, as from Xcode 26.1.
-- Gray macOS pre-renders are `GA8` (actool: `ARGB`), and pre-renders get no `RGBW` copies.
+- Pre-renders that come out exactly gray are `GA8` where actool's pixels are near gray and stay
+  `ARGB` (readinglist; utm-remote's Tintable icon). Pre-renders get no `RGBW` copies.
 - The `.icns` holds the first layer image, not the rendered icon.
 - PDF layers are not read.
 
@@ -124,8 +121,7 @@ Differs from actool:
 [icon-rendering.md](icon-rendering.md) · no pixel tests.
 
 Rendering uses resvg and tiny-skia. The glass edge blur is three box passes, so its σ is set
-below the measured one. Differs from actool: the opaque-glass floor applies only with
-`specular: true`.
+below the measured one.
 
 ## Testing against actool
 

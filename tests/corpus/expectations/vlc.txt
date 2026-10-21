@@ -1,17 +1,11 @@
-bitmapkey 39577: unexpected [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
-bitmapkey 42503: unexpected [ffffffff, 1, ffffffff, ffffffff, 1, ffffffff, 1, 1, 2]
 facet "VLC": want Element=85 Part=245 Identifier=44756 hotspot (0, 0), got Element=85 Part=220 Identifier=44756 hotspot (0, 0)
-facet "VLC_Assets/Color-14": unexpected Element=85 Part=217 Identifier=39577 hotspot (0, 0)
-facet "VLC_Assets/Gradient-8": unexpected Element=85 Part=247 Identifier=42503 hotspot (0, 0)
 header.coreui_version: want 1006, got 975
-header.rendition_count: want 44, got 46
 rendition [Appearance=1 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000003f00000000000000000000003f00000000000000000000003f00000000", missing
 rendition [Appearance=1 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=1 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1020.entries[0].name: want "VLC_Assets/Gradient-6", got "VLC_Assets/Gradient-7"
 rendition [Appearance=1 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
 rendition [Appearance=1 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=10 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000003f00000000000000000000003f00000000000000000000003f00000000", missing
@@ -20,7 +14,6 @@ rendition [Appearance=10 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1
 rendition [Appearance=10 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=10 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
 rendition [Appearance=10 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=10 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1020.entries[0].name: want "VLC_Assets/Gradient-7", got "VLC_Assets/Gradient-8"
 rendition [Appearance=10 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
 rendition [Appearance=10 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=8 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000003f00000000000000000000003f00000000000000000000003f00000000", missing
@@ -29,52 +22,5 @@ rendition [Appearance=8 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv10
 rendition [Appearance=8 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=8 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
 rendition [Appearance=8 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=8 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1020.entries[0].name: want "VLC_Assets/Gradient-6", got "VLC_Assets/Gradient-7"
 rendition [Appearance=8 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
 rendition [Appearance=8 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Element=85 Part=181 Identifier=27837 Scale=1].colorspace: want 3, got 0
-rendition [Element=85 Part=181 Identifier=47140 Scale=1].colorspace: want 3, got 0
-rendition [Element=85 Part=181 Identifier=53200 Scale=1].colorspace: want 3, got 0
-rendition [Element=85 Part=217 Identifier=33239 Scale=1].payload.colorspace: want 2, got 1
-rendition [Element=85 Part=217 Identifier=33239 Scale=1].payload.components: want [0.0,1.0], got [0.906000018119812,0.36500000953674316,0.09000000357627869,1.0]
-rendition [Element=85 Part=217 Identifier=3640 Scale=1].payload.components: want [0.5860000252723694,1.0], got [0.0,1.0]
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].colorspace: unexpected 0
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].flags: unexpected 0
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].format: unexpected ""
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].layout: unexpected "Color"
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].name: unexpected "VLC_Assets/Color-14"
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].payload.colorspace: unexpected 2
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].payload.components: unexpected [0.5860000252723694,1.0]
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].payload.type: unexpected "color"
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].payload.version: unexpected 1
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].scale: unexpected 0.0
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].size: unexpected [0,0]
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].tlvs.tlv1004.blend: unexpected 0
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].tlvs.tlv1004.opacity: unexpected 0.0
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].tlvs.tlv1006.orientation: unexpected 1
-rendition [Element=85 Part=217 Identifier=39577 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
-rendition [Element=85 Part=217 Identifier=62838 Scale=1].payload.colorspace: want 1, got 2
-rendition [Element=85 Part=217 Identifier=62838 Scale=1].payload.components: want [0.906000018119812,0.36500000953674316,0.09000000357627869,1.0], got [0.8209999799728394,1.0]
-rendition [Element=85 Part=247 Identifier=36165 Scale=1].payload.geometry: want [0.5,0.0,0.5,1.0], got [1.0,0.5,0.0,0.5]
-rendition [Element=85 Part=247 Identifier=36165 Scale=1].payload.stops[0]: want [0.0,"VLC_Assets/Color-9"], got [0.0,"VLC_Assets/Color-10"]
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].colorspace: unexpected 0
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].flags: unexpected 0
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].format: unexpected ""
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].layout: unexpected "Gradient"
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].name: unexpected "VLC_Assets/Gradient-8"
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].payload.geometry: unexpected [0.5,0.0,0.5,1.0]
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].payload.kind: unexpected 1
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].payload.reserved: unexpected 0
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].payload.stops[0]: unexpected [0.0,"VLC_Assets/Color-13"]
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].payload.stops[1]: unexpected [1.0,"VLC_Assets/Color-14"]
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].payload.type: unexpected "gradient"
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].scale: unexpected 0.0
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].size: unexpected [0,0]
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].tlvs.tlv1004.blend: unexpected 0
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].tlvs.tlv1004.opacity: unexpected 0.0
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].tlvs.tlv1004.type: unexpected "blend_opacity"
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].tlvs.tlv1006.orientation: unexpected 1
-rendition [Element=85 Part=247 Identifier=42503 Scale=1].tlvs.tlv1006.type: unexpected "orientation"
-rendition [Element=85 Part=247 Identifier=6566 Scale=1].payload.stops[0]: want [0.0,"VLC_Assets/Color-12"], got [0.0,"VLC_Assets/Color-9"]
-rendition [Element=85 Part=247 Identifier=6566 Scale=1].payload.stops[1]: want [1.0,"VLC_Assets/Color-13"], got [1.0,"VLC_Assets/Color-12"]

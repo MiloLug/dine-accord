@@ -13,9 +13,6 @@ facet "Zettlr": want Element=85 Part=245 Identifier=45099 hotspot (0, 0), got El
 header.coreui_version: want 969, got 975
 header.rendition_count: want 32, got 24
 keyformat: want ["Appearance","Localization","Element","Part","Size","Identifier","Dimension2","Layer","Scale","DisplayGamut"], got ["Appearance","Localization","Element","Part","Size","Identifier","Dimension2","Layer","Scale"]
-rendition [Appearance=1 Element=85 Part=245 Identifier=45099 Scale=1].tlvs.tlv1020.entries[1].kind: want 0, got 2
-rendition [Appearance=10 Element=85 Part=245 Identifier=45099 Scale=1].tlvs.tlv1020.entries[1].kind: want 0, got 2
-rendition [Appearance=8 Element=85 Part=245 Identifier=45099 Scale=1].tlvs.tlv1020.entries[1].kind: want 0, got 2
 rendition [Element=85 Part=181 Identifier=28995 Scale=1].payload.len: want 1038, got 1365
 rendition [Element=85 Part=220 Identifier=45099 Dimension2=1 Scale=2 DisplayGamut=1].colorspace: want 4, missing
 rendition [Element=85 Part=220 Identifier=45099 Dimension2=1 Scale=2 DisplayGamut=1].flags: want 0, missing

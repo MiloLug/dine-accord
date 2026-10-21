@@ -65,6 +65,7 @@ pub struct LayerEffects {
 /// All shading inputs for an icon group, resolved for a single appearance.
 #[derive(Debug, Clone)]
 pub struct IconEffects {
+    pub opacity: f32,
     pub shadow: ShadowSpec,
     pub specular: bool,
     pub translucency: Translucency,
@@ -146,14 +147,14 @@ fn resolve_layer(layer: &Layer, appearance: Appearance) -> LayerEffects {
     .unwrap_or(false);
     let opacity = resolve(
         layer.opacity_specializations.as_ref(),
-        None,
+        layer.opacity.map(Value::from).as_ref(),
         appearance,
         |v| v.as_f64().map(|x| x as f32),
     )
     .unwrap_or(1.0);
     let blend_mode = resolve(
         layer.blend_mode_specializations.as_ref(),
-        None,
+        layer.blend_mode.clone().map(Value::from).as_ref(),
         appearance,
         |v| v.as_str().map(str::to_string),
     )
@@ -188,7 +189,7 @@ pub fn resolve_icon_effects(group: &Group, appearance: Appearance) -> IconEffect
         appearance,
         |v| v.as_bool().or(v.as_str().map(|_| true)),
     )
-    .unwrap_or(false);
+    .unwrap_or(true);
 
     let plain_trans = group.translucency.as_ref().map(|t| {
         serde_json::json!({"enabled": t.enabled.unwrap_or(false), "value": t.value.unwrap_or(0.0)})
@@ -208,9 +209,17 @@ pub fn resolve_icon_effects(group: &Group, appearance: Appearance) -> IconEffect
         parse_blur,
     );
 
+    let opacity = resolve(
+        group.opacity_specializations.as_ref(),
+        group.opacity.map(Value::from).as_ref(),
+        appearance,
+        |v| v.as_f64().map(|x| x as f32),
+    )
+    .unwrap_or(1.0);
+
     let lighting = match resolve(
         group.lighting_specializations.as_ref(),
-        None,
+        group.lighting.clone().map(Value::from).as_ref(),
         appearance,
         |v| v.as_str().map(str::to_string),
     )
@@ -235,6 +244,7 @@ pub fn resolve_icon_effects(group: &Group, appearance: Appearance) -> IconEffect
         .collect();
 
     IconEffects {
+        opacity,
         shadow,
         specular,
         translucency,
