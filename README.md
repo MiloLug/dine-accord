@@ -87,12 +87,15 @@ accord prints the `actool` compilation-results plist and exits 0; errors exit 1,
 
 Known differences from `actool`:
 
-- Below macOS 11 and iOS 14, LZFSE where `actool` uses palette-img or deepmap compression;
+- Below macOS 11 and iOS 14, LZFSE where `actool` may use deepmap2 or another compression;
   CoreUI reads both.
 - No wide-gamut copies of icons rendered from an `.icon`.
+- The `.icns` made from an `.icon` holds its first layer image, not the rendered icon.
 - JPEGs are stored as they are; `actool` drops their EXIF `YCbCrPositioning` tag.
 - Some `.icon` palette entries are named or merged differently.
 - `.icon` pre-renders approximate Liquid Glass; iOS 27 draws the icon from the layer stack anyway.
+
+The full list, by part, is in [`docs/README.md`](docs/README.md).
 
 ## Testing against Apple's output
 
@@ -108,10 +111,14 @@ cargo test --release
 
 ## More
 
-- [`docs/format.md`](docs/format.md): `.car` layout, payloads, key attributes.
+[`docs/README.md`](docs/README.md) maps accord's modules to the specs it follows:
+
+- [`docs/format.md`](docs/format.md): `.car` layout, renditions, key attributes.
+- [`docs/codecs.md`](docs/codecs.md): image payloads and their compressions.
 - [`docs/atlas-packing.md`](docs/atlas-packing.md): how `actool` packs atlases.
-- [`docs/icon-bundle-parity.md`](docs/icon-bundle-parity.md): `.icon` output compared with Apple's.
-- [`docs/icon-shading.md`](docs/icon-shading.md): `.icon` shading effects.
+- [`docs/app-icons.md`](docs/app-icons.md): app icons, loose icon files, partial plist.
+- [`docs/icon-bundle.md`](docs/icon-bundle.md): what `actool` writes for an Icon Composer `.icon`.
+- [`docs/icon-rendering.md`](docs/icon-rendering.md): what its pre-rendered icons look like.
 
 accord is a fork of [viraptor/actool](https://github.com/viraptor/actool); its changes are not
 offered upstream.

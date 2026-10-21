@@ -1,16 +1,17 @@
 # Atlas packing
 
-How actool packs small images into `ZZZZPackedAsset` atlases. accord follows these rules: the
-59-configuration iOS app-icon sweep in `tools/atlas_sweep_dataset.json` (recorded with
-`tools/sweep_atlas_geometry.py`) reproduces exactly, and so do the corpus atlases whose packed
-images match Apple's; the others differ in what goes in (pre-rendered `.icon` icons, RootHide's
-drifted icon set). Format details of the atlas and `INLK` renditions are in
-[format.md](format.md).
+How actool packs small images into `ZZZZPackedAsset` atlases. These rules reproduce the splits and
+positions of the 59 iOS app-icon configurations recorded in `tools/atlas_sweep_dataset.json`, and
+roothide's atlases, sizes included. The atlas and `INLK` renditions are described in
+[format.md](format.md#atlases).
 
 ## Which images pack
 
-A raster image rendition (PNG, or a PDF/SVG rasterized at a scale; never a JPEG) packs when its
-pixel area is at most 18050 × scale. Images are grouped by a key of '.'-joined fields:
+Packing starts at deployment target macOS 10.11, iOS and tvOS 9.0, watchOS 2.0 (observed;
+sparkle-test-app at macOS 10.9 has no atlas). A raster image rendition (PNG, or a PDF/SVG
+rasterized at a scale; never a JPEG) packs when its pixel area is at most 18050 × scale. The
+images of every document in one actool run share the atlases. Images are grouped by a key of
+'.'-joined fields:
 
 `scale.opaque.monochrome.subtype.idiom.0.0.explicit.0.0.gamut.0.0.appearance.localization.0`
 
@@ -18,6 +19,7 @@ pixel area is at most 18050 × scale. Images are grouped by a key of '.'-joined 
   source file has no alpha channel. Opaque groups get atlases named `…-<scale>.1.<mono>-…`.
 - *monochrome*: gray images (`GA8`), named `…-<scale>.<opaque>.1-…`.
 - *explicit*: the sprite atlas of a `.spriteatlas`; those atlases are `ZZZZExplicitlyPackedAsset`.
+  No corpus sample has a sprite atlas, so the sprite-atlas rules on this page are unverified.
 
 A group of one image stays inline, except in a sprite atlas.
 
@@ -48,8 +50,8 @@ Each chunk is laid out with a growing binary-tree packer, every image padded to 
 - an image goes into the first free node that fits, searching a used node's right child before
   its down child; the node splits into a down node (full width, below the image) and a right node
   (image height, beside it);
-- when nothing fits, the canvas grows right if `height ≥ width + w`, else down if
-  `width ≥ height + h`, else right if `h ≤ height`, else down;
+- when nothing fits, the canvas grows right if `h ≤ height` and `height ≥ width + w`, else down
+  if `w ≤ width` and `width ≥ height + h`, else right if `h ≤ height`, else down;
 - an image's position is its node's origin plus 2.
 
 Empty nodes, for the split above, are counted from the root's children: a node holding no image

@@ -2,10 +2,9 @@
 """Sweep harness for measuring Apple's iOS app-icon atlas packer.
 
 Compiles an .appiconset with /usr/bin/actool and dumps each packed atlas's
-image positions (parsed from the INLK/KLNI link blocks), to probe the
-packing geometry; see docs/atlas-packing.md for why the algorithm did not
-yield a derivable rule. A snapshot of the collected data is in
-tools/atlas_sweep_dataset.json.
+image positions (parsed from the INLK/KLNI link blocks). The collected data
+is in tools/atlas_sweep_dataset.json; the rules it pins down are in
+docs/atlas-packing.md.
 
 Usage: python3 tools/sweep_atlas_geometry.py '[["60x60","3x","iphone"],...]'
 """
