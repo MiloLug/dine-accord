@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "accord"
-version = "2.2.4"
+version = "2.3.0"
 dependencies = [
  "anyhow",
  "byteorder",
