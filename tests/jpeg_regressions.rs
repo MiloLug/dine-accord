@@ -59,7 +59,7 @@ fn jpeg_stored_in_car_at_11_0() {
     let tmp = workspace_tmp("jpeg_11_0");
     let catalog = make_jpeg_catalog(&tmp);
     let out = tmp.join("out");
-    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     let car = out.join("Assets.car");
     assert!(car.exists(), "Assets.car missing");
@@ -73,7 +73,7 @@ fn jpeg_as_loose_file_at_10_9() {
     let tmp = workspace_tmp("jpeg_10_9");
     let catalog = make_jpeg_catalog(&tmp);
     let out = tmp.join("out");
-    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("10.9").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("10.9").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     assert!(out.join("Photo.jpg").exists(), "loose Photo.jpg missing");
     // No CAR for a catalog that contains only JPEGs at pre-10.10 targets.

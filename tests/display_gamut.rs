@@ -58,6 +58,7 @@ fn compile(catalog: &Path, out: &Path, platform: &str) -> Car {
         include_languages: None,
         development_region: None,
         plist_localizations: true,
+        ..Default::default()
     };
     compiler::compile(&[catalog.to_path_buf()], out, &opts).unwrap();
     Car::parse(&fs::read(out.join("Assets.car")).unwrap()).unwrap()

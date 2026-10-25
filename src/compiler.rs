@@ -6,6 +6,7 @@ use crate::car;
 use crate::catalog::{AppIconSet, AssetCatalog};
 use crate::icns;
 use crate::packer;
+use crate::xcode::XcodeVersion;
 use anyhow::Result;
 use indexmap::IndexMap;
 use std::fs;
@@ -25,6 +26,9 @@ pub struct Options {
     pub include_languages: Option<Vec<String>>,
     pub development_region: Option<String>,
     pub plist_localizations: bool,
+    pub xcode_version: XcodeVersion,
+    /// `--enable-icon-stack-fallback-generation NO`.
+    pub disable_icon_stack_fallback: bool,
 }
 
 /// Compiles `documents` into `output_dir`; returns the files written.
@@ -49,7 +53,7 @@ pub fn compile(documents: &[PathBuf], output_dir: &Path, opts: &Options) -> Resu
 
     let mut output_files: Vec<PathBuf> = docs.iter().flat_map(|d| d.files.iter().cloned()).collect();
     let car_path = output_dir.join("Assets.car");
-    if assemble::write_car(&docs, &car_path, &opts.platform, &opts.min_deploy)? {
+    if assemble::write_car(&docs, &car_path, &opts.platform, &opts.min_deploy, opts.xcode_version)? {
         output_files.push(fs::canonicalize(&car_path).unwrap_or(car_path));
     }
     if let Some(path) = &opts.info_plist {
@@ -100,10 +104,7 @@ fn catalog_document(
     catalog.skipped_app_icons = icon_names.to_vec();
     let (renditions, facets) = catalog.parse()?;
     let renditions = car::gamut_variants(&renditions);
-    let mut doc = Document {
-        coreui_version: if car::is_idiom_platform(platform) { 975 } else { 972 },
-        ..Document::default()
-    };
+    let mut doc = Document::default();
 
     let deploy_ver: (u32, u32) = {
         let mut parts = min_deploy.split('.');

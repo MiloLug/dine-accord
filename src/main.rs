@@ -1,4 +1,4 @@
-use accord::{car_read, catalog, compiler, symbols};
+use accord::{car_read, catalog, compiler, symbols, xcode::XcodeVersion};
 use clap::Parser;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
@@ -73,9 +73,13 @@ struct Cli {
     #[arg(long, default_value = "NO")]
     enable_on_demand_resources: String,
 
-    /// Accepted and ignored: pre-rendered icons are always generated
+    /// `NO` leaves out the pre-rendered icons under `--xcode-version 26`; ignored under 27
     #[arg(long)]
     enable_icon_stack_fallback_generation: Option<String>,
+
+    /// accord only: the Xcode build whose actool output to reproduce
+    #[arg(long, default_value = "27", value_parser = ["26", "27"])]
+    xcode_version: String,
 
     /// Accepted and ignored
     #[arg(long)]
@@ -236,6 +240,11 @@ fn main() -> ExitCode {
         include_languages,
         development_region: cli.development_region.clone(),
         plist_localizations: plist_l10n,
+        xcode_version: XcodeVersion::parse(&cli.xcode_version).expect("clap allows only known versions"),
+        disable_icon_stack_fallback: cli
+            .enable_icon_stack_fallback_generation
+            .as_deref()
+            .is_some_and(|v| v.eq_ignore_ascii_case("NO")),
     };
     let output_files = match compiler::compile(&cli.documents, &compile_dir, &opts) {
         Ok(f) => f,
@@ -415,6 +424,9 @@ fn inspect(path: &Path, json: bool) -> ExitCode {
     println!("keyformat: {}", attrs.join(" "));
     for (name, id) in &car.appearances {
         println!("appearance {id}: {name}");
+    }
+    for (name, id) in &car.localizations {
+        println!("localization {id}: {name}");
     }
     for f in &car.facets {
         let a: Vec<String> = f.attributes.iter().map(|(k, v)| format!("{}={v}", car_read::attribute_name(*k))).collect();

@@ -2,7 +2,8 @@
 # inputs they were compiled from in sources/<name>/ where they are public. `url` (and
 # `ipa_member` for an app archive) and `sources` record where each file came from.
 # Samples with `app_icon` are compile pairs: tests/corpus_parity.rs compiles their sources with
-# that `--app-icon`, the platform and deployment target stored in the sample, and `args`.
+# that `--app-icon`, the platform and deployment target stored in the sample, `--xcode-version` 27
+# for a sample stamped CoreUI 1006 or later and 26 otherwise, and `args`.
 # Third-party marks under their projects' licences: see README.md.
 
 [[sample]]
@@ -57,7 +58,7 @@ sources = [
 name = "emacs-liquid-glass"
 url = "https://raw.githubusercontent.com/jimeh/emacs-liquid-glass-icons/6e25183fe5a4bdda88458cef44ff7cb0ce678d49/Resources/Assets.car"
 # Apple ran without --app-icon. Its catalog has no pre-renders: the actool that built it honoured
-# --enable-icon-stack-fallback-generation NO, which accord accepts and ignores.
+# --enable-icon-stack-fallback-generation NO.
 app_icon = "AppIcon"
 args = ["--include-all-app-icons", "--target-device", "mac", "--enable-icon-stack-fallback-generation", "NO"]
 sources = [
@@ -108,8 +109,8 @@ url = "https://raw.githubusercontent.com/onivim/oni2/161a92c2226728b37cd9a6f554b
 
 [[sample]]
 name = "ios/roothide"
-# Apple's catalog was compiled from an older AppIcon.appiconset (the files AppIcon_Blue holds now),
-# so the primary icon and the atlases it shares differ from what these sources give.
+# Apple's catalog was compiled from an older AppIcon.appiconset: the source's AppIcon.appiconset
+# comes from 92bb518007863d6acdce3e60f7bb196c32353852, the rest of Assets.xcassets from c7f6b12.
 url = "https://raw.githubusercontent.com/P013onEr/RootHide/c7f6b12929c455c15f5b3e7a49ccb81496c20018/Application/Dopamine/Prebuilt/Assets.car"
 app_icon = "AppIcon"
 args = ["--accent-color", "AccentColor", "--include-all-app-icons", "--target-device", "iphone", "--target-device", "ipad"]

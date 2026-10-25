@@ -27,7 +27,7 @@ origin and the compile arguments of the pairs.
 | `sentinel` | macOS | [Sentinel](https://github.com/RemakeCode/sentinel) | `0cbf6eafcf3f` | MIT | yes |
 | `kdrive` | macOS | [kDrive](https://github.com/Infomaniak/desktop-kDrive) | `643057e04581` | GPL-3.0 |  |
 | `sparkle-test-app` | macOS | [Sparkle 1.26.0 Test App (vendored by Oni2)](https://github.com/onivim/oni2) | `161a92c22267` | MIT |  |
-| `ios/roothide` | iOS | [RootHide Dopamine](https://github.com/P013onEr/RootHide) | `c7f6b12929c4` | MIT | yes |
+| `ios/roothide` | iOS | [RootHide Dopamine](https://github.com/P013onEr/RootHide) | `c7f6b12929c4` (`AppIcon.appiconset`: `92bb51800786`) | MIT | yes |
 | `ios/openutau` | iOS | [OpenUtau Mobile](https://github.com/vocoder712/OpenUtauMobile) | `17a86f602e05` | Apache-2.0 | yes |
 | `ios/swiftgen` | iOS | [SwiftGen](https://github.com/SwiftGen/SwiftGen) | `ddb03a73cab2` | MIT |  |
 | `ios/sumup` | iOS | [SumUp iOS SDK](https://github.com/sumup/sumup-ios-sdk) | `8224b6eb435d` | Apache-2.0 |  |

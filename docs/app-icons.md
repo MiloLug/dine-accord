@@ -43,7 +43,8 @@ macOS:
   `<stem><pt>x<pt>_NSAppearanceNameSystem_<UUID>-<pid>-<timestamp>.png`.
 - `ARGB` for readinglist's near-gray icon, whose channels differ by up to 16.
 - An icon with wide-gamut colours gets an `RGBW` DisplayGamut 1 copy of every size (zettlr).
-- `--enable-icon-stack-fallback-generation NO` leaves them out (emacs-liquid-glass). moddable,
+- Xcode 26.0 leaves them out with `--enable-icon-stack-fallback-generation NO`
+  (emacs-liquid-glass), and the main facet then has Part 245. moddable,
   compiled for macOS 10.14 with `--app-icon main` and `main.icon`, has none either, for a reason
   not known.
 

@@ -22,7 +22,7 @@ fn compile_reference_catalog_produces_outputs() {
     }
     let out = workspace_tmp("rust_e2e_full");
     let plist = out.join("AppIcon.Info.plist");
-    let files = compiler::compile(&[(&ref_catalog()).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: (Some("AppIcon")).map(str::to_string), info_plist: (Some(&plist)).map(|p| p.to_path_buf()), accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    let files = compiler::compile(&[(&ref_catalog()).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: (Some("AppIcon")).map(str::to_string), info_plist: (Some(&plist)).map(|p| p.to_path_buf()), accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     assert!(files.iter().any(|p| p.ends_with("Assets.car")));
     assert!(files.iter().any(|p| p.ends_with("AppIcon.icns")));
@@ -39,7 +39,7 @@ fn compile_reference_catalog_without_icon() {
         return;
     }
     let out = workspace_tmp("rust_e2e_no_icon");
-    let files = compiler::compile(&[(&ref_catalog()).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    let files = compiler::compile(&[(&ref_catalog()).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     assert!(files.iter().any(|p| p.ends_with("Assets.car")));
     assert!(!files.iter().any(|p| p.ends_with(".icns")));
@@ -49,7 +49,7 @@ fn compile_reference_catalog_without_icon() {
 #[test]
 fn version_matches_expected_fields() {
     // Compile-time check that the library still exposes what the CLI uses.
-    let hdr = car::make_carheader(0);
+    let hdr = car::make_carheader_full(0, accord::xcode::XcodeVersion::default(), "macosx", 1);
     assert_eq!(&hdr[..4], b"RATC");
     let _ = BomWriter::new();
 }

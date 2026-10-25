@@ -1,5 +1,5 @@
 //! The layout Apple's actool emits for `--platform iphoneos`: Idiom + Subtype key columns,
-//! CoreUI 975 / key-semantics 2, per-idiom keys, `mac`/`ios-marketing` dropped from imagesets.
+//! key-semantics 2, per-idiom keys, `mac`/`ios-marketing` dropped from imagesets.
 
 use accord::compiler;
 use std::path::{Path, PathBuf};
@@ -49,7 +49,7 @@ fn build_mixed_catalog(root: &Path) {
 
 fn compile_ios(xcassets: &Path, out: &Path) {
     let plist = out.join("partial.plist");
-    compiler::compile(&[(xcassets).to_path_buf()], out, &compiler::Options { platform: ("iphoneos").to_string(), min_deploy: ("14.0").to_string(), app_icon: None, info_plist: (Some(&plist)).map(|p| p.to_path_buf()), accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(xcassets).to_path_buf()], out, &compiler::Options { platform: ("iphoneos").to_string(), min_deploy: ("14.0").to_string(), app_icon: None, info_plist: (Some(&plist)).map(|p| p.to_path_buf()), accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
 }
 
@@ -81,7 +81,7 @@ fn build_appicon_catalog(root: &Path, entries: &[(&str, &str, &str)]) {
 
 fn compile_ios_icon(xcassets: &Path, out: &Path) {
     let plist = out.join("partial.plist");
-    compiler::compile(&[(xcassets).to_path_buf()], out, &compiler::Options { platform: ("iphoneos").to_string(), min_deploy: ("14.0").to_string(), app_icon: (Some("AppIcon")).map(str::to_string), info_plist: (Some(&plist)).map(|p| p.to_path_buf()), accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(xcassets).to_path_buf()], out, &compiler::Options { platform: ("iphoneos").to_string(), min_deploy: ("14.0").to_string(), app_icon: (Some("AppIcon")).map(str::to_string), info_plist: (Some(&plist)).map(|p| p.to_path_buf()), accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
 }
 
@@ -117,7 +117,7 @@ fn ios_imageset_emits_idiom_keyformat_and_header() {
         .windows(4)
         .position(|w| w == b"RATC")
         .expect("RATC block");
-    assert_eq!(read_u32_le(&car, h + 4), 975, "coreui version");
+    assert_eq!(read_u32_le(&car, h + 4), 1010, "coreui version");
     assert_eq!(read_u32_le(&car, h + 432), 2, "key semantics");
 
     // EXTENDED_METADATA records the device family, not the SDK name.

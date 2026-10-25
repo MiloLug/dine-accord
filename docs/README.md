@@ -19,7 +19,8 @@ covers installing and running it.
 One `accord --compile` run:
 
 1. `main.rs` parses the actool-compatible command line, or runs `inspect`, `diff`, `extract` or
-   the asset-symbols mode.
+   the asset-symbols mode. `--xcode-version` picks the actool build to reproduce, Xcode 26.6 or
+   27.0 (the default); `xcode.rs` holds what differs between the two.
 2. `compiler.rs` handles the invocation: each `.icon` goes to `icon_bundle.rs`, everything else
    to `catalog.rs`; it also writes the loose iOS icons, the `.icns` and the partial plist.
 3. `catalog.rs` parses an `.xcassets` into renditions. `color.rs` converts ICC-tagged images to
@@ -43,19 +44,20 @@ are skipped).
 
 ### Container and blocks
 
-`bom.rs`, `car.rs`, `assemble.rs` · spec [format.md](format.md) · tests `bom_parity.rs`,
-`car_parity.rs`, `corpus_inspect.rs`.
+`bom.rs`, `car.rs`, `assemble.rs`, `xcode.rs` · spec [format.md](format.md) · tests
+`bom_parity.rs`, `bom_layout.rs`, `car_parity.rs`, `corpus_inspect.rs`, `language_variants.rs`.
 
 Differs from actool:
-- CoreUI version 975 for iOS catalogs and catalogs with an `.icon`, 972 otherwise; actool stamps
-  its own build. Storage 17 and schema 2 always; version string
-  `IBCocoaTouchImageCatalogTool-17.0`, authoring tool `actool`.
-- Block 1 starts at 0x20 and a tree entry's key block follows its value block.
-- APPEARANCEKEYS is always variable-key, also with a single entry. LOCALIZATIONKEYS is never
-  written.
+- The CoreUI version and the header and metadata strings are those of Xcode 26.6 or 27.0, never
+  of another build. Storage 17 and schema 2 always.
+- Blocks are allocated tree by tree: the entries in key order, then the leaf, then the tree
+  header. actool allocates the tree headers and leaves first and the entries in its own order.
 - tvOS, watchOS and Catalyst get key semantics 1 and the macOS key format.
-- The iOS key format has no Direction (4), so the left-to-right and right-to-left variants of an
-  image share a key.
+- A localized image packed into an atlas gives the atlas its Localization, in the atlas key and in
+  the link; no corpus sample has a packed localized image.
+
+Written as actool's rule with no corpus sample to compare: fixed-key name trees with several
+equal-length keys, and flag 0x40 on a set with one language direction.
 
 ### Image payloads
 
@@ -63,10 +65,10 @@ Differs from actool:
 
 accord uses deepmap2 from macOS 11, iOS and tvOS 14 and watchOS 7 for payloads over 256 bytes,
 except app icons and atlases made only of `ARGB` icons; otherwise chunked LZFSE from macOS 10.11,
-iOS and tvOS 9 and watchOS 2; below that gzip (4 KiB and up), RLE or raw. Simulator and visionOS
-targets use the macOS thresholds. Below macOS 11 and iOS 14, accord writes LZFSE where actool may
-use deepmap2 or another compression. accord's RLE header starts with the bytes per pixel where
-actool's has 3 (swiftgen). `car_read.rs` decodes raw, RLE, gzip, LZFSE and deepmap2.
+iOS and tvOS 9 and watchOS 2; below that gzip (4 KiB and up), RLE (not for `GA16` and `RGBW`) or
+raw. Simulator and visionOS targets use the macOS thresholds. Below macOS 11 and iOS 14, accord
+writes LZFSE where actool may use deepmap2 or another compression. `car_read.rs` decodes raw, RLE,
+gzip, LZFSE and deepmap2.
 
 ### Atlases
 
@@ -92,8 +94,9 @@ Differs from actool: PDFs are stored as given (actool rewrites them); JPEGs keep
 [app-icons.md](app-icons.md) · tests `ios_parity.rs`, `e2e_compile.rs`.
 
 Without `--app-icon`, an `.icon` bundle's name is taken as the app icon, so the `.icns` and plist
-keys are written; what actool does there is unverified. `.icon` pre-renders are always generated:
-`--enable-icon-stack-fallback-generation NO` is ignored.
+keys are written; what actool does there is unverified. `--enable-icon-stack-fallback-generation
+NO` leaves out the `.icon` pre-renders under `--xcode-version 26` only; the loose PNGs and the
+`.icns` are still written. The corpus shows `NO` working in Xcode 26.0 alone.
 
 ### Icon Composer bundles
 
@@ -101,14 +104,13 @@ keys are written; what actool does there is unverified. `.icon` pre-renders are 
 tests `icon_bundle_e2e.rs`, `icon_bundle_robustness.rs`.
 
 Differs from actool:
-- The main facet is always Part 220.
-- Gradients are numbered, except keyword entries in `fill-specializations`, which are named
-  `system-light` and `system-dark` whatever the build. actool numbers them before Xcode 27; from
-  Xcode 27 it names the dark gray-pair gradient `system-dark` whatever its source (tusk's comes
-  from a top-level `fill`).
-- The stack's 1020 group value is the `blur-material`, as from Xcode 27, in a catalog stamped 975
-  (daintree's actool writes 0).
-- TLV 1022 is not written; actool writes it from CoreUI 1006 on.
+- The main facet is Part 220 whenever there are pre-rendered icons; actool gives some such
+  catalogs 245.
+- Under Xcode 27, a top-level `fill: "system-dark"` keeps both its gradients numbered; no sample
+  shows what Xcode 27 names them.
+- The f32 of TLV 1022 group entries and the Xcode 27 1020 group value are the group's
+  `blur-material`; vlc, the one sample with a non-zero value, has the same 0.5 in
+  `refractivity.depth`.
 - The 1024 pt macOS pre-render is @1x, as from Xcode 26.1.
 - Pre-renders that come out exactly gray are `GA8` where actool's pixels are near gray and stay
   `ARGB` (readinglist; utm-remote's Tintable icon). Pre-renders get no `RGBW` copies.
@@ -127,7 +129,8 @@ below the measured one.
 
 - `tests/corpus/` holds catalogs compiled by actool and, where public, their inputs
   ([tests/corpus/README.md](../tests/corpus/README.md)). `tests/corpus_parity.rs` compiles each
-  pair and compares the result with actool's through `car_read::diff`; the differences it may
+  pair, with `--xcode-version 27` for a catalog stamped CoreUI 1006 or later and 26 otherwise, and
+  compares the result with actool's through `car_read::diff`; the differences it may
   show are listed in `tests/corpus/expectations/<sample>.txt`. A new difference fails the test, a
   vanished one prints a hint, and `ACCORD_UPDATE_EXPECTATIONS=1` rewrites the files.
 - `tools/compare_car.py A.car B.car --no-pixels` is a structural diff that runs anywhere. Its

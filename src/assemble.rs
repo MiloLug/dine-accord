@@ -4,6 +4,7 @@
 use crate::bom::BomWriter;
 use crate::car::{self, Rendition};
 use crate::packer::{self, PackedImage};
+use crate::xcode::XcodeVersion;
 use anyhow::Result;
 use byteorder::{LittleEndian, WriteBytesExt};
 use std::collections::{BTreeMap, BTreeSet};
@@ -25,8 +26,6 @@ pub struct Document {
     pub packable: Vec<Rendition>,
     pub facets: Vec<Facet>,
     pub appearances: Vec<(String, u16)>,
-    /// CARHEADER version this document's renditions need.
-    pub coreui_version: u32,
     pub plist: plist::Dictionary,
     /// Files written next to the catalog (loose icons, `.icns`, JPEGs).
     pub files: Vec<PathBuf>,
@@ -166,6 +165,7 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> (Vec<Rendition>,
             idiom: first.idiom,
             subtype: first.subtype,
             appearance: first.appearance,
+            localization: locale_id(first),
             display_gamut: first.display_gamut,
         };
         *counter += 1;
@@ -201,6 +201,7 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> (Vec<Rendition>,
             idiom: link.idiom,
             subtype: link.subtype,
             appearance: link.appearance,
+            locale: first.locale.clone(),
             display_gamut: link.display_gamut,
             width: atlas.width,
             height: atlas.height,
@@ -224,6 +225,8 @@ fn pack(docs: &[Document], min_deploy: &str, platform: &str) -> (Vec<Rendition>,
                 dim2: r.dim2,
                 appearance: r.appearance,
                 direction: r.direction,
+                flippable: r.flippable,
+                locale: r.locale.clone(),
                 idiom: r.idiom,
                 subtype: r.subtype,
                 display_gamut: r.display_gamut,
@@ -325,7 +328,13 @@ fn bitmap_keys(
 }
 
 /// Writes `car_path` unless no document has renditions; returns whether it did.
-pub fn write_car(docs: &[Document], car_path: &Path, platform: &str, min_deploy: &str) -> Result<bool> {
+pub fn write_car(
+    docs: &[Document],
+    car_path: &Path,
+    platform: &str,
+    min_deploy: &str,
+    xcode: XcodeVersion,
+) -> Result<bool> {
     let mut renditions: Vec<Rendition> = docs.iter().flat_map(|d| d.renditions.iter().cloned()).collect();
     let (packed, unpacked) = pack(docs, min_deploy, platform);
     renditions.extend(unpacked);
@@ -343,6 +352,8 @@ pub fn write_car(docs: &[Document], car_path: &Path, platform: &str, min_deploy:
     // A Dimension1 column whenever a scale has more than one atlas of one gamut, even if every
     // atlas of that scale belongs to a different idiom and so carries Dimension1 = 0.
     let uses_dim1 = atlas_count > atlas_scales.len();
+    let locales: BTreeSet<String> =
+        renditions.iter().filter(|r| !r.locale.is_empty()).map(|r| r.locale.clone()).collect();
     let keyformat = if car::is_idiom_platform(platform) {
         car::compute_keyformat_ios(&renditions, uses_dim1)
     } else {
@@ -359,13 +370,13 @@ pub fn write_car(docs: &[Document], car_path: &Path, platform: &str, min_deploy:
         .collect();
     entries.sort_by(|a, b| a.0.cmp(&b.0));
 
-    let coreui = docs.iter().map(|d| d.coreui_version).max().unwrap_or(972);
     let key_semantics = if car::is_idiom_platform(platform) { 2 } else { 1 };
     let mut bom = BomWriter::new();
-    bom.add_named_block("CARHEADER", car::make_carheader_full(entries.len() as u32, coreui, key_semantics));
-    bom.set_inline_key_size(Some(keyformat.len() * 2));
+    bom.add_named_block(
+        "CARHEADER",
+        car::make_carheader_full(entries.len() as u32, xcode, platform, key_semantics),
+    );
     bom.add_tree("RENDITIONS", &entries, 4096);
-    bom.set_inline_key_size(None);
 
     let facets: BTreeMap<String, &Facet> = docs.iter().flat_map(|d| &d.facets).map(|f| (f.name.clone(), f)).collect();
     let facet_entries: Vec<(Vec<u8>, Vec<u8>)> = facets
@@ -381,9 +392,16 @@ pub fn write_car(docs: &[Document], car_path: &Path, platform: &str, min_deploy:
             appearances.iter().map(|(n, v)| (n.as_bytes().to_vec(), v.to_le_bytes().to_vec())).collect();
         bom.add_tree("APPEARANCEKEYS", &entries, 4096);
     }
+    if !locales.is_empty() {
+        let entries: Vec<(Vec<u8>, Vec<u8>)> = locales
+            .iter()
+            .map(|l| (l.as_bytes().to_vec(), crate::name_hash::hash_name(l).to_le_bytes().to_vec()))
+            .collect();
+        bom.add_tree("LOCALIZATIONKEYS", &entries, 4096);
+    }
 
     bom.add_named_block("KEYFORMAT", car::make_keyformat(&keyformat));
-    bom.add_named_block("EXTENDED_METADATA", car::make_extended_metadata(platform, min_deploy));
+    bom.add_named_block("EXTENDED_METADATA", car::make_extended_metadata(platform, min_deploy, xcode));
     bom.add_raw_key_tree("BITMAPKEYS", &bitmap_keys(&facets, &entries, &keyformat), 1024);
     bom.write(car_path)?;
     Ok(true)

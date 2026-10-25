@@ -1,9 +1,4 @@
 facet "AppIcon-Remote": want Element=85 Part=245 Identifier=29341 hotspot (0, 0), got Element=85 Part=220 Identifier=29341 hotspot (0, 0)
-header.coreui_version: want 1010, got 975
-rendition [Appearance=1 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
-rendition [Appearance=1 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=1 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv1022.hex: want "0200000000000000000000000000000000000000000000000000000000000000", missing
-rendition [Appearance=1 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=1 Scale=1 Idiom=1 Dimension2=1 Identifier=29341 Element=85 Part=220].colorspace: want 1, got 2
 rendition [Appearance=1 Scale=1 Idiom=1 Dimension2=1 Identifier=29341 Element=85 Part=220].format: want "ARGB", got "GA8 "
 rendition [Appearance=1 Scale=1 Idiom=1 Dimension2=1 Identifier=29341 Element=85 Part=220].payload.decoded_len: want 4194304, got 2097152
@@ -12,10 +7,6 @@ rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85
 rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].format: want "ARGB", got "GA8 "
 rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].payload.decoded_len: want 4194304, got 2097152
 rendition [Appearance=1 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
-rendition [Appearance=10 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
-rendition [Appearance=10 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=10 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv1022.hex: want "0200000000000000000000000000000000000000000000000000000000000000", missing
-rendition [Appearance=10 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv1022.type: want "raw", missing
 rendition [Appearance=10 Scale=1 Idiom=1 Dimension2=1 Identifier=29341 Element=85 Part=220].colorspace: want 1, got 2
 rendition [Appearance=10 Scale=1 Idiom=1 Dimension2=1 Identifier=29341 Element=85 Part=220].format: want "ARGB", got "GA8 "
 rendition [Appearance=10 Scale=1 Idiom=1 Dimension2=1 Identifier=29341 Element=85 Part=220].payload.decoded_len: want 4194304, got 2097152
@@ -24,10 +15,6 @@ rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=8
 rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].format: want "ARGB", got "GA8 "
 rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].payload.decoded_len: want 4194304, got 2097152
 rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=29341 Element=85 Part=220].tlvs.tlv1007.bytes_per_row: want 4096, got 2048
-rendition [Appearance=4 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", missing
-rendition [Appearance=4 Scale=1 Identifier=23421 Element=85 Part=246].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=4 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv1022.hex: want "0200000000000000000000000000000000000000000000000000000000000000", missing
-rendition [Appearance=4 Scale=1 Identifier=29341 Element=85 Part=245].tlvs.tlv1022.type: want "raw", missing
 rendition [Identifier=33034 Element=85 Part=181].payload.len: want 5076, got 2314
 rendition [Identifier=37391 Element=85 Part=181].payload.len: want 5902, got 3041
 rendition [Identifier=55451 Element=85 Part=181].payload.len: want 6950, got 3920

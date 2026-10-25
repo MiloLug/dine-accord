@@ -459,6 +459,7 @@ impl AssetCatalog {
                     layout: car::LAYOUT_PDF,
                     pixel_format: *car::PIXELFMT_PDF,
                     template_rendering_intent: template_intent,
+                    locale: locale.clone(),
                     min_deploy: self.min_deploy.clone(),
                     platform: self.platform.clone(),
                     ..Rendition::default()
@@ -493,6 +494,7 @@ impl AssetCatalog {
                         pixel_data: pd,
                         template_rendering_intent: template_intent,
                         is_svg_rasterization: true,
+                        locale: locale.clone(),
                         colorspace_id: cs_id,
                         min_deploy: self.min_deploy.clone(),
                         platform: self.platform.clone(),
@@ -546,6 +548,7 @@ impl AssetCatalog {
                     direction,
                     layout: car::LAYOUT_PDF,
                     pixel_format: *car::PIXELFMT_SVG,
+                    locale: locale.clone(),
                     min_deploy: self.min_deploy.clone(),
                     platform: self.platform.clone(),
                     ..Rendition::default()
@@ -618,6 +621,11 @@ impl AssetCatalog {
                 ..Rendition::default()
             });
             stamp_idiom(renditions, img_rend_start, idiom_num);
+        }
+        let set = &mut renditions[count_before..];
+        let has = |d: u16| set.iter().any(|r| r.direction == d);
+        if has(car::DIRECTION_LTR) != has(car::DIRECTION_RTL) {
+            set.iter_mut().filter(|r| r.direction != car::DIRECTION_DEFAULT).for_each(|r| r.flippable = true);
         }
         if count_before < renditions.len() {
             facets.insert(

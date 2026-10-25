@@ -69,9 +69,12 @@ accord prints the `actool` compilation-results plist and exits 0; errors exit 1,
 `--compile` or the document is missing. `accord --help` lists every option. Differences from
 `actool`:
 
+- `--xcode-version 26|27` (accord only, default 27) picks the actool build whose output to
+  reproduce: Xcode 26.6 or 27.0.
+- `--enable-icon-stack-fallback-generation NO` leaves out the pre-rendered `.icon` icons with
+  `--xcode-version 26` and is ignored with 27.
 - `--warnings`, `--errors`, `--notices`, `--compress-pngs`, `--skip-app-store-deployment`,
-  `--enable-on-demand-resources`, `--alternate-app-icon`, `--force-png` and
-  `--enable-icon-stack-fallback-generation` are ignored; pre-rendered icons are always generated.
+  `--enable-on-demand-resources`, `--alternate-app-icon` and `--force-png` are ignored.
 - `--print-contents` prints nothing.
 - `--generate-objc-asset-symbols` with `--bundle-identifier` writes only the symbols header.
 - Options `--help` doesn't list, such as `--launch-image`, exit 2.

@@ -4,6 +4,7 @@ use crate::car::{self, MultisizeImageEntry, Rendition};
 use crate::catalog::load_image_as_bgra;
 use crate::icon_json::{Fill, IconJson};
 use crate::name_hash::hash_name;
+use crate::xcode::XcodeVersion;
 
 static TMP_SEQ: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
 use anyhow::Result;
@@ -118,7 +119,7 @@ pub fn document(
     output_dir: &Path,
     opts: &crate::compiler::Options,
 ) -> Result<crate::assemble::Document> {
-    let (platform, min_deploy) = (opts.platform.as_str(), opts.min_deploy.as_str());
+    let platform = opts.platform.as_str();
     let app_icon = opts.app_icon.as_deref();
     let bundle_stem = icon_path
         .file_stem()
@@ -169,12 +170,13 @@ pub fn document(
             .collect()
     };
     let (color_assets, gradient_assets) =
-        fill_assets(&facet_prefix, parsed.fill.as_ref(), &parsed)
+        fill_assets(&facet_prefix, parsed.fill.as_ref(), &parsed, opts.xcode_version)
             .unwrap_or_else(|| (Vec::new(), Vec::new()));
 
     let solid_fill = parsed.fill_specializations.is_none()
         && matches!(&parsed.fill, Some(Fill::Structured(v)) if v.get("solid").is_some());
     let solid_fill_color = solid_fill.then(|| solid_fill_facet(&parsed, &color_assets)).flatten();
+    let pre_rendered = !(opts.disable_icon_stack_fallback && opts.xcode_version.honours_fallback_no());
     if car::is_idiom_platform(platform) {
         return ios_document(
             icon_path,
@@ -188,6 +190,7 @@ pub fn document(
             &color_assets,
             &gradient_assets,
             solid_fill_color.as_deref(),
+            pre_rendered,
         );
     }
 
@@ -252,13 +255,15 @@ pub fn document(
     let light_layers = collect_stack_layers(icon_path, &parsed, crate::icon_effects::Appearance::Light, shape);
     let (light_fill, _) = resolve_background_fills(&parsed, &gradient_assets, &color_assets, shape);
     let mut light_stacks: Vec<Vec<u8>> = Vec::with_capacity(MACOS_ICON_SIZES.len());
-    for (point_size, scale) in MACOS_ICON_SIZES {
-        light_stacks.push(render_layer_stack(&light_layers, point_size * scale, light_fill.as_ref())?);
+    if pre_rendered {
+        for (point_size, scale) in MACOS_ICON_SIZES {
+            light_stacks.push(render_layer_stack(&light_layers, point_size * scale, light_fill.as_ref())?);
+        }
     }
 
     let mut doc = build_icon_car(
         &facet_prefix,
-        &icon_images,
+        if pre_rendered { &icon_images } else { &[] },
         &layer_assets,
         &group_facet_names,
         &color_assets,
@@ -268,8 +273,8 @@ pub fn document(
         light_fill.as_ref(),
         solid_fill_color.as_deref(),
         &[1, 8, 10],
-        platform,
-        min_deploy,
+        opts,
+        pre_rendered,
     )?;
     doc.appearances = car::ICON_APPEARANCES.iter().map(|(n, v)| (n.to_string(), *v)).collect();
 
@@ -312,6 +317,7 @@ fn ios_document(
     color_assets: &[ColorAsset],
     gradient_assets: &[GradientAsset],
     solid_fill_color: Option<&str>,
+    pre_rendered: bool,
 ) -> Result<crate::assemble::Document> {
     use crate::icon_effects::Appearance;
     use crate::icon_render::Shape;
@@ -327,8 +333,8 @@ fn ios_document(
         None,
         solid_fill_color,
         &[1, 4, 10],
-        &opts.platform,
-        &opts.min_deploy,
+        opts,
+        pre_rendered,
     )?;
     doc.appearances = IOS_ICON_APPEARANCES.iter().map(|(n, v)| (n.to_string(), *v)).collect();
 
@@ -347,6 +353,10 @@ fn ios_document(
     ];
     let mut default_render = Vec::new();
     for (appearance, appearance_name, look, fill) in looks {
+        // Without pre-renders only the default look is drawn, for the loose PNGs.
+        if !pre_rendered && appearance != 0 {
+            continue;
+        }
         let layers = collect_stack_layers(icon_path, parsed, look, Shape::FullBleed);
         let stack = render_layer_stack(&layers, 1024, fill)?;
         let pixels = match fill {
@@ -355,6 +365,9 @@ fn ios_document(
         };
         if appearance == 0 {
             default_render = pixels.clone();
+        }
+        if !pre_rendered {
+            break;
         }
         let (pixel_data, width, height, pixel_format) =
             crate::catalog::bgra_to_best_format(pixels, 1024, 1024, false);
@@ -377,7 +390,7 @@ fn ios_document(
             });
         }
     }
-    for &idiom in &idioms {
+    for &idiom in idioms.iter().filter(|_| pre_rendered) {
         let entries = [MultisizeImageEntry { width: 1024, height: 1024, index: 1 }];
         let mut multisize = car::build_multisize_rendition(facet_prefix, ident, &entries);
         multisize.idiom = idiom;
@@ -1090,9 +1103,11 @@ fn build_icon_car(
     light_fill: Option<&crate::icon_render::GradientFill>,
     solid_fill_color: Option<&str>,
     stack_appearances: &[u16],
-    platform: &str,
-    min_deploy: &str,
+    opts: &crate::compiler::Options,
+    pre_rendered: bool,
 ) -> Result<crate::assemble::Document> {
+    let (platform, min_deploy) = (opts.platform.as_str(), opts.min_deploy.as_str());
+    let xcode = opts.xcode_version;
     let ident = hash_name(icon_name);
     let mut renditions: Vec<Rendition> = Vec::new();
 
@@ -1173,11 +1188,11 @@ fn build_icon_car(
     }
 
     // Apple's main facet carries PART_ICON (its sized renditions), not the iconstack's
-    // PART_ICON_COMPOSER.
+    // PART_ICON_COMPOSER, unless there are no pre-rendered icons.
     let mut facets: Vec<FacetEntry> = vec![(
         icon_name.to_string(),
         car::ELEMENT_UNIVERSAL,
-        Some(car::PART_ICON),
+        Some(if pre_rendered { car::PART_ICON } else { car::PART_ICON_COMPOSER }),
         ident,
     )];
     for gname in group_facet_names {
@@ -1355,7 +1370,8 @@ fn build_icon_car(
                 10 => crate::icon_effects::Appearance::Tinted,
                 _ => crate::icon_effects::Appearance::Light,
             };
-            let (fill_part, fill_ident) = if appearance == 1 { dark_fill } else { light_fill };
+            let (fill_part, fill_ident) = specialized_fill(parsed, look, color_assets, gradient_assets)
+                .unwrap_or(if appearance == 1 { dark_fill } else { light_fill });
             let mut stack_layers = vec![car::LayerRef {
                 part: fill_part,
                 identifier: fill_ident,
@@ -1378,7 +1394,7 @@ fn build_icon_car(
                         Lighting::Combined => 0,
                         Lighting::Individual => 2,
                     },
-                    value: eff.blur_material.unwrap_or(0.0),
+                    value: xcode.group_value(eff.blur_material),
                     effects: Some(car::GroupEffects {
                         specular: eff.specular,
                         translucency: if eff.translucency.enabled { eff.translucency.value } else { 0.0 },
@@ -1400,7 +1416,7 @@ fn build_icon_car(
             }
             // icon.json lists groups front to back; stacks paint back to front.
             stack_layers[1..].reverse();
-            let stack_csi = car::build_iconstack_csi(&stack_name, 1024, &stack_layers);
+            let stack_csi = car::build_iconstack_csi(&stack_name, 1024, &stack_layers, xcode.writes_tlv_1022());
             renditions.push(Rendition {
                 name: stack_name.clone(),
                 identifier: main_ident,
@@ -1421,7 +1437,7 @@ fn build_icon_car(
             });
 
             for (group_ident, layer_refs) in &group_renditions {
-                let group_csi = car::build_icongroup_csi("IconGroup", layer_refs);
+                let group_csi = car::build_icongroup_csi("IconGroup", layer_refs, xcode.writes_tlv_1022());
                 renditions.push(Rendition {
                     name: "IconGroup".to_string(),
                     identifier: *group_ident,
@@ -1451,7 +1467,6 @@ fn build_icon_car(
             .into_iter()
             .map(|(name, element, part, identifier)| crate::assemble::Facet { name, element, part, identifier })
             .collect(),
-        coreui_version: 975,
         ..Default::default()
     })
 }
@@ -1575,7 +1590,7 @@ fn resolve_background_fills(
 
 /// Apple's palette for `fill: "automatic"`: white anchor, light and dark background gradients.
 /// Apple stores components as `f64(f32(v))`.
-fn automatic_fill_assets(facet_prefix: &str) -> (Vec<ColorAsset>, Vec<GradientAsset>) {
+fn automatic_fill_assets(facet_prefix: &str, xcode: XcodeVersion) -> (Vec<ColorAsset>, Vec<GradientAsset>) {
     let n = |s: &str| format!("{facet_prefix}_Assets/{s}");
     let g = |v: f32| (v as f32) as f64;
     let colors = vec![
@@ -1607,13 +1622,13 @@ fn automatic_fill_assets(facet_prefix: &str) -> (Vec<ColorAsset>, Vec<GradientAs
     ];
     let gradients = vec![
         GradientAsset {
-            facet_name: n("Gradient-1"),
+            facet_name: n(system_gradient_name(xcode, 1.0).unwrap_or("Gradient-1")),
             geometry: [0.5, 0.0, 0.5, 1.0],
             stops: vec![(0.0, n("Color-2")), (1.0, n("Color-3"))],
             kind: 1,
         },
         GradientAsset {
-            facet_name: n("Gradient-2"),
+            facet_name: n(system_gradient_name(xcode, 0.192).unwrap_or("Gradient-2")),
             geometry: [0.5, 0.0, 0.5, 1.0],
             stops: vec![(0.0, n("Color-4")), (1.0, n("Color-5"))],
             kind: 1,
@@ -1661,6 +1676,7 @@ fn parse_color_spec(spec: &str) -> Option<(u32, Vec<f64>)> {
 fn solid_fill_assets(
     facet_prefix: &str,
     spec: &str,
+    xcode: XcodeVersion,
 ) -> Option<(Vec<ColorAsset>, Vec<GradientAsset>)> {
     let (user_cspace, user_components) = parse_color_spec(spec)?;
     let g = |v: f32| v as f64;
@@ -1669,8 +1685,9 @@ fn solid_fill_assets(
     palette_add_color(&mut colors, facet_prefix, user_cspace, user_components, 0);
     let top = palette_add_color(&mut colors, facet_prefix, 2, vec![g(0.192), g(1.0)], 0);
     let bottom = palette_add_color(&mut colors, facet_prefix, 2, vec![g(0.078), g(1.0)], 0);
+    let name = system_gradient_name(xcode, 0.192).unwrap_or("Gradient-1");
     let gradients = vec![GradientAsset {
-        facet_name: format!("{facet_prefix}_Assets/Gradient-1"),
+        facet_name: format!("{facet_prefix}_Assets/{name}"),
         geometry: [0.5, 0.0, 0.5, 1.0],
         stops: vec![(0.0, top), (1.0, bottom)],
         kind: 1,
@@ -1684,6 +1701,7 @@ fn linear_gradient_fill_assets(
     facet_prefix: &str,
     stops_spec: &[&str],
     geometry: [f32; 4],
+    xcode: XcodeVersion,
 ) -> Option<(Vec<ColorAsset>, Vec<GradientAsset>)> {
     if stops_spec.len() < 2 {
         return None;
@@ -1701,7 +1719,7 @@ fn linear_gradient_fill_assets(
     let gradients = vec![
         GradientAsset { facet_name: n("Gradient-1"), geometry, stops: vec![(0.0, start), (1.0, end)], kind: 1 },
         GradientAsset {
-            facet_name: n("Gradient-2"),
+            facet_name: n(system_gradient_name(xcode, 0.192).unwrap_or("Gradient-2")),
             geometry: [0.5, 0.0, 0.5, 1.0],
             stops: vec![(0.0, top), (1.0, bottom)],
             kind: 1,
@@ -1715,6 +1733,7 @@ fn linear_gradient_fill_assets(
 fn automatic_gradient_fill_assets(
     facet_prefix: &str,
     spec: &str,
+    xcode: XcodeVersion,
 ) -> Option<(Vec<ColorAsset>, Vec<GradientAsset>)> {
     let (user_cspace, user_components) = parse_color_spec(spec)?;
     let g = |v: f32| v as f64;
@@ -1727,7 +1746,7 @@ fn automatic_gradient_fill_assets(
     let gradients = vec![
         GradientAsset { facet_name: n("Gradient-1"), geometry: [0.5, 0.0, 0.5, 1.0], stops: vec![(0.0, user)], kind: 0 },
         GradientAsset {
-            facet_name: n("Gradient-2"),
+            facet_name: n(system_gradient_name(xcode, 0.192).unwrap_or("Gradient-2")),
             geometry: [0.5, 0.0, 0.5, 1.0],
             stops: vec![(0.0, top), (1.0, bottom)],
             kind: 1,
@@ -1792,6 +1811,13 @@ fn keyword_bg_pair(keyword: &str, appearance: Option<&str>) -> Option<(f64, f64)
     }
 }
 
+/// The name of a gray-pair gradient from [`keyword_bg_pair`]; `None` when it is numbered.
+fn system_gradient_name(xcode: XcodeVersion, top: f64) -> Option<&'static str> {
+    xcode
+        .names_system_gradients()
+        .then_some(if top < 0.5 { "system-dark" } else { "system-light" })
+}
+
 /// Add a Color unless an equal one exists at `dedup_from` or later; returns its facet name. Apple
 /// keeps gradient colours apart from equal base ones (transmission: Color-12, Color-4, both 0.078).
 fn palette_add_color(
@@ -1817,18 +1843,19 @@ fn palette_add_color(
     name
 }
 
-/// Add a linear Gradient unless an equal one exists (scrumdinger's redundant layer `automatic`
-/// collapses here).
+/// Add a Gradient unless an equal one exists (scrumdinger's redundant layer `automatic`
+/// collapses here, as does EmacsLG3's repeated dark `automatic-gradient`).
 fn palette_add_gradient(
     gradients: &mut Vec<GradientAsset>,
     facet_prefix: &str,
+    kind: u32,
     geometry: [f32; 4],
     stops: Vec<(f32, String)>,
     name: Option<&str>,
 ) {
     if gradients
         .iter()
-        .any(|g| g.kind == 1 && g.geometry == geometry && g.stops == stops)
+        .any(|g| g.kind == kind && g.geometry == geometry && g.stops == stops)
     {
         return;
     }
@@ -1838,7 +1865,7 @@ fn palette_add_gradient(
         facet_name: format!("{facet_prefix}_Assets/{name}"),
         geometry,
         stops,
-        kind: 1,
+        kind,
     });
 }
 
@@ -1867,7 +1894,8 @@ fn parse_orientation(obj: &serde_json::Map<String, serde_json::Value>) -> [f32; 
     [sx, sy, ex, ey]
 }
 
-/// Fold one fill `value` (keyword, `linear-gradient` or `solid`) into the palette.
+/// Fold one fill `value` (keyword, `linear-gradient`, `solid` or `automatic-gradient`) into the
+/// palette.
 fn process_fill_value(
     value: &serde_json::Value,
     appearance: Option<&str>,
@@ -1875,20 +1903,21 @@ fn process_fill_value(
     colors: &mut Vec<ColorAsset>,
     gradients: &mut Vec<GradientAsset>,
     grad_floor: usize,
+    xcode: XcodeVersion,
 ) {
     let g = |v: f64| (v as f32) as f64;
     if let Some(s) = value.as_str() {
         if let Some((top, bottom)) = keyword_bg_pair(s, appearance) {
             let c0 = palette_add_color(colors, facet_prefix, 2, vec![g(top), g(1.0)], grad_floor);
             let c1 = palette_add_color(colors, facet_prefix, 2, vec![g(bottom), g(1.0)], grad_floor);
-            // Named after the system background it resolves to, yet numbered with the others.
-            let name = if top < 0.5 { "system-dark" } else { "system-light" };
+            // A named gradient still takes its number.
             palette_add_gradient(
                 gradients,
                 facet_prefix,
+                1,
                 [0.5, 0.0, 0.5, 1.0],
                 vec![(0.0, c0), (1.0, c1)],
-                Some(name),
+                system_gradient_name(xcode, top),
             );
         }
         return;
@@ -1915,12 +1944,19 @@ fn process_fill_value(
             .enumerate()
             .map(|(i, n)| (i as f32 / last, n))
             .collect();
-        palette_add_gradient(gradients, facet_prefix, geometry, stops, None);
+        palette_add_gradient(gradients, facet_prefix, 1, geometry, stops, None);
     } else if let Some(solid) = obj.get("solid").and_then(|x| x.as_str()) {
         // Solids deduplicate against the whole palette (recipe-scraper's layer
         // solid collapses onto its base gradient stop).
         if let Some((cspace, comps)) = parse_color_spec(solid) {
             palette_add_color(colors, facet_prefix, cspace, comps, 0);
+        }
+    } else if let Some(spec) = obj.get("automatic-gradient").and_then(|x| x.as_str()) {
+        // The colour folds like a solid; no dark gray pair, unlike a top-level `fill`
+        // (EmacsLG1-3).
+        if let Some((cspace, comps)) = parse_color_spec(spec) {
+            let user = palette_add_color(colors, facet_prefix, cspace, comps, 0);
+            palette_add_gradient(gradients, facet_prefix, 0, [0.5, 0.0, 0.5, 1.0], vec![(0.0, user)], None);
         }
     }
 }
@@ -1930,6 +1966,7 @@ fn process_fill_value(
 fn fill_specializations_assets(
     facet_prefix: &str,
     json: &IconJson,
+    xcode: XcodeVersion,
 ) -> (Vec<ColorAsset>, Vec<GradientAsset>) {
     let g = |v: f32| (v as f32) as f64;
     let mut colors = vec![ColorAsset {
@@ -1944,11 +1981,11 @@ fn fill_specializations_assets(
         for sp in specs {
             let appearance = sp.get("appearance").and_then(|a| a.as_str());
             if let Some(v) = sp.get("value") {
-                process_fill_value(v, appearance, facet_prefix, &mut colors, &mut gradients, 0);
+                process_fill_value(v, appearance, facet_prefix, &mut colors, &mut gradients, 0, xcode);
             }
         }
     }
-    append_layer_fills(facet_prefix, json, &mut colors, &mut gradients, 0);
+    append_layer_fills(facet_prefix, json, &mut colors, &mut gradients, 0, xcode);
     (colors, gradients)
 }
 
@@ -1960,19 +1997,20 @@ fn append_layer_fills(
     colors: &mut Vec<ColorAsset>,
     gradients: &mut Vec<GradientAsset>,
     grad_floor: usize,
+    xcode: XcodeVersion,
 ) {
     for (_group, layer) in json.iter_layers() {
         if layer.hidden == Some(true) {
             continue;
         }
         if let Some(Fill::Structured(v)) = layer.fill.as_ref() {
-            process_fill_value(v, None, facet_prefix, colors, gradients, grad_floor);
+            process_fill_value(v, None, facet_prefix, colors, gradients, grad_floor, xcode);
         }
         if let Some(specs) = layer.fill_specializations.as_ref() {
             for sp in specs {
                 let appearance = sp.get("appearance").and_then(|a| a.as_str());
                 if let Some(v) = sp.get("value") {
-                    process_fill_value(v, appearance, facet_prefix, colors, gradients, grad_floor);
+                    process_fill_value(v, appearance, facet_prefix, colors, gradients, grad_floor, xcode);
                 }
             }
         }
@@ -1984,6 +2022,7 @@ fn fill_assets(
     facet_prefix: &str,
     fill: Option<&Fill>,
     parsed: &IconJson,
+    xcode: XcodeVersion,
 ) -> Option<(Vec<ColorAsset>, Vec<GradientAsset>)> {
     if parsed
         .fill_specializations
@@ -1991,48 +2030,31 @@ fn fill_assets(
         .map(|v| !v.is_empty())
         .unwrap_or(false)
     {
-        return Some(fill_specializations_assets(facet_prefix, parsed));
+        return Some(fill_specializations_assets(facet_prefix, parsed, xcode));
     }
-    if fill_is_automatic(fill) {
-        let (mut colors, mut gradients) = automatic_fill_assets(facet_prefix);
-        let base = colors.len();
-            append_layer_fills(facet_prefix, parsed, &mut colors, &mut gradients, base);
-        return Some((colors, gradients));
-    }
-    let fill_val = fill?;
-    match fill_val {
-        Fill::Keyword(k) if k == "system-dark" => {
-            let (mut colors, mut gradients) = system_dark_fill_assets(facet_prefix);
-            let base = colors.len();
-            append_layer_fills(facet_prefix, parsed, &mut colors, &mut gradients, base);
-            Some((colors, gradients))
+    let (mut colors, mut gradients) = if fill_is_automatic(fill) {
+        automatic_fill_assets(facet_prefix, xcode)
+    } else {
+        match fill? {
+            Fill::Keyword(k) if k == "system-dark" => system_dark_fill_assets(facet_prefix),
+            Fill::Structured(v) => {
+                if let Some(spec) = v.get("solid").and_then(|s| s.as_str()) {
+                    solid_fill_assets(facet_prefix, spec, xcode)?
+                } else if let Some(spec) = v.get("automatic-gradient").and_then(|s| s.as_str()) {
+                    automatic_gradient_fill_assets(facet_prefix, spec, xcode)?
+                } else if let Some(arr) = v.get("linear-gradient").and_then(|s| s.as_array()) {
+                    let specs: Vec<&str> = arr.iter().filter_map(|x| x.as_str()).collect();
+                    linear_gradient_fill_assets(facet_prefix, &specs, parse_orientation(v.as_object()?), xcode)?
+                } else {
+                    return None;
+                }
+            }
+            _ => return None,
         }
-        Fill::Structured(v) => {
-            if let Some(spec) = v.get("solid").and_then(|s| s.as_str()) {
-                let (mut colors, mut gradients) = solid_fill_assets(facet_prefix, spec)?;
-                let base = colors.len();
-            append_layer_fills(facet_prefix, parsed, &mut colors, &mut gradients, base);
-                return Some((colors, gradients));
-            }
-            if let Some(spec) = v.get("automatic-gradient").and_then(|s| s.as_str()) {
-                let (mut colors, mut gradients) =
-                    automatic_gradient_fill_assets(facet_prefix, spec)?;
-                let base = colors.len();
-            append_layer_fills(facet_prefix, parsed, &mut colors, &mut gradients, base);
-                return Some((colors, gradients));
-            }
-            if let Some(arr) = v.get("linear-gradient").and_then(|s| s.as_array()) {
-                let specs: Vec<&str> = arr.iter().filter_map(|x| x.as_str()).collect();
-                let (mut colors, mut gradients) =
-                    linear_gradient_fill_assets(facet_prefix, &specs, parse_orientation(v.as_object()?))?;
-                let base = colors.len();
-            append_layer_fills(facet_prefix, parsed, &mut colors, &mut gradients, base);
-                return Some((colors, gradients));
-            }
-            None
-        }
-        _ => None,
-    }
+    };
+    let base = colors.len();
+    append_layer_fills(facet_prefix, parsed, &mut colors, &mut gradients, base, xcode);
+    Some((colors, gradients))
 }
 
 /// The IconGroup rows for a group's visible image layers, resolved for `look`.
@@ -2101,6 +2123,35 @@ fn position_of(p: Option<&crate::icon_json::Position>) -> (f32, [f32; 2]) {
         .unwrap_or((1.0, [0.0, 0.0]))
 }
 
+/// The stack fill (part, identifier) of the top-level `fill-specializations` entry for `look`: its
+/// colour for a solid (EmacsLG1's dark black), else its gradient.
+fn specialized_fill(
+    parsed: &IconJson,
+    look: crate::icon_effects::Appearance,
+    colors: &[ColorAsset],
+    gradients: &[GradientAsset],
+) -> Option<(u16, u16)> {
+    let specs = parsed.fill_specializations.as_ref()?;
+    let value = crate::icon_effects::spec_value(specs, look)?;
+    let facet = match value.as_str() {
+        Some(keyword) => {
+            let exact = specs.iter().any(|s| s.get("appearance").and_then(|a| a.as_str()) == Some(look.json_name()));
+            let (top, bottom) = keyword_bg_pair(keyword, exact.then(|| look.json_name()))?;
+            let g = |v: f64| vec![(v as f32) as f64, 1.0];
+            let gray = |v: f64| colors.iter().find(|c| c.colorspace_id == 2 && c.components == g(v)).map(|c| &c.facet_name);
+            let (c0, c1) = (gray(top)?, gray(bottom)?);
+            gradients
+                .iter()
+                .find(|gr| gr.kind == 1 && gr.stops.len() == 2 && &gr.stops[0].1 == c0 && &gr.stops[1].1 == c1)?
+                .facet_name
+                .clone()
+        }
+        None => fill_facet(value, colors, gradients)?,
+    };
+    let part = if colors.iter().any(|c| c.facet_name == facet) { car::PART_COLOR } else { car::PART_ICON_GRADIENT };
+    Some((part, hash_name(&facet)))
+}
+
 /// The palette facet of a top-level `solid` fill's colour.
 fn solid_fill_facet(parsed: &IconJson, colors: &[ColorAsset]) -> Option<String> {
     let Some(Fill::Structured(v)) = parsed.fill.as_ref() else { return None };
@@ -2116,6 +2167,13 @@ fn fill_facet(v: &serde_json::Value, colors: &[ColorAsset], gradients: &[Gradien
     };
     if let Some(solid) = obj.get("solid").and_then(|x| x.as_str()) {
         return color(solid);
+    }
+    if let Some(spec) = obj.get("automatic-gradient").and_then(|x| x.as_str()) {
+        let user = color(spec)?;
+        return gradients
+            .iter()
+            .find(|g| g.kind == 0 && g.stops.len() == 1 && g.stops[0].1 == user)
+            .map(|g| g.facet_name.clone());
     }
     let names: Vec<String> = obj
         .get("linear-gradient")?
@@ -2164,8 +2222,12 @@ mod tests {
     }
 
     fn palette(json: &str) -> (Vec<ColorAsset>, Vec<GradientAsset>) {
+        palette_for(json, XcodeVersion::default())
+    }
+
+    fn palette_for(json: &str, xcode: XcodeVersion) -> (Vec<ColorAsset>, Vec<GradientAsset>) {
         let parsed = crate::icon_json::IconJson::parse(json).unwrap();
-        fill_specializations_assets("X", &parsed)
+        fill_specializations_assets("X", &parsed, xcode)
     }
 
     fn write_solid_png(path: &Path, rgba: [u8; 4]) {
@@ -2385,6 +2447,22 @@ mod tests {
         assert_eq!(gradients.len(), 2, "redundant layer automatic must dedup");
         let cs: Vec<u32> = colors.iter().map(|c| c.colorspace_id).collect();
         assert_eq!(cs, vec![6, 2, 2, 2, 2]);
+    }
+
+    #[test]
+    fn system_gradients_named_from_xcode_27() {
+        let json = r#"{
+          "fill-specializations":[
+            {"value":"system-light"},
+            {"appearance":"dark","value":"system-dark"}
+          ],
+          "groups":[]
+        }"#;
+        let names = |xcode| -> Vec<String> {
+            palette_for(json, xcode).1.into_iter().map(|g| g.facet_name).collect()
+        };
+        assert_eq!(names(XcodeVersion::V26), ["X_Assets/Gradient-1", "X_Assets/Gradient-2"]);
+        assert_eq!(names(XcodeVersion::V27), ["X_Assets/system-light", "X_Assets/system-dark"]);
     }
 }
 

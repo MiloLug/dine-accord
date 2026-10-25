@@ -38,3 +38,51 @@ pub fn read(path: &Path) -> Vec<u8> {
     );
     data
 }
+
+/// Compiles a pair's sources the way actool built Apple's catalog: the platform, deployment
+/// target and Xcode build stored in it, the sample's `--app-icon` and `args`. Returns the
+/// accord catalog's path inside `out`.
+pub fn compile_pair(s: &Sample, apple: &accord::car_read::Car, out: &Path) -> PathBuf {
+    let meta = apple.metadata.as_ref().expect("sample has EXTENDED_METADATA");
+    // EXTENDED_METADATA records the device family, actool takes the SDK platform.
+    let platform = match meta.deployment_platform.as_str() {
+        "ios" => "iphoneos",
+        p => p,
+    };
+    // CoreUI 1006 is the first Xcode 27 build.
+    let coreui = apple.header.as_ref().expect("sample has CARHEADER").coreui_version;
+    let xcode = if coreui >= 1006 { "27" } else { "26" };
+    let inputs: Vec<PathBuf> = s
+        .sources
+        .iter()
+        .map(|u| root().join("sources").join(&s.name).join(u.rsplit('/').next().unwrap()))
+        .collect();
+    inputs.iter().for_each(|i| check_tree(i));
+    let status = std::process::Command::new(env!("CARGO_BIN_EXE_accord"))
+        .arg("--compile")
+        .arg(out)
+        .args(["--platform", platform])
+        .args(["--minimum-deployment-target", &meta.deployment_platform_version])
+        .args(["--app-icon", s.app_icon.as_deref().expect("compile pair")])
+        .args(["--xcode-version", xcode])
+        .arg("--output-partial-info-plist")
+        .arg(out.join("partial.plist"))
+        .args(&s.args)
+        .args(&inputs)
+        .output()
+        .unwrap();
+    assert!(status.status.success(), "{}: {}", s.name, String::from_utf8_lossy(&status.stderr));
+    out.join("Assets.car")
+}
+
+/// Every file under `dir`, read once so an LFS pointer fails with a hint, not a decode error.
+fn check_tree(dir: &Path) {
+    for e in std::fs::read_dir(dir).unwrap() {
+        let p = e.unwrap().path();
+        if p.is_dir() {
+            check_tree(&p);
+        } else {
+            read(&p);
+        }
+    }
+}

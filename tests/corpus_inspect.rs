@@ -1,5 +1,6 @@
 //! `car_read` on every corpus sample: each payload decodes to rows × bytes-per-row, each
-//! identifier has a facet, and BITMAPKEYS admit every key value the renditions use.
+//! identifier has a facet, BITMAPKEYS admit every key value the renditions use, and each
+//! LOCALIZATIONKEYS entry is the hash of its locale that the rendition keys carry.
 
 mod common;
 
@@ -30,6 +31,19 @@ fn reader_decodes_every_sample() {
             }
             let ident = r.key[id_col];
             assert!(ident == 0 || facet_ids.contains(&ident), "{name} {}: identifier {ident} has no facet", r.name);
+        }
+
+        if name == "ios/sumup" {
+            assert_eq!(car.localizations.len(), 28, "sumup's localized images span 28 locales");
+        }
+        for (locale, id) in &car.localizations {
+            assert_eq!(*id, accord::name_hash::hash_name(locale), "{name}: LOCALIZATIONKEYS {locale}");
+        }
+        if let Some(col) = car.keyformat.iter().position(|&a| a == 13) {
+            let ids: HashSet<u16> = car.localizations.iter().map(|(_, id)| *id).collect();
+            for r in car.renditions.iter().filter(|r| r.key[col] != 0) {
+                assert!(ids.contains(&r.key[col]), "{name} {}: Localization {} not in LOCALIZATIONKEYS", r.name, r.key[col]);
+            }
         }
 
         for b in &car.bitmap_keys {

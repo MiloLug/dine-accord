@@ -16,3 +16,4 @@ pub mod packer;
 pub mod pdf_raster;
 pub mod svg_raster;
 pub mod symbols;
+pub mod xcode;

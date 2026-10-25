@@ -1,26 +1,2 @@
 facet "VLC": want Element=85 Part=245 Identifier=44756 hotspot (0, 0), got Element=85 Part=220 Identifier=44756 hotspot (0, 0)
-header.coreui_version: want 1006, got 975
-rendition [Appearance=1 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000003f00000000000000000000003f00000000000000000000003f00000000", missing
-rendition [Appearance=1 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=1 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=1 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=1 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=1 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=1 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=1 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=10 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000003f00000000000000000000003f00000000000000000000003f00000000", missing
-rendition [Appearance=10 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=10 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=10 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=10 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=10 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=10 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=10 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=8 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.hex: want "0400000000000000000000000000000000000000000000000000003f00000000000000000000003f00000000000000000000003f00000000", missing
-rendition [Appearance=8 Element=85 Part=245 Identifier=44756 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=8 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=8 Element=85 Part=246 Identifier=24546 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=8 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=8 Element=85 Part=246 Identifier=40526 Scale=1].tlvs.tlv1022.type: want "raw", missing
-rendition [Appearance=8 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.hex: want "0100000000000000000000000000000000000000", missing
-rendition [Appearance=8 Element=85 Part=246 Identifier=60483 Scale=1].tlvs.tlv1022.type: want "raw", missing
+header.coreui_version: want 1006, got 1010

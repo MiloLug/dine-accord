@@ -14,7 +14,7 @@ pub enum Appearance {
 }
 
 impl Appearance {
-    fn json_name(self) -> &'static str {
+    pub(crate) fn json_name(self) -> &'static str {
         match self {
             Appearance::Light => "light",
             Appearance::Dark => "dark",

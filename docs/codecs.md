@@ -44,10 +44,13 @@ Compressions:
 | 10 | not decoded | moddable (CoreUI 969, macOS 10.14), scummvm |
 | 11 | deepmap2 | most catalogs with images, iOS 11.0 and macOS 11.0 targets upward |
 
-RLE (1) data is three u32 (3 in swiftgen's GA8 atlas, the width, the height), a u32 offset per
-row counted from the start of the RLE data, then the rows. Identical rows share one offset. A row
-is a series of runs (`u16 count, u16 0x8000`, one pixel) and literals (`u16 count, u16 0`, count
-pixels) that adds up to the width; rows are tight, and the TLV 1007 stride pads them.
+RLE (1) data is three u32: the line format (3 for `GA8`, whose pixels are 16 bits, as in
+swiftgen's atlas; 4 for 32-bit pixels), the width and the height. Then come a u32 offset per row,
+counted from the start of the RLE data, and the rows. A row equal to the one before it shares its
+offset; equal rows further apart are stored twice (swiftgen's first and last). A row is a series
+of runs (u32 count with bit 31 set, one pixel) and literals (u32 count, count pixels) that adds
+up to the width. A run covers more than 5 equal pixels; shorter repeats stay in a literal
+(swiftgen). Rows are tight, and the TLV 1007 stride pads them.
 
 LZFSE (4) payloads come in two forms:
 - chunked (version bit 0 set): u32 chunk count, then per chunk `KCBC`, u32 0, u32 0, u32 row

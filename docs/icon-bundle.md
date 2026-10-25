@@ -28,11 +28,12 @@ For a bundle `<stem>.icon`:
 | `<stem>` | 220 or 245 | pre-rendered icons (Part 220), the multisize set, the icon stacks (Part 245) |
 | `<stem>/<group name>` | 246 | that group's IconGroup renditions |
 | `<stem>_Assets/<image stem>` | 181 | one layer image |
-| `<stem>_Assets/Color-<n>`, `Gradient-<n>` | 217, 247 | the palette |
+| `<stem>_Assets/Color-<n>`, `Gradient-<n>`, `system-light`, `system-dark` | 217, 247 | the palette |
 
-- The main facet's part is 220 in aven, daintree, mediainfo, readinglist, sentinel and tusk, and
-  245 in brew-browser, emacs-liquid-glass, moddable, openutau, utm-remote, vlc and zettlr. No
-  version or input explains the split; two builds of one commit (brave beta and nightly) got one
+- The main facet's part is 245 in a catalog without pre-rendered icons (emacs-liquid-glass,
+  moddable). With them it is 220 in aven, daintree, mediainfo, readinglist, sentinel and tusk,
+  and 245 in brew-browser, openutau, utm-remote, vlc and zettlr. No version or input explains
+  that split; two builds of one commit (brave beta and nightly) got one
   each. The renditions under it keep their own parts either way (vlc: a 245 facet with Part 220
   pre-renders; daintree: a 220 facet with Part 245 stacks).
 - A group without a name is `Group`; repeated names get ` 2`, ` 3` (daintree: `Group`,
@@ -57,7 +58,9 @@ Colours and gradients get numbered facets in the order they are folded in:
 
    A top-level `fill-specializations` gives each entry in order instead (brew-browser: a light and
    a dark linear gradient). There the keywords `system-light` and `system-dark`, and `automatic`
-   by the entry's appearance, resolve to the light and dark pairs (aven).
+   by the entry's appearance, resolve to the light and dark pairs (aven), and an
+   `automatic-gradient` is its colour and a one-stop gradient of kind 0 on it, with no dark pair
+   (emacs-liquid-glass).
 3. Each visible layer's fill and `fill-specializations`, in document order (zettlr's `Color-5` and
    `Color-6`; moddable's white layer fill is `Color-1`).
 
@@ -67,15 +70,18 @@ Encoding:
   `(double)(float)` (zettlr's 0.10980 is stored as 0.10999999940395355).
 - A gradient's geometry is `orientation` as `[start.x, start.y, stop.x, stop.y]`, default
   `[0.5, 0, 0.5, 1]`.
-- Colours deduplicate on colorspace and components, gradients on geometry and stops. A layer's
-  solid fill deduplicates against the whole palette. A layer's gradient stop or keyword colour
+- Colours deduplicate on colorspace and components, gradients on kind, geometry and stops
+  (EmacsLG3's repeated dark `automatic-gradient` reuses `Gradient-2`). A layer's solid fill
+  deduplicates against the whole palette, and so does an `automatic-gradient` colour (EmacsLG3's
+  dark layer black reuses `Color-3`). A layer's gradient stop or keyword colour
   deduplicates against every colour except the keyword gray pairs (1.0, 0.925) and (0.192,
   0.078): vlc's white stop reuses the background's `Color-2`, while the public transmission
   bundle keeps a second 0.078 gray.
-- Since Xcode 27 (CoreUI 1006 and 1010) the gradient of the dark gray pair, whether it comes from
-  the `system-dark` keyword, a dark `automatic` or a top-level `fill`, is named `system-dark` and
-  still uses up its number (vlc: `Gradient-1`, `system-dark`, `Gradient-3`; tusk, utm-remote).
-  Earlier builds number it like any other (aven, daintree: `Gradient-2`).
+- Since Xcode 27 (CoreUI 1006 and 1010) the gradient of a gray pair is named after it and still
+  uses up its number: the dark pair, whether it comes from the `system-dark` keyword, a dark
+  `automatic` or a top-level `fill`, is `system-dark` (vlc: `Gradient-1`, `system-dark`,
+  `Gradient-3`; tusk, utm-remote). The light pair is `system-light`; no Xcode 27 sample has one.
+  Earlier builds number both (aven, daintree: `Gradient-1`, `Gradient-2`).
 
 ## Layer images
 
@@ -101,7 +107,7 @@ front:
 
 | | Fill entry | Group entry |
 |---|---|---|
-| 1012 key | the light gradient (Aqua, Light, Tintable) or the dark one (Dark); a solid fill's colour facet | the group's facet |
+| 1012 key | the light gradient (Aqua, Light, Tintable) or the dark one (Dark); a solid fill's colour facet. With `fill-specializations`, the entry for that appearance, else the default one: a `solid` entry's colour (EmacsLG1's dark black), any other entry's gradient | the group's facet |
 | 1012 frame, opacity | zero frame, 1 | zero frame, the group's opacity for that appearance (aven: 0 where `opacity-specializations` hides the group) |
 | 1020 | kind 0, value 0, no name | kind 2, but 0 in zettlr, the only sample with `lighting: combined`; value = `blur-material` since Xcode 27 (vlc 0.5), 0 before (daintree's 0.5) |
 | 1021 | all zero | specular flag, translucency, shadow kind, shadow opacity (below) |

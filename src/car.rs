@@ -2,6 +2,7 @@
 //! big-endian BOM container (`bom.rs`).
 
 use crate::{deepmap2, name_hash};
+use crate::xcode::XcodeVersion;
 use byteorder::{LittleEndian, WriteBytesExt};
 use std::io::Write;
 
@@ -12,8 +13,8 @@ pub const KEYFORMAT_OPTIONAL: &[u16] = &[4, 8, 9, 24];
 // columns, whatever idioms the renditions use.
 pub const KEYFORMAT_IOS: &[u16] = &[7, 13, 12, 15, 16, 17, 1, 2];
 
-/// iOS key format, with Dimension2 (9), Dimension1 (8) and DisplayGamut (24) after Subtype when
-/// used. iOS puts 9 before 8, the reverse of macOS's `KEYFORMAT_ALL`.
+/// iOS key format, with Dimension2 (9), Dimension1 (8), DisplayGamut (24) and Direction (4) after
+/// Subtype when used. iOS puts 9 before 8, the reverse of macOS's `KEYFORMAT_ALL`.
 pub fn compute_keyformat_ios<R>(renditions: &[R], force_dim1: bool) -> Vec<u16>
 where
     R: KeyformatRendition,
@@ -21,6 +22,7 @@ where
     let used_dim1 = force_dim1 || renditions.iter().any(|r| r.dim1() != 0);
     let used_dim2 = renditions.iter().any(|r| r.dim2() != 0);
     let used_gamut = renditions.iter().any(|r| r.display_gamut() != 0);
+    let used_direction = renditions.iter().any(|r| r.direction() != 0);
     let mut kf = vec![7, 13, 12, 15, 16];
     if used_dim2 {
         kf.push(9);
@@ -30,6 +32,9 @@ where
     }
     if used_gamut {
         kf.push(24);
+    }
+    if used_direction {
+        kf.push(4);
     }
     kf.extend_from_slice(&[17, 1, 2]);
     kf
@@ -199,36 +204,25 @@ pub trait KeyformatRendition {
     fn display_gamut(&self) -> u32;
 }
 
-pub fn make_carheader(rendition_count: u32) -> Vec<u8> {
-    make_carheader_versioned(rendition_count, 972)
-}
-
-/// `.icon` catalogs need CoreUI version ≥ 975: lower values take the legacy path and every
-/// `imagesWithName:` lookup comes back empty.
-pub fn make_carheader_versioned(rendition_count: u32, coreui_version: u32) -> Vec<u8> {
-    make_carheader_full(rendition_count, coreui_version, 1)
-}
-
 /// CARHEADER with its key-semantics field (offset 432): 1 on macOS, 2 on iOS, whose keys carry an
 /// idiom column.
 pub fn make_carheader_full(
     rendition_count: u32,
-    coreui_version: u32,
+    xcode: XcodeVersion,
+    platform: &str,
     key_semantics: u32,
 ) -> Vec<u8> {
+    let strings = xcode.version_strings(platform);
     let mut buf = vec![0u8; 436];
     buf[0..4].copy_from_slice(b"RATC");
-    (&mut buf[4..8]).write_u32::<LittleEndian>(coreui_version).unwrap();
+    (&mut buf[4..8]).write_u32::<LittleEndian>(xcode.coreui_version()).unwrap();
     (&mut buf[8..12]).write_u32::<LittleEndian>(17).unwrap();
     (&mut buf[12..16]).write_u32::<LittleEndian>(0).unwrap();
     (&mut buf[16..20])
         .write_u32::<LittleEndian>(rendition_count)
         .unwrap();
-    let main_ver = format!("@(#)PROGRAM:CoreUI  PROJECT:CoreUI-{coreui_version}.1\n");
-    let main_ver_bytes = main_ver.as_bytes();
-    buf[20..20 + main_ver_bytes.len()].copy_from_slice(main_ver_bytes);
-    let ver_str = b"IBCocoaTouchImageCatalogTool-17.0\n";
-    buf[148..148 + ver_str.len()].copy_from_slice(ver_str);
+    buf[20..20 + strings.coreui.len()].copy_from_slice(strings.coreui.as_bytes());
+    buf[148..148 + strings.xcode.len()].copy_from_slice(strings.xcode.as_bytes());
     // uuid at 404 = zeros; checksum at 420 = zero.
     (&mut buf[424..428]).write_u32::<LittleEndian>(2).unwrap();
     (&mut buf[428..432]).write_u32::<LittleEndian>(1).unwrap();
@@ -238,14 +232,14 @@ pub fn make_carheader_full(
     buf
 }
 
-pub fn make_extended_metadata(platform: &str, min_deploy: &str) -> Vec<u8> {
+pub fn make_extended_metadata(platform: &str, min_deploy: &str, xcode: XcodeVersion) -> Vec<u8> {
     let mut buf = vec![0u8; 1028];
     buf[0..4].copy_from_slice(b"META");
     let d = min_deploy.as_bytes();
     buf[260..260 + d.len()].copy_from_slice(d);
     let p = deployment_platform_name(platform).as_bytes();
     buf[516..516 + p.len()].copy_from_slice(p);
-    let tool = b"actool";
+    let tool = xcode.version_strings(platform).authoring_tool.as_bytes();
     buf[772..772 + tool.len()].copy_from_slice(tool);
     buf
 }
@@ -332,73 +326,63 @@ pub fn make_facetkey_value(element: u16, part: Option<u16>, identifier: u16) -> 
     buf
 }
 
-pub(crate) fn compress_rle(pixel_data: &[u8], width: u32, height: u32, bpp: u32) -> Vec<u8> {
-    let row_stride = (width * bpp) as usize;
-    let bpp = bpp as usize;
-    let width = width as usize;
-    let height = height as usize;
+/// actool's RLE (docs/codecs.md#celm). CoreUI picks its line decoder from header word 0: 3 for
+/// 16-bit `GA8` pixels, 4 for 32-bit ones.
+pub(crate) fn compress_rle(pixel_data: &[u8], width: u32, height: u32, pixel_format: &[u8]) -> Vec<u8> {
+    let bpp = bytes_per_pixel(pixel_format) as usize;
+    let (width, height) = (width as usize, height as usize);
+    let row_stride = width * bpp;
 
-    let mut header = Vec::with_capacity(12);
-    header.write_u32::<LittleEndian>(bpp as u32).unwrap();
-    header.write_u32::<LittleEndian>(width as u32).unwrap();
-    header.write_u32::<LittleEndian>(height as u32).unwrap();
+    let mut out = Vec::with_capacity(12 + height * 4);
+    out.write_u32::<LittleEndian>(if pixel_format == b" 8AG" { 3 } else { 4 }).unwrap();
+    out.write_u32::<LittleEndian>(width as u32).unwrap();
+    out.write_u32::<LittleEndian>(height as u32).unwrap();
 
     let mut row_offsets = Vec::with_capacity(height);
     let mut encoded = Vec::new();
     let data_base = 12 + height * 4;
-    let mut row_cache: std::collections::HashMap<Vec<u8>, u32> =
-        std::collections::HashMap::new();
-
-    for y in 0..height {
-        let row_start = y * row_stride;
-        let row = &pixel_data[row_start..row_start + row_stride];
-        if let Some(&off) = row_cache.get(row) {
-            row_offsets.push(off);
+    let rows: Vec<&[u8]> = pixel_data.chunks_exact(row_stride).take(height).collect();
+    for (y, row) in rows.iter().enumerate() {
+        // Only a row equal to the one before it is shared.
+        if y > 0 && rows[y - 1] == *row {
+            row_offsets.push(row_offsets[y - 1]);
             continue;
         }
-        let abs_off = (data_base + encoded.len()) as u32;
-        row_cache.insert(row.to_vec(), abs_off);
-        row_offsets.push(abs_off);
-
-        let mut x = 0usize;
+        row_offsets.push((data_base + encoded.len()) as u32);
+        let px = |i: usize| &row[i * bpp..(i + 1) * bpp];
+        let mut literal_start = None;
+        let mut x = 0;
         while x < width {
-            let px = &row[x * bpp..(x + 1) * bpp];
-            let mut run_len = 1usize;
-            while x + run_len < width
-                && &row[(x + run_len) * bpp..(x + run_len + 1) * bpp] == px
-            {
-                run_len += 1;
+            let mut n = 1;
+            while x + n < width && px(x + n) == px(x) {
+                n += 1;
             }
-            if run_len >= 2 {
-                encoded.write_u16::<LittleEndian>(run_len as u16).unwrap();
-                encoded.write_u16::<LittleEndian>(0x8000).unwrap();
-                encoded.extend_from_slice(px);
-                x += run_len;
-            } else {
-                let lit_start = x;
-                while x < width {
-                    let next_px = &row[x * bpp..(x + 1) * bpp];
-                    if x + 1 < width
-                        && &row[(x + 1) * bpp..(x + 2) * bpp] == next_px
-                    {
-                        break;
-                    }
-                    x += 1;
+            if n > 5 {
+                if let Some(start) = literal_start.take() {
+                    write_rle_literal(&mut encoded, &row[start * bpp..x * bpp], x - start);
                 }
-                let lit_count = (x - lit_start) as u16;
-                encoded.write_u16::<LittleEndian>(lit_count).unwrap();
-                encoded.write_u16::<LittleEndian>(0).unwrap();
-                encoded.extend_from_slice(&row[lit_start * bpp..x * bpp]);
+                encoded.write_u32::<LittleEndian>(n as u32 | 0x8000_0000).unwrap();
+                encoded.extend_from_slice(px(x));
+            } else {
+                literal_start.get_or_insert(x);
             }
+            x += n;
+        }
+        if let Some(start) = literal_start {
+            write_rle_literal(&mut encoded, &row[start * bpp..], width - start);
         }
     }
 
-    let mut out = header;
     for o in row_offsets {
         out.write_u32::<LittleEndian>(o).unwrap();
     }
     out.extend_from_slice(&encoded);
     out
+}
+
+fn write_rle_literal(out: &mut Vec<u8>, pixels: &[u8], count: usize) {
+    out.write_u32::<LittleEndian>(count as u32).unwrap();
+    out.extend_from_slice(pixels);
 }
 
 fn lzfse_compress(input: &[u8]) -> Option<Vec<u8>> {
@@ -512,8 +496,9 @@ pub fn compress_data(
                 return out;
             }
         }
-    } else if height > 0 {
-        let rle = compress_rle(pixel_data, width, height, bytes_per_pixel(pixel_format));
+    } else if height > 0 && pixel_format != b"61AG" && pixel_format != PIXELFMT_RGBW {
+        // actool never RLE-encodes 16-bit-channel formats.
+        let rle = compress_rle(pixel_data, width, height, pixel_format);
         if rle.len() < pixel_data.len() {
             let mut out = Vec::new();
             out.extend_from_slice(b"MLEC");
@@ -688,12 +673,21 @@ pub struct AtlasKey {
     pub idiom: u16,
     pub subtype: u16,
     pub appearance: u16,
+    pub localization: u16,
     pub display_gamut: u16,
 }
 
 pub fn make_inlk_tlv(x: u32, y: u32, width: u32, height: u32, atlas: &AtlasKey) -> Vec<u8> {
-    let AtlasKey { identifier: atlas_identifier, dim1: atlas_dim1, scale, idiom, subtype, appearance, display_gamut } =
-        *atlas;
+    let AtlasKey {
+        identifier: atlas_identifier,
+        dim1: atlas_dim1,
+        scale,
+        idiom,
+        subtype,
+        appearance,
+        localization,
+        display_gamut,
+    } = *atlas;
     let mut inlk = Vec::new();
     inlk.extend_from_slice(b"KLNI");
     inlk.write_u32::<LittleEndian>(0).unwrap();
@@ -731,6 +725,10 @@ pub fn make_inlk_tlv(x: u32, y: u32, width: u32, height: u32, atlas: &AtlasKey) 
     if appearance != 0 {
         attr.write_u16::<LittleEndian>(7).unwrap();
         attr.write_u16::<LittleEndian>(appearance).unwrap();
+    }
+    if localization != 0 {
+        attr.write_u16::<LittleEndian>(13).unwrap();
+        attr.write_u16::<LittleEndian>(localization).unwrap();
     }
     if display_gamut != 0 {
         attr.write_u16::<LittleEndian>(24).unwrap();
@@ -852,7 +850,7 @@ pub struct LayerRef {
     pub opacity: f32,
     /// Stacks: 0 fill, 2 group. Groups: 1 glass, 0 `glass: false`.
     pub kind: u32,
-    /// Stacks: the group's blur material.
+    /// Stacks: the group's value (TLV 1020 and 1022).
     pub value: f32,
     /// Groups: the layer's own fill facet, empty when it has none.
     pub fill: String,
@@ -921,10 +919,28 @@ fn layer_tables(layers: &[LayerRef]) -> Vec<u8> {
     tlv
 }
 
+/// TLV 1022: a (0, `value`, 0) row per layer; IconGroup rows are all zero.
+fn layer_values_tlv(values: impl ExactSizeIterator<Item = f32>) -> Vec<u8> {
+    let mut body = Vec::new();
+    body.write_u32::<LittleEndian>(values.len() as u32).unwrap();
+    body.write_u32::<LittleEndian>(0).unwrap();
+    for v in values {
+        body.write_u32::<LittleEndian>(0).unwrap();
+        body.write_f32::<LittleEndian>(v).unwrap();
+        body.write_u32::<LittleEndian>(0).unwrap();
+    }
+    let mut out = tlv_header(0x03FE, body.len() as u32);
+    out.extend(body);
+    out
+}
+
 /// iconstack rendition (LAYOUT_ICONSTACK=1019): one per non-system appearance,
 /// listing the fill and then the groups back to front.
-pub fn build_iconstack_csi(name: &str, dim: u32, layers: &[LayerRef]) -> Vec<u8> {
+pub fn build_iconstack_csi(name: &str, dim: u32, layers: &[LayerRef], tlv_1022: bool) -> Vec<u8> {
     let mut tlv = layer_tables(layers);
+    if tlv_1022 {
+        tlv.extend(layer_values_tlv(layers.iter().map(|l| l.value)));
+    }
     tlv.extend(make_blend_opacity_tlv());
     tlv.extend(make_uti_tlv("public.layeredimage"));
     tlv.extend(make_exif_orientation_tlv(1));
@@ -933,8 +949,11 @@ pub fn build_iconstack_csi(name: &str, dim: u32, layers: &[LayerRef]) -> Vec<u8>
 
 /// IconGroup rendition (LAYOUT_ICON_GROUP=1020): one per non-system appearance,
 /// listing the group's visible layers.
-pub fn build_icongroup_csi(name: &str, layers: &[LayerRef]) -> Vec<u8> {
+pub fn build_icongroup_csi(name: &str, layers: &[LayerRef], tlv_1022: bool) -> Vec<u8> {
     let mut tlv = layer_tables(layers);
+    if tlv_1022 {
+        tlv.extend(layer_values_tlv(layers.iter().map(|_| 0.0)));
+    }
     tlv.extend(make_blend_opacity_tlv());
     tlv.extend(make_exif_orientation_tlv(1));
     build_csi(0, 0, 100, PIXELFMT_DATA, LAYOUT_ICON_GROUP, name, &tlv, &make_dwar_trailer(), 0, 0, 1)
@@ -1286,6 +1305,9 @@ pub struct Rendition {
     pub dim2: u16,
     pub appearance: u16,
     pub direction: u16,
+    /// CSI flag 0x40: the image of a set holding only one language direction, mirrored for the
+    /// other.
+    pub flippable: bool,
     /// Device idiom (key attribute 15), encoded only on iOS.
     pub idiom: u16,
     /// Idiom subtype (key attribute 16). 0 unless the asset declares one.
@@ -1333,6 +1355,7 @@ impl Default for Rendition {
             dim2: 0,
             appearance: 0,
             direction: 0,
+            flippable: false,
             idiom: 0,
             subtype: 0,
             is_template: false,
@@ -1429,6 +1452,15 @@ impl Rendition {
     }
 
     pub fn build_csi(&self) -> Vec<u8> {
+        let mut csi = self.build_csi_unflagged();
+        if self.flippable {
+            let flags = u32::from_le_bytes(csi[8..12].try_into().unwrap()) | 0x40;
+            csi[8..12].copy_from_slice(&flags.to_le_bytes());
+        }
+        csi
+    }
+
+    fn build_csi_unflagged(&self) -> Vec<u8> {
         if let Some(over) = &self.csi_override {
             return over.clone();
         }
@@ -1584,13 +1616,64 @@ mod tests {
 
     #[test]
     fn carheader_layout() {
-        let hdr = make_carheader(5);
+        let hdr = make_carheader_full(5, XcodeVersion::V27, "macosx", 1);
         assert_eq!(hdr.len(), 436);
         assert_eq!(&hdr[..4], b"RATC");
+        assert_eq!(u32::from_le_bytes(hdr[4..8].try_into().unwrap()), 1010);
+        assert!(hdr[148..].starts_with(b"Xcode 27.0 (27A266a) via AssetCatalogAgent-AssetRuntime\0"));
         assert_eq!(u32::from_le_bytes(hdr[16..20].try_into().unwrap()), 5);
         assert_eq!(u32::from_le_bytes(hdr[424..428].try_into().unwrap()), 2);
         assert_eq!(u32::from_le_bytes(hdr[428..432].try_into().unwrap()), 1);
         assert_eq!(u32::from_le_bytes(hdr[432..436].try_into().unwrap()), 1);
+    }
+
+    #[test]
+    fn no_rle_for_16_bit_channels() {
+        for fmt in [*b"61AG", PIXELFMT_RGBW] {
+            let r = Rendition {
+                width: 4,
+                height: 4,
+                pixel_data: vec![7; 4 * 4 * bytes_per_pixel(&fmt) as usize],
+                pixel_format: fmt,
+                min_deploy: "10.9".into(),
+                ..Rendition::default()
+            };
+            let csi = r.build_csi();
+            let m = csi.windows(4).position(|w| w == b"MLEC").expect("MLEC payload");
+            let compression = u32::from_le_bytes(csi[m + 8..m + 12].try_into().unwrap());
+            assert_ne!(compression, 1, "{:?} stored as RLE", std::str::from_utf8(&fmt));
+        }
+    }
+
+    /// The version strings of each build and platform form, against the corpus catalog it copies.
+    #[test]
+    fn version_strings_match_actool() {
+        for (sample, xcode, platform) in [
+            ("aven", XcodeVersion::V26, "macosx"),
+            ("ios/sumup", XcodeVersion::V26, "iphoneos"),
+            ("tusk", XcodeVersion::V27, "macosx"),
+        ] {
+            let path = format!("{}/tests/corpus/samples/{sample}/Assets.car", env!("CARGO_MANIFEST_DIR"));
+            let car = std::fs::read(path).unwrap();
+            let block = |magic: &[u8], len: usize| {
+                let at = car.windows(4).position(|w| w == magic).unwrap();
+                car[at..at + len].to_vec()
+            };
+            let (header, meta) = (block(b"RATC", 436), block(b"META", 1028));
+            let ours = make_carheader_full(0, xcode, platform, 1);
+            assert_eq!(ours[4..8], header[4..8], "{sample}: CoreUI version");
+            assert_eq!(ours[20..404], header[20..404], "{sample}: version strings");
+            let ours = make_extended_metadata(platform, "0", xcode);
+            assert_eq!(ours[772..], meta[772..], "{sample}: authoring tool");
+        }
+    }
+
+    #[test]
+    fn carheader_follows_xcode_26() {
+        let hdr = make_carheader_full(0, XcodeVersion::V26, "iphoneos", 2);
+        assert_eq!(u32::from_le_bytes(hdr[4..8].try_into().unwrap()), 975);
+        assert!(hdr[20..].starts_with(b"@(#)PROGRAM:CoreUI  PROJECT:CoreUI-975\0"));
+        assert!(hdr[148..].starts_with(b"Xcode 26.6 (17F113) via AssetCatalogSimulatorAgent\0"));
     }
 
     #[test]

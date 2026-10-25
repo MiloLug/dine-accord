@@ -11,7 +11,17 @@ use std::path::Path;
 pub struct BomWriter {
     blocks: Vec<Vec<u8>>,
     named_blocks: IndexMap<String, usize>,
-    inline_key_size: Option<usize>,
+}
+
+/// A tree is fixed-key when all its keys have one length: its header records that length and
+/// each leaf inlines the keys. Otherwise the key size is -1.
+fn fixed_key_size(entries: &[(Vec<u8>, Vec<u8>)]) -> Option<usize> {
+    let len = entries.first()?.0.len();
+    entries.iter().all(|(k, _)| k.len() == len).then_some(len)
+}
+
+fn header_key_size(key_size: Option<usize>) -> u32 {
+    key_size.map_or(0xFFFFFFFF, |n| n as u32)
 }
 
 impl BomWriter {
@@ -19,16 +29,7 @@ impl BomWriter {
         Self {
             blocks: vec![Vec::new()], // block 0 is always empty
             named_blocks: IndexMap::new(),
-            inline_key_size: None,
         }
-    }
-
-    /// Set the fixed key size for subsequent `add_tree` calls. When set, the
-    /// leaf node reserves `n_entries * key_size` zero bytes after the
-    /// block_size padding, matching Apple's RENDITIONS leaf layout. Set back
-    /// to `None` before adding variable-key trees (FACETKEYS, APPEARANCEKEYS).
-    pub fn set_inline_key_size(&mut self, size: Option<usize>) {
-        self.inline_key_size = size;
     }
 
     pub fn add_block(&mut self, data: Vec<u8>) -> usize {
@@ -52,6 +53,7 @@ impl BomWriter {
         // Entry format: value_block_idx(4) + key_block_idx(4) = 8 bytes
         // Node header: isLeaf(2) + count(2) + forward(4) + backward(4) = 12 bytes
         let max_per_node = ((block_size as usize) - 12) / 8;
+        let key_size = fixed_key_size(entries);
 
         if entries.is_empty() {
             let mut node = Vec::with_capacity(block_size as usize);
@@ -61,8 +63,7 @@ impl BomWriter {
             node.write_u32::<BigEndian>(0).unwrap();
             node.resize(block_size as usize, 0);
             let node_idx = self.add_block(node);
-            let tree_hdr =
-                build_tree_header(node_idx, block_size, 0, 0, self.tree_key_size());
+            let tree_hdr = build_tree_header(node_idx, block_size, 0, 0, header_key_size(None));
             let tree_idx = self.add_block(tree_hdr);
             self.named_blocks.insert(name.to_string(), tree_idx);
             return tree_idx;
@@ -72,14 +73,14 @@ impl BomWriter {
             entries.chunks(max_per_node).collect();
 
         if leaf_batches.len() == 1 {
-            let node = self.build_leaf_node(leaf_batches[0], 0, 0, block_size);
+            let node = self.build_leaf_node(leaf_batches[0], 0, 0, block_size, key_size);
             let node_idx = self.add_block(node);
             let tree_hdr = build_tree_header(
                 node_idx,
                 block_size,
                 entries.len() as u32,
                 0,
-                self.tree_key_size(),
+                header_key_size(key_size),
             );
             let tree_idx = self.add_block(tree_hdr);
             self.named_blocks.insert(name.to_string(), tree_idx);
@@ -99,7 +100,7 @@ impl BomWriter {
                 0
             };
             let bwd = if i > 0 { leaf_indices[i - 1] as u32 } else { 0 };
-            let node = self.build_leaf_node(batch, fwd, bwd, block_size);
+            let node = self.build_leaf_node(batch, fwd, bwd, block_size, key_size);
             self.blocks[leaf_indices[i]] = node;
         }
 
@@ -127,18 +128,11 @@ impl BomWriter {
             block_size,
             entries.len() as u32,
             0,
-            self.tree_key_size(),
+            header_key_size(key_size),
         );
         let tree_idx = self.add_block(tree_hdr);
         self.named_blocks.insert(name.to_string(), tree_idx);
         tree_idx
-    }
-
-    fn tree_key_size(&self) -> u32 {
-        match self.inline_key_size {
-            Some(n) => n as u32,
-            None => 0xFFFFFFFF,
-        }
     }
 
     fn build_leaf_node(
@@ -147,6 +141,7 @@ impl BomWriter {
         forward: u32,
         backward: u32,
         block_size: u32,
+        key_size: Option<usize>,
     ) -> Vec<u8> {
         let mut node = Vec::new();
         node.write_u16::<BigEndian>(1).unwrap(); // isLeaf
@@ -155,21 +150,16 @@ impl BomWriter {
         node.write_u32::<BigEndian>(backward).unwrap();
         let mut key_blob: Vec<u8> = Vec::new();
         for (key_data, value_data) in entries {
-            let val_idx = self.add_block(value_data.clone());
             let key_idx = self.add_block(key_data.clone());
+            let val_idx = self.add_block(value_data.clone());
             node.write_u32::<BigEndian>(val_idx as u32).unwrap();
             node.write_u32::<BigEndian>(key_idx as u32).unwrap();
-            if self.inline_key_size.is_some() {
+            if key_size.is_some() {
                 key_blob.extend_from_slice(key_data);
             }
         }
-        // For fixed-key trees (RENDITIONS, APPEARANCEKEYS), Apple inlines
-        // each rendition key immediately after the entries — CUICatalog
-        // reads keys from this packed region rather than chasing key block
-        // pointers, so the order and adjacency to entries matters. Without
-        // this, `imagesWithName:` silently returns empty arrays even when
-        // every separate key block is correct. A 4-byte zero gap separates
-        // the entry table from the inline-key region.
+        // CoreUI reads a fixed-key tree's keys from this packed region after a 4-byte gap,
+        // not through the key blocks; without it `imagesWithName:` silently returns nothing.
         if !key_blob.is_empty() {
             node.extend_from_slice(&[0u8; 4]);
             node.extend_from_slice(&key_blob);
@@ -177,9 +167,7 @@ impl BomWriter {
         if (node.len() as u32) < block_size {
             node.resize(block_size as usize, 0);
         }
-        // After the inline-key region the leaf is padded with zeros until
-        // total length = block_size + n_entries * fixed_key_size.
-        if let Some(ks) = self.inline_key_size {
+        if let Some(ks) = key_size {
             let target = block_size as usize + entries.len() * ks;
             if node.len() < target {
                 node.resize(target, 0);
@@ -293,10 +281,11 @@ impl BomWriter {
     pub fn to_bytes(&self) -> Vec<u8> {
         const MIN_TABLE_SIZE: usize = 256;
         const FREELIST_SIZE: usize = 20;
+        const FIRST_BLOCK_OFFSET: u64 = 0x200;
 
-        let header_size: u64 = 32;
-        let mut current_offset: u64 = header_size;
-        let num_used_blocks = self.blocks.len() as u32;
+        let mut current_offset: u64 = FIRST_BLOCK_OFFSET;
+        // The header counts blocks without the null block 0.
+        let num_used_blocks = self.blocks.len() as u32 - 1;
 
         let mut block_entries: Vec<(u32, u32)> = Vec::new();
         for (i, block_data) in self.blocks.iter().enumerate() {
@@ -311,9 +300,8 @@ impl BomWriter {
                 .push((current_offset as u32, block_data.len() as u32));
             current_offset += block_data.len() as u64;
         }
-        while block_entries.len() < MIN_TABLE_SIZE {
-            block_entries.push((0, 0));
-        }
+        let slots = MIN_TABLE_SIZE.max(block_entries.len().next_multiple_of(8));
+        block_entries.resize(slots, (0, 0));
 
         let mut index_data = Vec::new();
         index_data
@@ -405,9 +393,8 @@ fn build_tree_header(
 ) -> Vec<u8> {
     // "tree"(4) + version(4) + root(4) + block_size(4) + n_paths(4) +
     // flag(1) + key_size(4) + pad(4).
-    // key_size is the per-entry inline key length: the actual size for
-    // fixed-key trees (RENDITIONS), 0xFFFFFFFF for variable-key trees
-    // (FACETKEYS, APPEARANCEKEYS), or 0 for raw-key trees (BITMAPKEYS).
+    // key_size: the inline key length of a fixed-key tree, 0xFFFFFFFF for a variable-key one, 0
+    // for a raw-key tree (BITMAPKEYS).
     let mut hdr = Vec::new();
     hdr.extend_from_slice(b"tree");
     hdr.write_u32::<BigEndian>(1).unwrap();
@@ -433,7 +420,7 @@ mod tests {
         assert_eq!(&data[..8], b"BOMStore");
         let mut c = Cursor::new(&data[8..]);
         assert_eq!(c.read_u32::<BigEndian>().unwrap(), 1); // version
-        assert_eq!(c.read_u32::<BigEndian>().unwrap(), 1); // num blocks (just null)
+        assert_eq!(c.read_u32::<BigEndian>().unwrap(), 0); // num blocks, null block not counted
     }
 
     #[test]

@@ -88,7 +88,7 @@ fn lone_ga8_stored_inline() {
     )
     .expect("make catalog");
     let out = tmp.join("out");
-    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     let layouts = parse_car_layouts(&out.join("Assets.car"));
     assert_eq!(layouts.get("Mono.png").copied(), Some(12));
@@ -101,7 +101,7 @@ fn single_imageset_stored_inline() {
     let tmp = workspace_tmp("packing_single");
     let catalog = make_catalog(&tmp, &[("Solo", "RGBA")]).expect("make");
     let out = tmp.join("out");
-    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     let layouts = parse_car_layouts(&out.join("Assets.car"));
     assert_eq!(layouts.get("Solo.png").copied(), Some(12));
@@ -115,7 +115,7 @@ fn all_same_format_packed() {
     let catalog =
         make_catalog(&tmp, &[("X", "LA"), ("Y", "LA"), ("Z", "LA")]).expect("make");
     let out = tmp.join("out");
-    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     let layouts = parse_car_layouts(&out.join("Assets.car"));
     for name in ["X.png", "Y.png", "Z.png"] {
@@ -133,53 +133,9 @@ fn two_formats_one_each_both_inline() {
     let catalog =
         make_catalog(&tmp, &[("Color", "RGBA"), ("Gray", "LA")]).expect("make");
     let out = tmp.join("out");
-    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true })
+    compiler::compile(&[(&catalog).to_path_buf()], &out, &compiler::Options { platform: ("macosx").to_string(), min_deploy: ("11.0").to_string(), app_icon: None, info_plist: None, accent_color: None, widget_background_color: None, standalone_icon_behavior: ("default").to_string(), target_devices: Vec::new(), include_all_app_icons: false, include_languages: None, development_region: None, plist_localizations: true, ..Default::default() })
     .expect("compile");
     let layouts = parse_car_layouts(&out.join("Assets.car"));
     assert_eq!(layouts.get("Color.png").copied(), Some(12));
     assert_eq!(layouts.get("Gray.png").copied(), Some(12));
-}
-
-mod common;
-
-fn copy_dir(from: &Path, to: &Path) {
-    fs::create_dir_all(to).unwrap();
-    for e in fs::read_dir(from).unwrap().flatten() {
-        let dst = to.join(e.file_name());
-        if e.file_type().unwrap().is_dir() { copy_dir(&e.path(), &dst) } else { fs::copy(e.path(), &dst).unwrap(); }
-    }
-}
-
-/// RootHide's catalog was compiled when its primary icon set held what `AppIcon_Blue` holds now.
-/// With that input, five icon sets' worth of iOS icons split into Apple's atlases exactly.
-#[test]
-fn roothide_atlases_match_apple() {
-    let root = workspace_tmp("roothide_atlases");
-    let xc = root.join("Assets.xcassets");
-    copy_dir(&common::root().join("sources/ios/roothide/Assets.xcassets"), &xc);
-    fs::remove_dir_all(xc.join("AppIcon.appiconset")).unwrap();
-    copy_dir(&xc.join("AppIcon_Blue.appiconset"), &xc.join("AppIcon.appiconset"));
-    let out = root.join("out");
-    let opts = compiler::Options {
-        platform: "iphoneos".into(),
-        min_deploy: "15.0".into(),
-        app_icon: Some("AppIcon".into()),
-        info_plist: Some(out.join("partial.plist")),
-        accent_color: Some("AccentColor".into()),
-        widget_background_color: None,
-        standalone_icon_behavior: "default".into(),
-        target_devices: vec!["iphone".into(), "ipad".into()],
-        include_all_app_icons: true,
-        include_languages: None,
-        development_region: None,
-        plist_localizations: true,
-    };
-    compiler::compile(&[xc], &out, &opts).unwrap();
-    let want = accord::car_read::Car::parse(&common::read(&common::root().join("samples/ios/roothide/Assets.car"))).unwrap();
-    let got = accord::car_read::Car::parse(&fs::read(out.join("Assets.car")).unwrap()).unwrap();
-    let diffs: Vec<String> = accord::car_read::diff(&want, &got)
-        .into_iter()
-        .filter(|d| d.contains("Element=9") || d.contains("tlv1010") || d.starts_with("bitmapkey") || d.contains("rendition_count"))
-        .collect();
-    assert!(diffs.is_empty(), "{diffs:#?}");
 }

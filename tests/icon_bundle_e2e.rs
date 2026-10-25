@@ -285,7 +285,7 @@ fn synthetic_png_automatic_fill_produces_iconcomposer_catalog() {
     let car = parse_car(&out.join("Assets.car"));
 
     // Lower CoreUI versions take the legacy path, and lookups fail silently.
-    assert_eq!(car.coreui_version, 975, "CoreUI version must be 975 for .icon catalogs");
+    assert!(car.coreui_version >= 975, "CoreUI version must be at least 975 for .icon catalogs");
 
     for required in ["CARHEADER", "RENDITIONS", "FACETKEYS", "APPEARANCEKEYS",
                       "KEYFORMAT", "EXTENDED_METADATA", "BITMAPKEYS"] {
@@ -302,8 +302,8 @@ fn synthetic_png_automatic_fill_produces_iconcomposer_catalog() {
         "Synth_Assets/Color-3",
         "Synth_Assets/Color-4",
         "Synth_Assets/Color-5",
-        "Synth_Assets/Gradient-1",
-        "Synth_Assets/Gradient-2",
+        "Synth_Assets/system-light",
+        "Synth_Assets/system-dark",
     ].iter().map(|s| s.to_string()).collect();
     assert_eq!(facets, expected, "facet inventory mismatch for automatic fill");
 
@@ -344,7 +344,9 @@ fn solid_srgb_fill_emits_4_colors_1_gradient_with_user_color() {
     let color_count = facets.iter().filter(|f| f.contains("_Assets/Color-")).count();
     let gradient_count = facets.iter().filter(|f| f.contains("_Assets/Gradient-")).count();
     assert_eq!(color_count, 4, "solid fill expected 4 Colors, got {color_count}");
-    assert_eq!(gradient_count, 1, "solid fill expected 1 Gradient, got {gradient_count}");
+    // The one gradient is the dark gray pair, named under the default Xcode 27.
+    assert_eq!(gradient_count, 0, "solid fill expected no numbered Gradient, got {gradient_count}");
+    assert!(facets.contains("Solid_Assets/system-dark"));
 
     // Color-2 carries the user's fill colour.
     let renditions_root = tree_root_idx(&car, "RENDITIONS");
@@ -585,7 +587,7 @@ fn two_overlapping_glass_groups_compile_and_load() {
     assert!(files.iter().any(|p| p.ends_with("Assets.car")));
 
     let car = parse_car(&out.join("Assets.car"));
-    assert_eq!(car.coreui_version, 975);
+    assert_eq!(car.coreui_version, 1010);
     let facets: std::collections::HashSet<_> = facet_names(&car).into_iter().collect();
     for required in ["MultiGlass", "MultiGlass/Front", "MultiGlass/Back"] {
         assert!(facets.contains(required), "missing group facet: {required}");
@@ -594,4 +596,51 @@ fn two_overlapping_glass_groups_compile_and_load() {
     let idents: std::collections::HashSet<u32> =
         facet_identifiers(&car).into_values().map(|v| v as u32).collect();
     assert_eq!(bk, idents, "BITMAPKEYS must cover every facet identifier");
+}
+
+/// Under Xcode 26, `--enable-icon-stack-fallback-generation NO` leaves out the iOS pre-renders and
+/// their multisize set; the main facet points at the stacks and the loose PNG is still written.
+#[test]
+fn ios_fallback_no_keeps_only_stacks_under_xcode_26() {
+    use accord::car_read::Car;
+    use accord::xcode::XcodeVersion;
+    let dir = tempdir();
+    let bundle = build_icon_bundle(
+        dir.path(),
+        "Bare",
+        "main.png",
+        |p| write_synthetic_png(p, 1024, [200, 200, 200, 255]),
+        serde_json::json!("automatic"),
+        Some("Front"),
+        serde_json::json!({"squares": "shared"}),
+    );
+    let compile_with = |xcode: XcodeVersion, sub: &str| {
+        let out = dir.path().join(sub);
+        let opts = accord::compiler::Options {
+            platform: "iphoneos".into(),
+            min_deploy: "17.0".into(),
+            app_icon: Some("Bare".into()),
+            info_plist: Some(out.join("partial.plist")),
+            standalone_icon_behavior: "default".into(),
+            target_devices: vec!["iphone".into()],
+            xcode_version: xcode,
+            disable_icon_stack_fallback: true,
+            ..Default::default()
+        };
+        accord::compiler::compile(&[bundle.clone()], &out, &opts).expect("compile");
+        let car = Car::parse(&fs::read(out.join("Assets.car")).unwrap()).unwrap();
+        let part = car.keyformat.iter().position(|&a| a == 2).unwrap();
+        let parts: std::collections::HashSet<u16> = car.renditions.iter().map(|r| r.key[part]).collect();
+        let main_part = car.facets.iter().find(|f| f.name == "Bare").unwrap().attributes.iter().find(|(a, _)| *a == 2).unwrap().1;
+        (out, parts, main_part)
+    };
+
+    let (out, parts, main_part) = compile_with(XcodeVersion::V26, "v26");
+    assert!(parts.contains(&245) && !parts.contains(&220) && !parts.contains(&218), "{parts:?}");
+    assert_eq!(main_part, 245);
+    assert!(out.join("Bare60x60@2x.png").exists(), "loose home-screen PNG");
+
+    let (_, parts, main_part) = compile_with(XcodeVersion::V27, "v27");
+    assert!(parts.contains(&220) && parts.contains(&218), "Xcode 27 ignores NO: {parts:?}");
+    assert_eq!(main_part, 220);
 }

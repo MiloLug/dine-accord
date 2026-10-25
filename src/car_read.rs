@@ -91,6 +91,15 @@ impl<'a> Bom<'a> {
         self.vars.iter().find(|(n, _)| n == name).map(|&(_, bi)| self.block(bi))
     }
 
+    /// The key size in a tree's header: a fixed-key tree's key length, -1 for variable keys;
+    /// `None` for a legacy 21-byte header, which has no such field.
+    pub fn tree_key_size(&self, name: &str) -> Result<Option<i32>> {
+        let Some(header) = self.var(name) else { return Ok(None) };
+        let header = header?;
+        ensure!(header.starts_with(b"tree"), "{name} is not a tree");
+        Ok(header.get(21..25).map(|b| i32::from_be_bytes(b.try_into().unwrap())))
+    }
+
     /// Entries of a BOM B-tree, in leaf order. Trees with the inline-key flag (BITMAPKEYS) store
     /// the key itself in the entry instead of a block index; it is returned as 4 big-endian bytes.
     pub fn tree(&self, name: &str) -> Result<Vec<(Vec<u8>, &'a [u8])>> {
@@ -260,7 +269,11 @@ pub struct Car {
     pub metadata: Option<Metadata>,
     pub keyformat: Vec<u16>,
     pub appearances: Vec<(String, u16)>,
+    /// LOCALIZATIONKEYS: locale name and the id rendition keys carry as Localization.
+    pub localizations: Vec<(String, u16)>,
     pub facets: Vec<Facet>,
+    /// Header key size of FACETKEYS, APPEARANCEKEYS and LOCALIZATIONKEYS, where present.
+    pub tree_key_sizes: Vec<(String, i32)>,
     pub bitmap_keys: Vec<BitmapKey>,
     pub renditions: Vec<Rendition>,
 }
@@ -324,6 +337,17 @@ impl Car {
             .into_iter()
             .map(|(k, v)| Ok((cstr(&k), le16(v, 0)?)))
             .collect::<Result<_>>()?;
+        let localizations = bom
+            .tree("LOCALIZATIONKEYS")?
+            .into_iter()
+            .map(|(k, v)| Ok((cstr(&k), le16(v, 0)?)))
+            .collect::<Result<_>>()?;
+        let mut tree_key_sizes = Vec::new();
+        for name in ["FACETKEYS", "APPEARANCEKEYS", "LOCALIZATIONKEYS"] {
+            if let Some(size) = bom.tree_key_size(name)? {
+                tree_key_sizes.push((name.to_string(), size));
+            }
+        }
         let facets = bom
             .tree("FACETKEYS")?
             .into_iter()
@@ -347,7 +371,9 @@ impl Car {
             metadata,
             keyformat,
             appearances,
+            localizations,
             facets,
+            tree_key_sizes,
             bitmap_keys,
             renditions,
         })
@@ -800,6 +826,12 @@ fn summary(car: &Car) -> std::collections::BTreeMap<String, String> {
     for (name, id) in &car.appearances {
         m.insert(format!("appearance {name}"), id.to_string());
     }
+    for (name, id) in &car.localizations {
+        m.insert(format!("localization {name}"), id.to_string());
+    }
+    for (name, size) in &car.tree_key_sizes {
+        m.insert(format!("tree {name} key_size"), size.to_string());
+    }
     for f in &car.facets {
         let a: Vec<String> = f.attributes.iter().map(|(k, v)| format!("{}={v}", attribute_name(*k))).collect();
         m.insert(format!("facet {:?}", f.name), format!("{} hotspot {:?}", a.join(" "), f.hotspot));
@@ -868,14 +900,32 @@ mod tests {
 
     #[test]
     fn rle_round_trip() {
-        // GA8 rows: a run, literals, and a repeat of the first row (shared row offset).
+        // GA8 rows: literals, a run, and the first row again two rows down.
         let rows: [[u8; 10]; 3] = [
             [1, 255, 1, 255, 1, 255, 2, 255, 3, 128],
             [9, 9, 8, 8, 7, 7, 7, 7, 7, 7],
             [1, 255, 1, 255, 1, 255, 2, 255, 3, 128],
         ];
         let pixels: Vec<u8> = rows.concat();
-        let rle = crate::car::compress_rle(&pixels, 5, 3, 2);
+        let rle = crate::car::compress_rle(&pixels, 5, 3, b" 8AG");
         assert_eq!(decode_rle(&rle, 5, 3, 2).unwrap(), pixels);
+    }
+
+    /// Re-encoding the corpus's one RLE payload (swiftgen's 42×42 GA8 atlas) gives actool's bytes.
+    #[test]
+    fn rle_matches_actool() {
+        let path = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/corpus/samples/ios/swiftgen/Assets.car");
+        let data = std::fs::read(path).unwrap();
+        let bom = Bom::parse(&data).unwrap();
+        let body = (1..bom.block_count() as u32)
+            .filter_map(|i| bom.block(i).ok())
+            .filter(|b| b.starts_with(b"ISTC") && b[40..].starts_with(b"ZZZZPackedAsset-3.0.1-gamut0\0"))
+            .find_map(|b| {
+                let m = b.windows(4).position(|w| w == b"MLEC")?;
+                (le32(b, m + 8).ok()? == 1).then(|| &b[m + 16..m + 16 + le32(b, m + 12).unwrap() as usize])
+            })
+            .expect("swiftgen's RLE atlas");
+        let pixels = decode_rle(body, 42, 42, 2).unwrap();
+        assert_eq!(crate::car::compress_rle(&pixels, 42, 42, b" 8AG"), body);
     }
 }

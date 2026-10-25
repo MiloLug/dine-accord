@@ -14,8 +14,9 @@ GitHub repositories, named where cited. `accord inspect --json` prints all of it
 ## BOM container
 
 - Big-endian: header, block index, vars, tree headers, tree pages, BITMAPKEYS' inline keys.
-- Header `BOMStore`, version 1, block count, index offset and length, vars offset and length;
-  zero up to 0x200, where block 1 starts. Block 0 is (0, 0).
+- Header `BOMStore`, version 1, block count (the highest block index; block 0 is not counted),
+  index offset and length, vars offset and length; zero up to 0x200, where block 1 starts. Block
+  0 is (0, 0).
 - Blocks are 16-byte aligned and zero-padded. A tree entry's value block is its key block + 1.
   Byte-identical payloads still get a block each.
 - Named blocks (vars), in this order: CARHEADER, RENDITIONS, FACETKEYS, APPEARANCEKEYS,
@@ -26,8 +27,9 @@ GitHub repositories, named where cited. `accord inspect --json` prints all of it
 - File order: CARHEADER, RENDITIONS tree and leaf, FACETKEYS, APPEARANCEKEYS, appearance and
   facet key/value pairs, KEYFORMAT, rendition key/value pairs, EXTENDED_METADATA, BITMAPKEYS tree,
   leaf and values, vars, index. In current catalogs the file ends with the index.
-- The index has at least 256 slots and more when the file has more blocks (roothide 536, sumup
-  432), no free list, and in current catalogs 20 zero bytes after the last slot.
+- The index has 256 slots, or the block count + 1 rounded up to a multiple of 8 when that is more
+  (roothide 529 blocks: 536 slots; sumup 426: 432), no free list, and in current catalogs 20 zero
+  bytes after the last slot.
 
 ### Trees
 
@@ -39,10 +41,12 @@ count, u32 forward and backward links, then one (u32 value block, u32 key block)
   table, after a 4-byte zero gap, and the leaf is `4096 + n × key size` bytes. Entries are sorted
   by memcmp of the key. Without that inline-key region the catalog loads, but lookups by name
   return nothing (observed).
-- FACETKEYS, APPEARANCEKEYS: key size -1 (keys of any length), sorted by strcmp. A tree with one
-  entry is written fixed-key instead: key size = that key's length, the key inlined after the gap,
-  leaf `4096 + key length` (APPEARANCEKEYS holding only `UIAppearanceAny` in roothide, sumup,
-  swiftyvk and scummvm: 15 and 4111; kdrive's single facet: 11 and 4107).
+- FACETKEYS, APPEARANCEKEYS, LOCALIZATIONKEYS: sorted by strcmp. A tree whose keys all have one
+  length is fixed-key like RENDITIONS: key size = that length, the keys inlined after the gap,
+  leaf `4096 + n × key length`. Otherwise the key size is -1 (keys of any length). The corpus's
+  fixed-key name trees hold one entry: APPEARANCEKEYS with only `UIAppearanceAny` in roothide,
+  sumup, swiftyvk and scummvm (15, leaf 4111), the single facet of kdrive (11, 4107) and of
+  sparkle-test-app (7, 4103). Its multi-entry name trees all mix key lengths.
 - BITMAPKEYS: page 1024, inline-keys flag 1, key size 0; the key is the u32 itself.
 
 ## CoreUI blocks
@@ -53,17 +57,23 @@ Little-endian.
   count, main version string[128], version string[256], UUID (zero), checksum 0, schema version,
   colorspace 1, key semantics.
   - The CoreUI version is that of the actool build: 308 to 1010 across the corpus, 969 and up in
-    catalogs with an Icon Composer icon. The main version string repeats it (`@(#)PROGRAM:CoreUI
-    PROJECT:CoreUI-975 [LAR]`); the version string names the Xcode build (`Xcode 26.6 (17F113)
-    via AssetCatalogAgent-AssetRuntime`).
+    catalogs with an Icon Composer icon; Xcode 26.6 writes 975, Xcode 27.0 (27A266a) and 27.1
+    write 1010, vlc's Xcode 27 beta 1006.
+    The main version string repeats it (`@(#)PROGRAM:CoreUI  PROJECT:CoreUI-975 [LAR]`); the
+    version string names the Xcode build (`Xcode 26.6 (17F113) via
+    AssetCatalogAgent-AssetRuntime`). Both strings end in a NUL, no newline.
+  - Xcode 26 builds for iOS write `via AssetCatalogSimulatorAgent` and no ` [LAR]` (sumup,
+    roothide, openutau); Xcode 27 writes the macOS form for iOS too (utm-remote).
   - Storage 17 and schema 2 in current catalogs; schema 5 in browseros, kdrive and
     sparkle-test-app; storage 8 and schema 4 in pxcore2; storage 11 in acextract.
   - Key semantics 1 on macOS; 2 on iOS, tvOS (scummvm) and Mac Catalyst (swiftyvk).
 - **EXTENDED_METADATA** (1028 bytes): `META`, then thinning arguments, deployment platform
-  version, platform, authoring tool, 256 bytes each. Platforms seen: `macosx`, `ios`, `atv`,
-  `macosx-ios` (Catalyst). On macOS, every deployment target from 11.0 to 26.0 gives the same
-  catalog apart from this version field (observed). CoreUI 308 and 374 catalogs have no metadata
-  block.
+  version, platform, authoring tool, 256 bytes each. The authoring tool is the CoreThemeDefinition
+  version string of the build (`@(#)PROGRAM:CoreThemeDefinition  PROJECT:CoreThemeDefinition-664
+  [LAR] [IIO-2851][LAR] AppleJPEG[1][32]  CMPhoto[1][218]] [IR-120(hw)]` in tusk). Platforms
+  seen: `macosx`, `ios`, `atv`, `macosx-ios` (Catalyst). On macOS, every deployment target from
+  11.0 to 26.0 gives the same catalog apart from this version field (observed). CoreUI 308 and
+  374 catalogs have no metadata block.
 - **KEYFORMAT**: `tmfk`, 0, count, u32 attribute ids. A rendition key is the u16 values in that
   order. The order is a fixed per-platform list:
   - macOS `[7,13,1,2,3,4,6,17,8,9,10,14,11,12,24,19,18,25,26,27]`;
@@ -82,6 +92,10 @@ Little-endian.
   - iOS: `UIAppearanceAny` 0 always; `UIAppearanceDark` 1, `UIAppearanceLight` 4 and
     `ISAppearanceTintable` 10 when used (all three with an Icon Composer icon: openutau,
     utm-remote).
+- **LOCALIZATIONKEYS**: locale name to the u16 Localization value the rendition keys carry, which
+  is the same hash of the name that turns a facet name into its Identifier (sumup: 28 locales,
+  `en` 6677). One entry per locale the renditions use; unlocalized renditions carry 0 and have no
+  entry.
 - **FACETKEYS** value: i16 hotspot x, y, u16 count, then (u16 attribute, u16 value) pairs:
   Element 85, Part, Identifier.
 - **BITMAPKEYS**: one entry per facet identifier, and every facet must have one; with the tree
@@ -96,9 +110,10 @@ colorspace, modtime 0, u16 layout, u16 0, name[128], TLV length, 1, 0, payload l
 
 Flags: the image's template mode times 4 (2 template gives 8, 4 automatic gives 16), plus 4 when
 the rendition comes from a vector source (SVG and PDF renditions carry 4, images rasterised
-from them 20: sumup's `.svg` and `.pdf` images). App-icon renditions, atlases, colours,
-gradients and Icon Composer stacks carry 0. An app-icon rendition with flags 16 is not found by
-name (observed). swiftyvk also sets 0x100, meaning unknown.
+from them 20: sumup's `.svg` and `.pdf` images), plus 0x40 on the images of a set that holds
+only left-to-right or only right-to-left images (see Direction below). App-icon renditions,
+atlases, colours, gradients and Icon Composer stacks carry 0. An app-icon rendition with flags 16
+is not found by name (observed). swiftyvk also sets 0x100, meaning unknown.
 
 Layouts: 9 vector, 12 image, 1000 data, 1003 internal reference (a packed image), 1004 packed
 atlas, 1009 colour, 1010 multisize image set, 1019 icon stack, 1020 icon group, 1021 gradient.
@@ -121,7 +136,7 @@ TLVs:
 | 1013 | a list of names, on swiftgen's layout 1005 renditions |
 | 1020 | group materials: count, 0, then per entry u32 kind, f32 value, u32 name length including NUL, name |
 | 1021 | group effects: count, then 20-byte entries (u32 0, u32 specular flag, f32 translucency, u32 shadow kind, f32 shadow opacity), then 4 zero bytes |
-| 1022 | from CoreUI 1006 on (vlc; brew-browser, tusk and utm-remote at 1010), on icon stacks and IconGroups: count, 0, then 12-byte entries (u32, f32, u32), all zero except vlc's stacks, which hold 0.5 in the f32 of each group entry; meaning unknown |
+| 1022 | from CoreUI 1006 on (vlc; brew-browser, tusk and utm-remote at 1010), on icon stacks and IconGroups, after 1021: count, 0, then a 12-byte entry (u32 0, f32, u32 0) per layer, the fill and groups of a stack (tusk 2, brew-browser 4), the visible layers of a group (vlc's group with a hidden layer: 1). The f32 is 0 except in vlc's stack group entries: 0.5, which is both the groups' `blur-material` and their `refractivity.depth` |
 
 What TLVs 1012, 1020 and 1021 hold in an Icon Composer catalog is in
 [icon-bundle.md](icon-bundle.md#stacks-and-groups).
@@ -153,6 +168,10 @@ the same input differ in those bytes.
 
 - Idiom: universal 0, phone 1, pad 2, tv 3, car 4, watch 5, marketing 6 (scummvm has tv and
   marketing; the iOS samples 0 to 2).
+- Direction: `left-to-right` 5, `right-to-left` 4, unset 0. In a set with both directions each
+  image keeps its value; in a set with only one, its images also get CSI flag 0x40. Current Xcode
+  lists attribute 4 only when a rendition sets it, on iOS between DisplayGamut and Identifier. No
+  corpus sample sets a direction: swiftgen keeps 4 in its full Xcode 12 list, all 0.
   Dimension2 of app icons is in [app-icons.md](app-icons.md#renditions).
 - Colour and gradient renditions have Scale 1 in their key and scale 0 in the CSI header (every
   corpus colour). Colour lookups match on the key's scale.
