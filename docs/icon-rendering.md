@@ -30,6 +30,10 @@ actool.
   0 to 1 gradient does.
 - Colours interpolate linearly in their components (a black to white probe has its midpoint at
   127).
+- An `automatic-gradient` is not flat. readinglist's white (Xcode 26.6) stays white over about
+  the top third, then darkens linearly to about 0.90 at the bottom. zettlr's green (Xcode 26.0)
+  starts lighter at the top and reaches its colour about two thirds down, flat below. No
+  rule covering both is known.
 
 ## Layers
 
@@ -39,6 +43,9 @@ actool.
   (layer translation × group scale + group translation) × 824/1024. Marker sweeps across scale,
   translation, viewBox size and aspect match this to the pixel.
 - A layer's `solid` fill colours its shape.
+- Model: a `linear-gradient` fill runs from its first stop at the top of the layer's drawn area
+  to its last stop at the bottom, or along `orientation` across that area (utm-remote's dark
+  rings: light green at the top, dark green at the bottom).
 - Model: blend modes (`normal`, `multiply`, `screen`, `overlay`, `soft-light`, `hard-light`,
   `darken`, `lighten`) follow the W3C separable blend definitions, and opacity scales the layer's
   alpha. Both can differ per appearance.
@@ -81,6 +88,13 @@ White light is added in linear light inside the squircle edge, fading to nothing
 brightest at the top left; all four edges brighten. Measured strength at the edge: about 0.34 at
 the top and left, 0.23 at the bottom and right. Model: `L0 = 0.286 + 0.083·d`, with `d` the
 outward edge normal's projection on the top-left diagonal, falling linearly to 0 at 16.5 px.
+
+## Pixel noise
+
+Xcode 26.6 and 27.1 output carries noise of ±1 in each colour channel, independent per channel
+and centred on the true value (R above B as often as below). Channels differ by 1 on about 42 % of
+the visible pixels of readinglist's 1024 macOS icon and by 2 on about 3 %; utm-remote's Tintable
+iOS icon differs by 1 on about 21 %. openutau's Tintable icon, from Xcode 26.0.1, has none.
 
 ## Properties with little or no static effect
 

@@ -79,7 +79,16 @@ impl XcodeVersion {
         }
     }
 
-    /// Whether `--enable-icon-stack-fallback-generation NO` leaves out the pre-rendered icons.
+    /// Whether pre-rendered icons carry about ±1 of independent noise per channel, so a neutral
+    /// icon is not exactly gray (readinglist, utm-remote); Xcode 26.0.1's have none (openutau).
+    pub fn adds_render_noise(self) -> bool {
+        match self {
+            Self::V26 | Self::V27 => true,
+        }
+    }
+
+    /// Whether turning `--enable-icon-stack-fallback-generation` off leaves out the pre-rendered
+    /// icons.
     pub fn honours_fallback_no(self) -> bool {
         match self {
             Self::V26 => true,

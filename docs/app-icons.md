@@ -41,20 +41,21 @@ macOS:
 - 16, 32 and 64 pt are packed into an atlas; the others stay inline (aven).
 - Appearance 0 only, named
   `<stem><pt>x<pt>_NSAppearanceNameSystem_<UUID>-<pid>-<timestamp>.png`.
-- `ARGB` for readinglist's near-gray icon, whose channels differ by up to 16.
 - An icon with wide-gamut colours gets an `RGBW` DisplayGamut 1 copy of every size (zettlr).
-- Xcode 26.0 leaves them out with `--enable-icon-stack-fallback-generation NO`
-  (emacs-liquid-glass), and the main facet then has Part 245. moddable,
-  compiled for macOS 10.14 with `--app-icon main` and `main.icon`, has none either, for a reason
-  not known.
+- Xcode 26.0 and 26.0.1 leave them out with `--enable-icon-stack-fallback-generation NO`
+  (emacs-liquid-glass, 26.0.1) or `=disabled` (moddable, 26.0), and the main facet then has
+  Part 245.
 
 iOS:
 - One 1024 × 1024 @1x per target-device idiom for each of Any (0), Dark (1) and Tintable (10),
   Dimension2 1, named `<stem>1024x1024_UIAppearanceAny_…` (openutau, utm-remote).
-- The Tintable image is `GA8` in openutau, whose pixels are exactly gray, and `ARGB` in
-  utm-remote, whose channels differ by up to 2.
 - They show on systems before iOS 27 and in the loose PNG; iOS 27 draws the icon from the stack
   ([icon-bundle.md](icon-bundle.md#stacks-and-groups)).
+
+A pre-render is `GA8` when its pixels are exactly gray (openutau's Tintable icon, Xcode
+26.0.1). Xcode 26.6 and 27.1 renders carry pixel noise
+([icon-rendering.md](icon-rendering.md#pixel-noise)), so their gray icons are `ARGB`
+(readinglist; utm-remote's Tintable icon).
 
 ## Loose files
 

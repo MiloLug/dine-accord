@@ -73,7 +73,8 @@ struct Cli {
     #[arg(long, default_value = "NO")]
     enable_on_demand_resources: String,
 
-    /// `NO` leaves out the pre-rendered icons under `--xcode-version 26`; ignored under 27
+    /// A value read as NO (`NO`, `disabled`) leaves out the pre-rendered icons under
+    /// `--xcode-version 26`; ignored under 27
     #[arg(long)]
     enable_icon_stack_fallback_generation: Option<String>,
 
@@ -222,10 +223,7 @@ fn main() -> ExitCode {
             Some(v)
         }
     };
-    let plist_l10n = !matches!(
-        cli.include_partial_info_plist_localizations.to_ascii_uppercase().as_str(),
-        "NO"
-    );
+    let plist_l10n = yes(&cli.include_partial_info_plist_localizations);
 
     let opts = compiler::Options {
         platform: cli.platform.clone(),
@@ -244,7 +242,7 @@ fn main() -> ExitCode {
         disable_icon_stack_fallback: cli
             .enable_icon_stack_fallback_generation
             .as_deref()
-            .is_some_and(|v| v.eq_ignore_ascii_case("NO")),
+            .is_some_and(|v| !yes(v)),
     };
     let output_files = match compiler::compile(&cli.documents, &compile_dir, &opts) {
         Ok(f) => f,
@@ -263,6 +261,13 @@ fn main() -> ExitCode {
 
     print_compilation_results(&cli.output_format, &output_files);
     ExitCode::SUCCESS
+}
+
+/// Lenient YES/NO: moddable's actool build turned the pre-renders off with `=disabled`.
+fn yes(value: &str) -> bool {
+    let v = value.trim_start();
+    let v = v.strip_prefix(['+', '-']).unwrap_or(v).trim_start_matches('0');
+    v.starts_with(['Y', 'y', 'T', 't', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 }
 
 fn print_version(format: &str) {
@@ -446,4 +451,19 @@ fn inspect(path: &Path, json: bool) -> ExitCode {
         }
     }
     ExitCode::SUCCESS
+}
+
+#[cfg(test)]
+mod tests {
+    use super::yes;
+
+    #[test]
+    fn yes_no_arguments_read_like_actool() {
+        for v in ["YES", "yes", "true", "T", "1", "42", " +01", "-1"] {
+            assert!(yes(v), "{v:?} is YES");
+        }
+        for v in ["NO", "no", "disabled", "enabled", "false", "0", "00", "", " ", "+"] {
+            assert!(!yes(v), "{v:?} is NO");
+        }
+    }
 }

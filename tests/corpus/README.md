@@ -19,7 +19,7 @@ origin and the compile arguments of the pairs.
 | `mediainfo` | macOS | [MediaInfo](https://github.com/MediaArea/MediaInfo) | `61082c82b555` | BSD-2-Clause | yes |
 | `moddable` | macOS | [Moddable SDK (mcsim)](https://github.com/Moddable-OpenSource/moddable) | `80076c48f5ab` | GPL-3.0 | yes |
 | `aven` | macOS | [Aven](https://github.com/raine/aven) | `35d55d8cfcbc` | MIT | yes |
-| `zettlr` | macOS | [Zettlr](https://github.com/Zettlr/Zettlr) | `c805b1e3ec8c` | GPL-3.0 | yes |
+| `zettlr` | macOS | [Zettlr](https://github.com/Zettlr/Zettlr) | `7884fde11e23` | GPL-3.0 | yes |
 | `emacs-liquid-glass` | macOS | [Emacs Liquid Glass Icons](https://github.com/jimeh/emacs-liquid-glass-icons) | `6e25183fe5a4` | GPL-3.0 | yes |
 | `tusk` | macOS | [Tusk](https://github.com/alpcanaydin/tusk) | `5285238fb750` | MIT | yes |
 | `browseros` | macOS | [BrowserOS](https://github.com/browseros-ai/BrowserOS) | `7fdd50f80800` | AGPL-3.0 | yes |

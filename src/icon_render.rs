@@ -139,6 +139,28 @@ fn shadow_pixmap(size: u32, path: &tiny_skia::Path, sh: &ShadowParams) -> Option
     Pixmap::from_vec(rgba, tiny_skia::IntSize::from_wh(size, size)?)
 }
 
+/// The ±1 per-channel noise of actool's pre-renders (`XcodeVersion::adds_render_noise`), seeded
+/// by pixel index so output is reproducible. Premultiplied BGRA: channels stay within alpha.
+pub fn add_render_noise(bgra: &mut [u8]) {
+    for (i, px) in bgra.chunks_exact_mut(4).enumerate() {
+        let a = px[3];
+        if a == 0 {
+            continue;
+        }
+        let mut h = (i as u64).wrapping_add(1).wrapping_mul(0x9E37_79B9_7F4A_7C15);
+        h = (h ^ (h >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+        h = (h ^ (h >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+        h ^= h >> 31;
+        for (c, ch) in px[..3].iter_mut().enumerate() {
+            match (h >> (c * 4)) & 0xF {
+                0 | 1 => *ch = ch.saturating_sub(1),
+                2 | 3 => *ch = ch.saturating_add(1).min(a),
+                _ => {}
+            }
+        }
+    }
+}
+
 /// Composite a sized rendition: the gradient background and the supplied layer
 /// (canvas-sized premultiplied-first BGRA), both clipped to the icon squircle,
 /// optionally preceded by a drop shadow. Returns premultiplied-first BGRA of

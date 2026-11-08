@@ -23,13 +23,16 @@ partial.plist
 
 ## Install
 
-Needs Linux and Rust 1.89 or later. There are no prebuilt binaries.
+Each [release](https://github.com/MiloLug/dine-accord/releases) carries prebuilt x86_64 binaries,
+`accord-x86_64-linux` and `accord-x86_64-windows.exe`; the Windows one is built but not tested.
+From source, with Rust 1.89 or later:
 
 ```sh
 cargo install --git https://github.com/MiloLug/dine-accord
 ```
 
-`accord --version` prints the version plist of the `actool` it mirrors (26.3, build 24506).
+`accord --version` prints a fixed `actool` version plist (26.3, build 24506), whatever
+`--xcode-version` says.
 
 ## Usage
 
@@ -71,12 +74,14 @@ accord prints the `actool` compilation-results plist and exits 0; errors exit 1,
 
 - `--xcode-version 26|27` (accord only, default 27) picks the actool build whose output to
   reproduce: Xcode 26.6 or 27.0.
-- `--enable-icon-stack-fallback-generation NO` leaves out the pre-rendered `.icon` icons with
-  `--xcode-version 26` and is ignored with 27.
+- `--enable-icon-stack-fallback-generation` with a value read as NO (`NO`, `disabled`) leaves
+  out the pre-rendered `.icon` icons with `--xcode-version 26` and is ignored with 27.
+- `--output-format binary1` prints the XML plist.
 - `--warnings`, `--errors`, `--notices`, `--compress-pngs`, `--skip-app-store-deployment`,
   `--enable-on-demand-resources`, `--alternate-app-icon` and `--force-png` are ignored.
 - `--print-contents` prints nothing.
-- `--generate-objc-asset-symbols` with `--bundle-identifier` writes only the symbols header.
+- `--generate-objc-asset-symbols` with `--bundle-identifier` writes only the symbols header, plus
+  the index with `--generate-asset-symbol-index`.
 - Options `--help` doesn't list, such as `--launch-image`, exit 2.
 
 ## What compiles
@@ -95,8 +100,9 @@ Known differences from `actool`:
 - No wide-gamut copies of icons rendered from an `.icon`.
 - The `.icns` made from an `.icon` holds its first layer image, not the rendered icon.
 - JPEGs are stored as they are; `actool` drops their EXIF `YCbCrPositioning` tag.
-- Some `.icon` palette entries are named or merged differently.
-- `.icon` pre-renders approximate Liquid Glass; iOS 27 draws the icon from the layer stack anyway.
+- PDFs are stored as they are; `actool` rewrites them.
+- `.icon` pre-renders approximate Liquid Glass, with flat `automatic-gradient` backgrounds and
+  `display-p3` colours drawn as sRGB; iOS 27 draws the icon from the layer stack anyway.
 
 The full list, by part, is in [`docs/README.md`](docs/README.md).
 

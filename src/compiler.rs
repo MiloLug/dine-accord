@@ -27,7 +27,7 @@ pub struct Options {
     pub development_region: Option<String>,
     pub plist_localizations: bool,
     pub xcode_version: XcodeVersion,
-    /// `--enable-icon-stack-fallback-generation NO`.
+    /// `--enable-icon-stack-fallback-generation` given a value read as NO.
     pub disable_icon_stack_fallback: bool,
 }
 

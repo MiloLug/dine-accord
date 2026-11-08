@@ -359,7 +359,7 @@ fn ios_document(
         }
         let layers = collect_stack_layers(icon_path, parsed, look, Shape::FullBleed);
         let stack = render_layer_stack(&layers, 1024, fill)?;
-        let pixels = match fill {
+        let mut pixels = match fill {
             Some(f) => crate::icon_render::composite_icon(1024, f, &stack, None).unwrap_or(stack),
             None => stack,
         };
@@ -368,6 +368,9 @@ fn ios_document(
         }
         if !pre_rendered {
             break;
+        }
+        if opts.xcode_version.adds_render_noise() {
+            crate::icon_render::add_render_noise(&mut pixels);
         }
         let (pixel_data, width, height, pixel_format) =
             crate::catalog::bgra_to_best_format(pixels, 1024, 1024, false);
@@ -604,6 +607,45 @@ fn box_blur_v(src: &mut [f32], tmp: &mut [f32], w: usize, r: usize) {
     src.copy_from_slice(tmp);
 }
 
+enum LayerFill {
+    Solid([f64; 3]),
+    /// Two stops from `from` to `to`, in unit coordinates with (0, 0) at the top left.
+    Linear { start: [f64; 3], stop: [f64; 3], from: [f32; 2], to: [f32; 2] },
+}
+
+impl LayerFill {
+    fn parse(v: &serde_json::Value) -> Option<Self> {
+        let rgb = |spec: &serde_json::Value| comps_to_rgb(&parse_color_spec(spec.as_str()?)?.1);
+        if let Some(solid) = v.get("solid") {
+            return rgb(solid).map(Self::Solid);
+        }
+        let stops = v.get("linear-gradient")?.as_array()?;
+        let [fx, fy, tx, ty] = parse_orientation(v.as_object()?);
+        Some(Self::Linear {
+            start: rgb(stops.first()?)?,
+            stop: rgb(stops.last()?)?,
+            from: [fx, fy],
+            to: [tx, ty],
+        })
+    }
+
+    fn at(&self, p: [f32; 2]) -> [f64; 3] {
+        match self {
+            Self::Solid(rgb) => *rgb,
+            Self::Linear { start, stop, from, to } => {
+                let d = [to[0] - from[0], to[1] - from[1]];
+                let len2 = d[0] * d[0] + d[1] * d[1];
+                let t = if len2 > 0.0 {
+                    (((p[0] - from[0]) * d[0] + (p[1] - from[1]) * d[1]) / len2).clamp(0.0, 1.0) as f64
+                } else {
+                    0.0
+                };
+                [0, 1, 2].map(|c| start[c] + (stop[c] - start[c]) * t)
+            }
+        }
+    }
+}
+
 /// A layer in paint order; `scale`, `tx`, `ty` are in 1024-canvas pixels.
 struct StackLayer {
     source: PathBuf,
@@ -626,8 +668,8 @@ struct StackLayer {
     /// non-1024 / non-square layer keeps its aspect and isn't stretched.
     native_w: u32,
     native_h: u32,
-    /// The layer's solid fill, which replaces the artwork's colour inside its coverage.
-    fill: Option<[f64; 3]>,
+    /// The layer's fill, which replaces the artwork's colour inside its coverage.
+    fill: Option<LayerFill>,
 }
 
 /// The visible layers of every group for `appearance`, back to front.
@@ -704,9 +746,7 @@ fn collect_stack_layers(
                     Some(Fill::Structured(v)) => Some(v),
                     _ => None,
                 })
-                .and_then(|v| v.get("solid")?.as_str())
-                .and_then(parse_color_spec)
-                .and_then(|(_, comps)| comps_to_rgb(&comps));
+                .and_then(LayerFill::parse);
             out.push(StackLayer {
                 source: path,
                 frosted,
@@ -903,6 +943,17 @@ fn draw_glass(
     }
 }
 
+/// The bounding box of `rgba`'s non-transparent pixels, `w` wide, as (x0, y0, x1, y1). A gradient
+/// fill spans it, not the raster: utm-remote's rings cover a small part of their 1024 canvas and
+/// still run the full light-to-dark range.
+fn drawn_bounds(rgba: &[u8], w: usize) -> (usize, usize, usize, usize) {
+    let (mut x0, mut y0, mut x1, mut y1) = (usize::MAX, usize::MAX, 0, 0);
+    for (i, _) in rgba.chunks_exact(4).enumerate().filter(|(_, p)| p[3] > 0) {
+        (x0, y0, x1, y1) = (x0.min(i % w), y0.min(i / w), x1.max(i % w), y1.max(i / w));
+    }
+    (x0, y0, x1, y1)
+}
+
 /// Composite `layers` into premultiplied BGRA at `pixel_size`². Frosted layers share one
 /// coverage mask drawn as a tint of `gradient` (see `GLASS_*`), not in their own colour.
 fn render_layer_stack(
@@ -930,12 +981,23 @@ fn render_layer_stack(
             Entry::Vacant(e) => e.insert(rasterize_layer(&layer.source, rw, rh)?),
         };
         let filled;
-        let src = match layer.fill {
-            Some(rgb) => {
-                let px = rgb.map(|c| (c.clamp(0.0, 1.0) * 255.0).round() as u8);
+        let src = match &layer.fill {
+            Some(fill) => {
+                let fw = rw as usize;
+                let (x0, y0, x1, y1) = match fill {
+                    LayerFill::Linear { .. } => drawn_bounds(src, fw),
+                    LayerFill::Solid(_) => (0, 0, 0, 0),
+                };
+                let span = |a: usize, b: usize| b.saturating_sub(a).max(1) as f32;
                 filled = src
                     .chunks_exact(4)
-                    .flat_map(|p| [px[0], px[1], px[2], p[3]])
+                    .enumerate()
+                    .flat_map(|(i, p)| {
+                        let u = (i % fw).saturating_sub(x0) as f32 / span(x0, x1);
+                        let v = (i / fw).saturating_sub(y0) as f32 / span(y0, y1);
+                        let px = fill.at([u, v]).map(|c| (c.clamp(0.0, 1.0) * 255.0).round() as u8);
+                        [px[0], px[1], px[2], p[3]]
+                    })
                     .collect::<Vec<u8>>();
                 &filled
             }
@@ -1136,11 +1198,14 @@ fn build_icon_car(
             }
         };
         let shadow = shadow_params(icon_shadow, *pixel_size);
-        let composited = match light_fill {
+        let mut composited = match light_fill {
             Some(f) => crate::icon_render::composite_icon(*pixel_size, f, &layer_bgra, shadow.as_ref())
                 .unwrap_or_else(|| layer_bgra.clone()),
             None => layer_bgra.clone(),
         };
+        if xcode.adds_render_noise() {
+            crate::icon_render::add_render_noise(&mut composited);
+        }
         let (pd, w, h, pf) = crate::catalog::bgra_to_best_format(composited, w, h, false);
         let cs_id = car::colorspace_for_pixel_format(&pf);
         let name = pre_rendered_name(icon_name, point_size, *scale, "NSAppearanceNameSystem");
@@ -2260,6 +2325,26 @@ mod tests {
         let out = render_layer_stack(&layers, 64, None).unwrap();
         let i = (32 * 64 + 32) * 4; // premul-first BGRA, opaque red
         assert_eq!((out[i], out[i + 1], out[i + 2], out[i + 3]), (0, 0, 255, 255));
+    }
+
+    #[test]
+    fn linear_gradient_layer_fill_runs_top_to_bottom() {
+        let dir = std::env::temp_dir().join(format!("gradfill_t_{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let white = dir.join("white.png");
+        let band = image::RgbaImage::from_fn(64, 64, |_, y| {
+            image::Rgba([255, 255, 255, if (16..48).contains(&y) { 255 } else { 0 }])
+        });
+        band.save(&white).unwrap();
+        let fill = serde_json::json!({"linear-gradient": ["srgb:1,0,0,1", "srgb:0,0,1,1"]});
+        let layers = vec![StackLayer { source: white, frosted: false, tinted: false, opaque_glass: false, shadow_strength: 0.0, scale: 1.0, tx: 0.0, ty: 0.0, opacity: 1.0, blend: BlendMode::Normal, native_w: 1024, native_h: 1024, fill: LayerFill::parse(&fill) }];
+        let out = render_layer_stack(&layers, 64, None).unwrap();
+        let px = |y: usize| {
+            let i = (y * 64 + 32) * 4;
+            (out[i], out[i + 1], out[i + 2])
+        };
+        assert_eq!(px(16), (0, 0, 255), "first stop at the top of the drawn band");
+        assert_eq!(px(47), (255, 0, 0), "last stop at its bottom");
     }
 
     #[test]

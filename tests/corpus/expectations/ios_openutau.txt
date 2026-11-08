@@ -1,2 +1,10 @@
 facet "openutau": want Element=85 Part=245 Identifier=30793 hotspot (0, 0), got Element=85 Part=220 Identifier=30793 hotspot (0, 0)
 header.coreui_version: want 970, got 975
+rendition [Appearance=10 Scale=1 Idiom=1 Dimension2=1 Identifier=30793 Element=85 Part=220].colorspace: want 2, got 1
+rendition [Appearance=10 Scale=1 Idiom=1 Dimension2=1 Identifier=30793 Element=85 Part=220].format: want "GA8 ", got "ARGB"
+rendition [Appearance=10 Scale=1 Idiom=1 Dimension2=1 Identifier=30793 Element=85 Part=220].payload.decoded_len: want 2097152, got 4194304
+rendition [Appearance=10 Scale=1 Idiom=1 Dimension2=1 Identifier=30793 Element=85 Part=220].tlvs.tlv1007.bytes_per_row: want 2048, got 4096
+rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=30793 Element=85 Part=220].colorspace: want 2, got 1
+rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=30793 Element=85 Part=220].format: want "GA8 ", got "ARGB"
+rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=30793 Element=85 Part=220].payload.decoded_len: want 2097152, got 4194304
+rendition [Appearance=10 Scale=1 Idiom=2 Dimension2=1 Identifier=30793 Element=85 Part=220].tlvs.tlv1007.bytes_per_row: want 2048, got 4096

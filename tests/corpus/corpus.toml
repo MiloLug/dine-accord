@@ -33,7 +33,11 @@ sources = [
 [[sample]]
 name = "moddable"
 url = "https://raw.githubusercontent.com/Moddable-OpenSource/moddable/80076c48f5ab87ce29de728071b7408599071a12/tools/mcsim/mac/Assets.car"
+# The actool rule that built it is in tools/mcconfig/make.x-mac.mk before 6a66533, which replaced
+# it with a copy of this file: `=disabled` turned the pre-renders off.
 app_icon = "main"
+args = ["--include-all-app-icons", "--target-device", "mac", "--development-region", "en",
+        "--enable-on-demand-resources", "NO", "--enable-icon-stack-fallback-generation=disabled"]
 sources = [
     "https://raw.githubusercontent.com/Moddable-OpenSource/moddable/80076c48f5ab87ce29de728071b7408599071a12/tools/mcsim/mac/main.icon",
 ]
@@ -48,10 +52,10 @@ sources = [
 
 [[sample]]
 name = "zettlr"
-url = "https://raw.githubusercontent.com/Zettlr/Zettlr/c805b1e3ec8c9ca91f6c2be086c89fa55df6ec0d/resources/icons/Assets.car"
+url = "https://raw.githubusercontent.com/Zettlr/Zettlr/7884fde11e236b4d7d4a20290045e9cef81b4181/resources/icons/Assets.car"
 app_icon = "Zettlr"
 sources = [
-    "https://raw.githubusercontent.com/Zettlr/Zettlr/c805b1e3ec8c9ca91f6c2be086c89fa55df6ec0d/resources/icons/Zettlr.icon",
+    "https://raw.githubusercontent.com/Zettlr/Zettlr/7884fde11e236b4d7d4a20290045e9cef81b4181/resources/icons/Zettlr.icon",
 ]
 
 [[sample]]
@@ -121,6 +125,8 @@ sources = [
 [[sample]]
 name = "ios/openutau"
 url = "https://raw.githubusercontent.com/vocoder712/OpenUtauMobile/17a86f602e054c345841684224903004eff1f536/OpenUtauMobile/Resources/AppIcon/Assets.car"
+# Built by Xcode 26.0.1, whose pre-renders carry no pixel noise: its exactly gray Tintable icon is
+# GA8, where `--xcode-version 26` (26.6) writes ARGB.
 app_icon = "AppIcon"
 args = ["--target-device", "iphone", "--target-device", "ipad"]
 sources = [

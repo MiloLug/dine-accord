@@ -20,7 +20,7 @@ One `accord --compile` run:
 
 1. `main.rs` parses the actool-compatible command line, or runs `inspect`, `diff`, `extract` or
    the asset-symbols mode. `--xcode-version` picks the actool build to reproduce, Xcode 26.6 or
-   27.0 (the default); `xcode.rs` holds what differs between the two.
+   27.0 (the default); `xcode.rs` holds what depends on the build.
 2. `compiler.rs` handles the invocation: each `.icon` goes to `icon_bundle.rs`, everything else
    to `catalog.rs`; it also writes the loose iOS icons, the `.icns` and the partial plist.
 3. `catalog.rs` parses an `.xcassets` into renditions. `color.rs` converts ICC-tagged images to
@@ -94,9 +94,12 @@ Differs from actool: PDFs are stored as given (actool rewrites them); JPEGs keep
 [app-icons.md](app-icons.md) · tests `ios_parity.rs`, `e2e_compile.rs`.
 
 Without `--app-icon`, an `.icon` bundle's name is taken as the app icon, so the `.icns` and plist
-keys are written; what actool does there is unverified. `--enable-icon-stack-fallback-generation
-NO` leaves out the `.icon` pre-renders under `--xcode-version 26` only; the loose PNGs and the
-`.icns` are still written. The corpus shows `NO` working in Xcode 26.0 alone.
+keys are written; what actool does there is unverified. accord reads a YES/NO argument as YES
+only when it starts with Y, y, T, t or 1-9 (after spaces, a sign and zeros). Any other value of
+`--enable-icon-stack-fallback-generation` leaves out the `.icon` pre-renders under
+`--xcode-version 26` only; the loose PNGs and the `.icns` are still written. The corpus shows the
+switch working in Xcode 26.0 and 26.0.1 alone (`disabled` in moddable, `NO` in
+emacs-liquid-glass).
 
 ### Icon Composer bundles
 
@@ -112,18 +115,25 @@ Differs from actool:
   `blur-material`; vlc, the one sample with a non-zero value, has the same 0.5 in
   `refractivity.depth`.
 - The 1024 pt macOS pre-render is @1x, as from Xcode 26.1.
-- Pre-renders that come out exactly gray are `GA8` where actool's pixels are near gray and stay
-  `ARGB` (readinglist; utm-remote's Tintable icon). Pre-renders get no `RGBW` copies.
+- Pre-renders get a noise pattern of accord's own, of the strength actool's Xcode 26.6 and 27.1
+  output shows, under both `--xcode-version` values; a gray one is therefore `ARGB` like
+  actool's. openutau, built by Xcode 26.0.1 whose renders have no noise, gets an `ARGB` Tintable
+  icon where actool's is `GA8`. Pre-renders get no `RGBW` copies.
 - The `.icns` holds the first layer image, not the rendered icon.
 - PDF layers are not read.
 
 ### Pre-rendered icon look
 
 `icon_render.rs`, `icon_bundle.rs` (layer stack), `svg_raster.rs` · spec
-[icon-rendering.md](icon-rendering.md) · no pixel tests.
+[icon-rendering.md](icon-rendering.md) · pixel checks only in `icon_bundle.rs` unit tests.
 
 Rendering uses resvg and tiny-skia. The glass edge blur is three box passes, so its σ is set
 below the measured one.
+
+Differs from actool:
+- An `automatic-gradient` background is drawn flat in its colour.
+- `display-p3` colours are drawn with their components taken as sRGB (zettlr's green background
+  comes out (28, 178, 126) where actool's ends at (2, 182, 123)).
 
 ## Testing against actool
 
